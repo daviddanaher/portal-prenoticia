@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portal de Usuarios Autorizados - Prensa & Noticias Exclusivas</title>
+<title>Portal de Usuarios</title>
 <style>
   :root {
     --primary-orange: #ff9800;
@@ -14,9 +14,9 @@
     --text-color: #222222;
     --text-muted: #666666;
     --border-color: #e0e0e0;
-    --accent-blue: #1e88e5;
     --green-success: #2e7d32;
     --red-error: #c62828;
+    --amber-warning: #ed6c02;
   }
 
   * {
@@ -32,40 +32,8 @@
     min-height: 100vh;
   }
 
-  /* Top Bar Header inspirado en Prenoticia */
-  .top-header {
-    background-color: var(--header-bg);
-    color: #fff;
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  }
-
-  .top-header h1 {
-    margin: 0;
-    font-size: 26px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .top-nav {
-    display: flex;
-    gap: 15px;
-  }
-
-  .top-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 14px;
-    text-transform: uppercase;
-  }
-
   .container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 30px auto;
     background: var(--card-bg);
     padding: 25px;
@@ -73,7 +41,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   }
 
-  /* Formulario de Login */
+  /* Login */
   .login-section {
     max-width: 400px;
     margin: 40px auto;
@@ -101,7 +69,7 @@
     margin-bottom: 5px;
   }
 
-  input[type="text"], input[type="password"], input[type="email"], input[type="date"], select {
+  input[type="text"], input[type="password"], input[type="email"], select, textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -125,7 +93,7 @@
     background-color: var(--dark-orange);
   }
 
-  /* NAVEGACIÓN POR PESTAÑAS (TABS) */
+  /* Pestañas */
   .tabs-header {
     display: flex;
     border-bottom: 3px solid var(--header-bg);
@@ -158,44 +126,53 @@
     display: block;
   }
 
-  /* Alertas de Estado */
-  .status-badge {
-    background-color: #e8f5e9;
-    color: var(--green-success);
-    border: 1px solid #a5d6a7;
-    padding: 12px;
+  /* Alertas */
+  .alert-box {
+    padding: 15px;
     border-radius: 6px;
     font-weight: bold;
     margin-bottom: 20px;
+    display: none;
+  }
+
+  .alert-warning {
+    background-color: #fff3e0;
+    color: var(--amber-warning);
+    border: 1px solid #ffe0b2;
+  }
+
+  .alert-error {
+    background-color: #ffebee;
+    color: var(--red-error);
+    border: 1px solid #ffcdd2;
+  }
+
+  /* Bloqueo por suspensión */
+  .suspended-box {
+    background: #ffebee;
+    border: 2px solid var(--red-error);
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    color: #b71c1c;
+  }
+
+  .suspended-box h2 {
+    margin-top: 0;
+  }
+
+  .btn-pay {
     display: inline-block;
-  }
-
-  /* Tablas Estilizadas */
-  .table-container {
-    overflow-x: auto;
-    margin-bottom: 20px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-
-  th, td {
-    padding: 12px 15px;
-    border: 1px solid var(--border-color);
-    text-align: left;
-    font-size: 14px;
-  }
-
-  th {
-    background-color: #f8f9fa;
-    color: var(--header-bg);
+    background-color: #2e7d32;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
     font-weight: bold;
+    border-radius: 5px;
+    margin-top: 15px;
   }
 
-  /* Sección de Noticias */
+  /* Noticias */
   .news-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -225,18 +202,16 @@
     flex-direction: column;
   }
 
-  .news-card h4 {
-    margin: 0 0 10px 0;
-    color: #111;
-  }
-
-  .news-card p {
+  .news-extra-content {
+    display: none;
+    margin-top: 10px;
     font-size: 13px;
-    color: var(--text-muted);
-    flex-grow: 1;
+    color: #444;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
   }
 
-  .btn-read-more {
+  .btn-toggle-news {
     background-color: #333;
     color: #fff;
     border: none;
@@ -247,7 +222,7 @@
     align-self: flex-start;
   }
 
-  /* Sección Concursos */
+  /* Concursos */
   .contest-card {
     border: 2px solid var(--header-bg);
     border-radius: 8px;
@@ -259,32 +234,38 @@
   }
 
   .contest-img {
-    max-width: 250px;
+    max-width: 220px;
     width: 100%;
     border-radius: 6px;
   }
 
-  .contest-info {
-    flex: 1;
+  /* Modificación de datos */
+  .modify-panel {
+    display: none;
+    width: 100%;
+    background: #fdfdfd;
+    border: 2px solid var(--header-bg);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
   }
 
-  .btn-whatsapp {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: #25d366;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: bold;
-    margin-right: 10px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
   }
 
-  .btn-whatsapp img {
-    width: 18px;
-    height: 18px;
-    margin-right: 8px;
+  th, td {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    text-align: left;
+    font-size: 14px;
+  }
+
+  th {
+    background-color: #f8f9fa;
+    color: var(--header-bg);
   }
 
   .action-buttons {
@@ -294,242 +275,187 @@
     flex-wrap: wrap;
   }
 
-  /* Ocultar formulario real de Blogger */
-  #hidden-blogger-form {
+  /* Formulario transparente de Blogger */
+  #hidden-blogger-iframe {
     display: none;
+    width: 0;
+    height: 0;
+    border: 0;
   }
 </style>
 </head>
 <body>
 
-<header class="top-header">
-  <h1>Prenoticia</h1>
-  <nav class="top-nav">
-    <a href="#">Secciones</a>
-    <a href="#">Noticias Hoy</a>
-    <a href="#">Horóscopo</a>
-    <a href="#">Mundo</a>
-    <a href="#">Sociedad</a>
-    <a href="#">Cultura</a>
-  </nav>
-</header>
-
-<!-- PANTALLA DE LOGIN -->
+<!-- LOGIN -->
 <div class="container" id="login-container">
   <div class="login-section">
     <h2>Iniciar Sesión</h2>
-    <p>Portal exclusivo para usuarios autorizados</p>
+    <p>Ingrese sus credenciales de acceso</p>
     <div class="input-group">
       <label for="dni">DNI / Documento</label>
       <input type="text" id="dni" placeholder="Ingrese su DNI">
     </div>
     <div class="input-group">
       <label for="password">Contraseña</label>
-      <input type="password" id="password" placeholder="Ingrese su contraseña">
+      <input type="password" id="password" placeholder="Ingrese contraseña">
     </div>
     <button onclick="login()">Ingresar</button>
     <p id="login-error" style="color:var(--red-error); margin-top: 10px;"></p>
   </div>
 </div>
 
+<!-- VISTA DE CUENTA SUSPENDIDA -->
+<div class="container" id="suspended-container" style="display:none;">
+  <div class="suspended-box">
+    <h2>Cuenta Suspendida</h2>
+    <p>Tu cuenta ha sido suspendida momentáneamente. Por favor regulariza tu situación comunicándote a <strong>prenoticia@gmail.com</strong> o aboná parcial o total a través de este link para que tu cuenta sea rehabilitada:</p>
+    <a href="https://link.mercadopago.com.ar/prenoticia" target="_blank" class="btn-pay">Abonar en Mercado Pago</a>
+    <br><br>
+    <button onclick="logout()" style="background:#555;">Cerrar Sesión</button>
+  </div>
+</div>
+
 <!-- DASHBOARD DE USUARIO -->
 <div class="container" id="dashboard-container" style="display:none;">
   
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-    <h2>Bienvenido, <span id="user-display-name"></span></h2>
-    <div class="status-badge">✔ Tu cuenta está al día</div>
-  </div>
+  <h2>Hola <span id="user-display-name"></span></h2>
 
-  <!-- NAVEGACIÓN POR SECCIONES -->
+  <!-- Módulo de Alertas Dinámicas -->
+  <div id="alert-cobro" class="alert-box alert-warning"></div>
+  <div id="alert-mora" class="alert-box alert-error"></div>
+
+  <!-- NAVEGACIÓN -->
   <div class="tabs-header">
-    <button class="tab-btn active" onclick="openTab('tab-noticias')">Noticias Exclusivas</button>
-    <button class="tab-btn" onclick="openTab('tab-concursos')">Concursos & Sorteos</button>
-    <button class="tab-btn" onclick="openTab('tab-datos')">Mis Datos & Suscripción</button>
-    <button class="tab-btn" onclick="openTab('tab-marca')">Marcas Registradas</button>
+    <button class="tab-btn active" onclick="openTab('tab-noticias')">Noticias</button>
+    <button class="tab-btn" onclick="openTab('tab-concursos')">Concursos</button>
+    <button class="tab-btn" onclick="openTab('tab-datos')">Mis datos</button>
   </div>
 
-  <!-- SECCIÓN 1: NOTICIAS EXCLUSIVAS -->
+  <!-- SECCIÓN NOTICIAS -->
   <div id="tab-noticias" class="tab-content active">
-    <h3>Noticias Exclusivas para Suscriptores</h3>
+    <h3>Noticias Exclusivas</h3>
     <div class="news-grid">
       <div class="news-card">
         <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop&q=60" alt="Noticia 1">
         <div class="news-card-body">
           <h4>Nuevas Tendencias en Propiedad Intelectual 2026</h4>
-          <p>Análisis exhaustivo sobre los cambios regulatorios en la protección de marcas y patentes a nivel local e internacional.</p>
-          <button class="btn-read-more" onclick="alert('Abriendo artículo completo...')">Ver y Leer más</button>
+          <p>Análisis exhaustivo sobre los cambios regulatorios en la protección de marcas y activos digitales.</p>
+          <div class="news-extra-content" id="news-1-extra">
+            <p>La reciente actualización normativa exige que las marcas con presencia comercial en medios digitales adapten sus registros ante organismos oficiales. Este procedimiento optimiza la resolución de disputas de dominios y cuentas en plataformas de contenido.</p>
+          </div>
+          <button class="btn-toggle-news" onclick="toggleNews('news-1-extra', this)">Ver más</button>
         </div>
       </div>
+
       <div class="news-card">
         <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60" alt="Noticia 2">
         <div class="news-card-body">
           <h4>Avances Tecnológicos y Protección Digital</h4>
-          <p>Cómo resguardar los activos digitales e intangibles frente a los avances del mercado automatizado.</p>
-          <button class="btn-read-more" onclick="alert('Abriendo artículo completo...')">Ver y Leer más</button>
+          <p>Cómo resguardar tus activos intangibles frente a nuevos desarrollos tecnológicos.</p>
+          <div class="news-extra-content" id="news-2-extra">
+            <p>Se recomienda la implementación de auditorías periódicas sobre bases de datos y marcas registradas para asegurar la continuidad de los derechos intelectuales e industriales en el ámbito local e internacional.</p>
+          </div>
+          <button class="btn-toggle-news" onclick="toggleNews('news-2-extra', this)">Ver más</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN 2: CONCURSOS Y SORTEOS -->
+  <!-- SECCIÓN CONCURSOS -->
   <div id="tab-concursos" class="tab-content">
-    <h3>Concursos Exclusivos</h3>
+    <h3>Concursos y Sorteos Activos</h3>
     <div class="contest-card">
       <img src="https://revuecinema.ca/wp-content/uploads/2026/05/coyote_vs_acme_tmdb-7znmjp6z6mdap4louacykgsbuqv-683x1024.jpg" alt="Coyote vs Acme" class="contest-img">
-      <div class="contest-info">
+      <div>
         <h3>Sorteo de Entradas: COYOTE VS ACME</h3>
         <p><strong>Cine:</strong> Cinemark Abasto</p>
-        <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs (Idioma: Castellano)</p>
-        <p>Participá por pares de entradas para esta función exclusiva. Al hacer clic, tus datos cargados en el sitio se autocompletarán automáticamente en la inscripción.</p>
-        
-        <div id="contest-action-area">
-          <button id="btn-participate" onclick="participarConcurso()">¡Hacer clic para Participar!</button>
-        </div>
+        <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs (Castellano)</p>
+        <p>Hacé clic para registrarte automáticamente en el sorteo con los datos cargados en el sistema.</p>
+        <button id="btn-participate" onclick="participarConcurso()">Participar</button>
         <div id="contest-status-msg" style="margin-top:15px; font-weight:bold; color:var(--green-success);"></div>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÓN 3: MIS DATOS Y SUSCRIPCIÓN -->
+  <!-- SECCIÓN MIS DATOS -->
   <div id="tab-datos" class="tab-content">
-    <h3>Verificación de Datos Personales y Suscripción</h3>
-    <div class="table-container">
-      <table>
-        <tr>
-          <th>Nombre Completo</th>
-          <td id="data-fullname"></td>
-        </tr>
-        <tr>
-          <th>Correo Electrónico Asociado</th>
-          <td id="data-email"></td>
-        </tr>
-        <tr>
-          <th>Teléfono Asociado</th>
-          <td><input type="text" id="data-phone" value="+54 11 2167-9936" style="width:250px;"></td>
-        </tr>
-        <tr>
-          <th>Monto del Abono</th>
-          <td id="data-abono">$5.000 / mes</td>
-        </tr>
-        <tr>
-          <th>Modalidad de Pago</th>
-          <td>
-            <select id="data-metodo-pago" onchange="actualizarMetodoPago(this.value)">
-              <option value="Mercado Pago">Mercado Pago</option>
-              <option value="Transferencia Bancaria">Transferencia Bancaria</option>
-            </select>
-          </td>
-        </tr>
-        <tr>
-          <th>Fecha de Pago Habitual</th>
-          <td>Todos los 1 de cada mes</td>
-        </tr>
-        <tr>
-          <th>Próximo Vencimiento</th>
-          <td>
-            <input type="date" id="data-vencimiento" value="2026-09-01" style="width:200px;">
-            <small style="display:block; color:#666;">(Editable manualmente por el usuario)</small>
-          </td>
-        </tr>
-      </table>
+    <h3>Mis Datos Cargados</h3>
+    <table>
+      <tr><th>Nombre Completo</th><td id="data-fullname"></td></tr>
+      <tr><th>Correo Electrónico</th><td id="data-email"></td></tr>
+      <tr><th>Teléfono Asociado</th><td id="data-phone"></td></tr>
+      <tr><th>Monto del Abono</th><td id="data-abono"></td></tr>
+      <tr><th>Medio de Pago</th><td id="data-medio"></td></tr>
+      <tr><th>Próximo Vencimiento</th><td id="data-vencimiento"></td></tr>
+    </table>
+    <br>
+    <button onclick="mostrarPanelModificacion()">Modificar Datos</button>
+
+    <!-- PANEL FULL SIZE DE MODIFICACIÓN -->
+    <div id="modify-panel" class="modify-panel">
+      <h3>Solicitar Modificación de Datos</h3>
+      <p>Seleccioná el dato que deseas modificar e ingresá la nueva información:</p>
+      
+      <div class="input-group">
+        <label for="select-campo">Campo a modificar</label>
+        <select id="select-campo">
+          <option value="Nombre Completo">Nombre Completo</option>
+          <option value="Correo Electrónico">Correo Electrónico</option>
+          <option value="Teléfono Asociado">Teléfono Asociado</option>
+          <option value="Medio de Pago">Medio de Pago</option>
+          <option value="Fecha de Vencimiento">Fecha de Vencimiento</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="input-nuevo-valor">Nuevo Valor / Solicitud</label>
+        <textarea id="input-nuevo-valor" rows="3" placeholder="Escriba aquí los cambios solicitados..."></textarea>
+      </div>
+
+      <button onclick="enviarModificacionBlogger()">Enviar Solicitud de Cambio</button>
+      <button onclick="ocultarPanelModificacion()" style="background:#777;">Cancelar</button>
+      <div id="modify-status-msg" style="margin-top:10px; font-weight:bold;"></div>
     </div>
-    <button onclick="guardarCambiosDatos()">Guardar Cambios de Perfil</button>
   </div>
 
-  <!-- SECCIÓN 4: MARCAS REGISTRADAS (TABLA ORIGINAL ADAPTADA) -->
-  <div id="tab-marca" class="tab-content">
-    <h3>Estado de Trámites ante el INPI</h3>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Marca</th>
-            <th>Categoría</th>
-            <th>Medio de Pago</th>
-            <th>Consulta Disponibilidad</th>
-            <th>Registro de Marca</th>
-            <th>Expediente</th>
-            <th>Fecha de Inicio</th>
-            <th>Propietario</th>
-            <th>Estado Actual</th>
-            <th>Última Actualización</th>
-            <th>Organismo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td id="marca-name"></td>
-            <td id="marca-categoria"></td>
-            <td id="marca-medio-pago">Mercado Pago</td>
-            <td id="consulta-status"></td>
-            <td id="registro-status"></td>
-            <td id="expediente"></td>
-            <td id="fecha-inicio"></td>
-            <td id="propietario"></td>
-            <td id="estado-actual"></td>
-            <td id="ultima-actualizacion"></td>
-            <td>INPI</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h4>Novedades del Expediente</h4>
-    <div class="novedades" id="novedades-list"></div>
-  </div>
-
-  <!-- ACCIONES GENERALES -->
   <hr style="margin-top:30px; border:0; border-top:1px solid #ddd;">
   <div class="action-buttons">
     <a href="https://www.dracostadanaher.com/p/cambiar-contrasena.html" target="_blank">
       <button style="background:#555;">Cambiar Contraseña</button>
     </a>
     <a id="btn-ayuda" class="btn-whatsapp" target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"> Contactar Soporte
+      <button style="background:#25d366; color:white;">Contactar Soporte</button>
     </a>
     <button onclick="logout()" style="background:var(--red-error);">Cerrar Sesión</button>
   </div>
 
 </div>
 
-<!-- FORMULARIO OCULTO DE BLOGGER PARA INYECCIÓN DIRECTA DE CONSULTAS -->
-<form id="hidden-blogger-form" action="https://www.blogger.com/contact-form.do" method="POST" target="hidden-iframe">
-  <input type="text" name="name" id="bf-name">
-  <input type="email" name="email" id="bf-email">
-  <textarea name="body" id="bf-body"></textarea>
-  <input type="hidden" name="blogID" value="OFFICIAL_BLOG_ID">
-  <button type="submit" id="bf-submit-btn">Enviar</button>
+<!-- FORMULARIO DIRECTO Y COMPATIBLE DE BLOGGER -->
+<form id="blogger-form" action="https://www.blogger.com/contact-form.do" method="POST" target="hidden-blogger-iframe">
+  <input type="hidden" name="blogID" value="1234567890123456789"> <!-- Reemplazar con ID real si se tiene -->
+  <input type="hidden" id="bf-name" name="name" value="">
+  <input type="hidden" id="bf-email" name="email" value="">
+  <input type="hidden" id="bf-body" name="body" value="">
+  <input type="submit" id="bf-submit" style="display:none;">
 </form>
-<iframe name="hidden-iframe" id="hidden-iframe" style="display:none;"></iframe>
+<iframe id="hidden-blogger-iframe" name="hidden-blogger-iframe"></iframe>
 
 <script>
-// BASE DE DATOS DE USUARIOS AUTORIZADOS
+// BASE DE DATOS DE USUARIOS CON CONTROL DE SUSPENSIÓN Y FECHAS
 const users = {
   "93976879": {
     dni: "93976879",
     nombreCompleto: "María Lucía Carpio Peralta",
-    nombreSaludo: "Maria Lucia", // Solo los dos nombres
+    nombreSaludo: "Maria Lucia",
     email: "luciacarpio20@gmail.com",
     pass: "osotobi20",
     telefono: "+54 11 2167-9936",
     metodoPago: "Mercado Pago",
-    abonoMonto: "$5.000 / mes",
-    proximoVencimiento: "2026-09-01",
-    marca: "PASTELITTO DOLCE",
-    categoria: "Gastronomía, ventas por internet",
-    pagoConsulta: "08/09/2025",
-    pagoRegistro: null,
-    consultaVerificado: true,
-    registroVerificado: false,
-    expediente: "5452454",
-    fechaInicio: "09/09/2025",
-    propietario: "100%",
-    estadoActual: "Pendiente pago registro",
-    ultActAuto: false,
-    novedades: [
-      {fecha:"08/09/2025", hora:"10:00", descripcion:"Abonó consulta de disponibilidad de marca"},
-      {fecha:"09/09/2025", hora:"10:00", descripcion:"Requiere pago de Registro de marca"}
-    ]
+    abonoMonto: "$5.000",
+    proximoVencimiento: "2026-08-27", // Ejemplo: a 2 días del cobro (hoy 25/08/2026)
+    estadoCuenta: "activa", // Opciones: "activa", "mora", "suspendida"
+    fechaLimiteMora: "2026-08-30"
   },
   "37170491": {
     dni: "37170491",
@@ -539,24 +465,10 @@ const users = {
     pass: "choquedetetas333",
     telefono: "+54 11 2167-9936",
     metodoPago: "Mercado Pago",
-    abonoMonto: "$5.000 / mes",
+    abonoMonto: "$5.000",
     proximoVencimiento: "2026-09-01",
-    marca: "DE ESTRENO",
-    categoria: "Medio de comunicación",
-    pagoConsulta: "09/09/2025",
-    pagoRegistro: "09/09/2025",
-    consultaVerificado: true,
-    registroVerificado: true,
-    expediente: "52545",
-    fechaInicio: "09/09/2025",
-    propietario: "100%",
-    estadoActual: "En trámite",
-    ultActAuto: true,
-    novedades: [
-      {fecha:"08/09/2025", hora:"10:56", descripcion:"Abonó consulta de disponibilidad de marca"},
-      {fecha:"09/09/2025", hora:"10:57", descripcion:"Abonó Registro de marca"},
-      {fecha:"09/09/2025", hora:"11:00", descripcion:"Inicio de Registro de marca"}
-    ]
+    estadoCuenta: "activa",
+    fechaLimiteMora: "2026-09-05"
   }
 };
 
@@ -572,7 +484,13 @@ function login() {
     if (user.pass === passInput) {
       errorElement.textContent = "";
       currentUser = user;
-      showDashboard(user);
+      
+      if (user.estadoCuenta === "suspendida") {
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("suspended-container").style.display = "block";
+      } else {
+        showDashboard(user);
+      }
     } else {
       errorElement.textContent = "Contraseña incorrecta.";
     }
@@ -585,52 +503,40 @@ function showDashboard(user) {
   document.getElementById("login-container").style.display = "none";
   document.getElementById("dashboard-container").style.display = "block";
 
-  // Mostrar saludo personalizado sin DNI ni email
+  // Muestra "Hola" seguido de los nombres
   document.getElementById("user-display-name").textContent = user.nombreSaludo;
 
-  // Cargar pestaña Datos Personales & Suscripción
+  // Cargar datos en vista
   document.getElementById("data-fullname").textContent = user.nombreCompleto;
   document.getElementById("data-email").textContent = user.email;
-  document.getElementById("data-phone").value = user.telefono;
+  document.getElementById("data-phone").textContent = user.telefono;
   document.getElementById("data-abono").textContent = user.abonoMonto;
-  document.getElementById("data-metodo-pago").value = user.metodoPago;
-  document.getElementById("data-vencimiento").value = user.proximoVencimiento;
+  document.getElementById("data-medio").textContent = user.metodoPago;
+  document.getElementById("data-vencimiento").textContent = user.proximoVencimiento;
 
-  // Cargar pestaña Marcas Registradas
-  document.getElementById("marca-name").textContent = user.marca;
-  document.getElementById("marca-categoria").textContent = user.categoria;
-  document.getElementById("marca-medio-pago").textContent = user.metodoPago;
+  // Lógica de cálculo de fechas e avisos
+  const hoy = new Date("2026-08-25"); // Fecha actual del entorno
+  const vencimiento = new Date(user.proximoVencimiento);
+  const diffTiempo = vencimiento - hoy;
+  const diffDias = Math.ceil(diffTiempo / (1000 * 60 * 60 * 24));
 
-  document.getElementById("consulta-status").innerHTML = user.consultaVerificado ? 
-    `<span style="color:var(--green-success)">✔ Completado</span>` : `<span style="color:var(--red-error)">✖ No completado</span>`;
-  
-  document.getElementById("registro-status").innerHTML = user.registroVerificado ? 
-    `<span style="color:var(--green-success)">✔ Completado</span>` : `<span style="color:var(--red-error)">✖ No completado</span>`;
+  const alertCobro = document.getElementById("alert-cobro");
+  const alertMora = document.getElementById("alert-mora");
 
-  document.getElementById("expediente").textContent = user.expediente;
-  document.getElementById("fecha-inicio").textContent = user.fechaInicio;
-  document.getElementById("propietario").textContent = user.propietario;
-  document.getElementById("estado-actual").textContent = user.estadoActual;
+  alertCobro.style.display = "none";
+  alertMora.style.display = "none";
 
-  const ultAct = user.ultActAuto ? new Date().toLocaleDateString("es-AR") : "-";
-  document.getElementById("ultima-actualizacion").textContent = ultAct;
+  if (user.estadoCuenta === "mora") {
+    alertMora.style.display = "block";
+    alertMora.innerHTML = `Tu cuenta registra mora por falta de pago, tienes hasta el día ${user.fechaLimiteMora} para abonar.`;
+  } else if (diffDias >= 0 && diffDias <= 2) {
+    alertCobro.style.display = "block";
+    alertCobro.innerHTML = `En ${diffDias} días se debitará tu membresía de tu cuenta ${user.metodoPago}.`;
+  }
 
-  // Cargar novedades
-  const novedadesList = document.getElementById("novedades-list");
-  novedadesList.innerHTML = "";
-  user.novedades.forEach(n => {
-    const div = document.createElement("div");
-    div.style.padding = "10px";
-    div.style.background = "#f8f9fa";
-    div.style.borderLeft = "4px solid var(--header-bg)";
-    div.style.marginBottom = "8px";
-    div.innerHTML = `<strong>${n.fecha}, ${n.hora}</strong> - ${n.descripcion}`;
-    novedadesList.appendChild(div);
-  });
-
-  // Configurar WhatsApp Soporte
+  // Soporte WhatsApp
   const ayudaBtn = document.getElementById("btn-ayuda");
-  const msg = encodeURIComponent(`Hola, soy ${user.nombreCompleto}. Necesito asistencia sobre mi suscripción / expediente ${user.expediente}`);
+  const msg = encodeURIComponent(`Hola, soy ${user.nombreCompleto}. Consulta sobre mi cuenta.`);
   ayudaBtn.href = `https://wa.me/541121679936?text=${msg}`;
 }
 
@@ -645,58 +551,88 @@ function openTab(tabId) {
   event.currentTarget.classList.add('active');
 }
 
-function actualizarMetodoPago(valor) {
-  if (currentUser) {
-    currentUser.metodoPago = valor;
-    document.getElementById("marca-medio-pago").textContent = valor;
+function toggleNews(idExtra, btn) {
+  const extraContent = document.getElementById(idExtra);
+  if (extraContent.style.display === "block") {
+    extraContent.style.display = "none";
+    btn.textContent = "Ver más";
+  } else {
+    extraContent.style.display = "block";
+    btn.textContent = "Ver menos";
   }
 }
 
-function guardarCambiosDatos() {
-  if (currentUser) {
-    currentUser.telefono = document.getElementById("data-phone").value;
-    currentUser.proximoVencimiento = document.getElementById("data-vencimiento").value;
-    alert("Tus datos y fecha de vencimiento han sido actualizados correctamente.");
-  }
+function mostrarPanelModificacion() {
+  document.getElementById("modify-panel").style.display = "block";
 }
 
-// LÓGICA DEL CONCURSO Y ENVÍO AUTOMÁTICO A BLOGGER
+function ocultarPanelModificacion() {
+  document.getElementById("modify-panel").style.display = "none";
+}
+
+function enviarModificacionBlogger() {
+  if (!currentUser) return;
+
+  const campo = document.getElementById("select-campo").value;
+  const nuevoValor = document.getElementById("input-nuevo-valor").value.trim();
+
+  if (!nuevoValor) {
+    alert("Por favor ingrese el nuevo valor que desea modificar.");
+    return;
+  }
+
+  const mensajeBody = `SOLICITUD DE MODIFICACIÓN DE DATOS:\n\nUsuario: ${currentUser.nombreCompleto}\nDNI: ${currentUser.dni}\nEmail: ${currentUser.email}\nCampo a Modificar: ${campo}\nNuevo Valor Solicitado: ${nuevoValor}\nFecha: ${new Date().toLocaleString("es-AR")}`;
+
+  document.getElementById("bf-name").value = currentUser.nombreCompleto;
+  document.getElementById("bf-email").value = currentUser.email;
+  document.getElementById("bf-body").value = mensajeBody;
+
+  // Envío forzado mediante formulario oculto
+  document.getElementById("bf-submit").click();
+
+  const statusMsg = document.getElementById("modify-status-msg");
+  statusMsg.style.color = "var(--green-success)";
+  statusMsg.textContent = "✔ Solicitud enviada correctamente por el formulario de Blogger.";
+  
+  setTimeout(() => {
+    ocultarPanelModificacion();
+    document.getElementById("input-nuevo-valor").value = "";
+    statusMsg.textContent = "";
+  }, 3000);
+}
+
 function participarConcurso() {
   if (!currentUser) return;
 
   const contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
   const contestLink = "https://revuecinema.ca/wp-content/uploads/2026/05/coyote_vs_acme_tmdb-7znmjp6z6mdap4louacykgsbuqv-683x1024.jpg";
 
-  // Guardar en cache / localStorage
-  const participationData = {
+  // Registro en cache local
+  localStorage.setItem("concurso_" + currentUser.dni, JSON.stringify({
     usuario: currentUser.nombreCompleto,
     email: currentUser.email,
-    concurso: contestName,
-    fechaRegistro: new Date().toISOString()
-  };
-  localStorage.setItem("concurso_registro_" + currentUser.dni, JSON.stringify(participationData));
+    concurso: contestName
+  }));
 
-  // Rellenar formulario oculto de Blogger para envío por correo
+  const mensajeBody = `NUEVA INSCRIPCIÓN A CONCURSO:\n\nUsuario: ${currentUser.nombreCompleto}\nEmail: ${currentUser.email}\nTipo de Concurso: ${contestName}\nLink Promoción: ${contestLink}\nFecha: ${new Date().toLocaleString("es-AR")}`;
+
   document.getElementById("bf-name").value = currentUser.nombreCompleto;
   document.getElementById("bf-email").value = currentUser.email;
-  document.getElementById("bf-body").value = `NUEVA INSCRIPCIÓN A CONCURSO:\n\nUsuario: ${currentUser.nombreCompleto}\nEmail: ${currentUser.email}\nTipo de Concurso: ${contestName}\nLink de Imagen/Promoción: ${contestLink}\nFecha: ${new Date().toLocaleString("es-AR")}`;
+  document.getElementById("bf-body").value = mensajeBody;
 
-  // Forzar envío del formulario de Blogger
-  try {
-    document.getElementById("hidden-blogger-form").submit();
-  } catch(e) {
-    console.log("Envío de formulario Blogger procesado.");
-  }
+  // Envío forzado
+  document.getElementById("bf-submit").click();
 
-  // Interfaz de usuario
-  document.getElementById("btn-participate").disabled = true;
-  document.getElementById("btn-participate").style.background = "#999";
-  document.getElementById("contest-status-msg").innerHTML = "✔ ¡Ya estás participando! Tus datos (" + currentUser.email + ") han sido registrados exitosamente.";
+  const btn = document.getElementById("btn-participate");
+  btn.disabled = true;
+  btn.style.background = "#999";
+  document.getElementById("contest-status-msg").textContent = "✔ ¡Ya estás participando! Tus datos (" + currentUser.email + ") han sido registrados exitosamente.";
 }
 
 function logout() {
   currentUser = null;
   document.getElementById("dashboard-container").style.display = "none";
+  document.getElementById("suspended-container").style.display = "none";
   document.getElementById("login-container").style.display = "block";
   document.getElementById("dni").value = "";
   document.getElementById("password").value = "";
