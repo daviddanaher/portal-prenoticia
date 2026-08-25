@@ -287,6 +287,84 @@
     padding: 20px;
     margin-top: 20px;
   }
+
+  /* VENTANA FLOTANTE / MODAL DE CONFIRMACIÓN DE CACHÉ */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .modal-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    border-top: 5px solid var(--header-bg);
+  }
+
+  .modal-card h3 {
+    margin-top: 0;
+    color: var(--header-bg);
+    font-size: 20px;
+  }
+
+  .cache-data-group {
+    background: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 13px;
+  }
+
+  .cache-data-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dashed #ddd;
+  }
+
+  .cache-data-row:last-child {
+    border-bottom: none;
+  }
+
+  .btn-confirm-submit {
+    background: var(--green-success);
+    color: white;
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-close-modal {
+    background: #6c757d;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin-top: 8px;
+  }
 </style>
 </head>
 <body>
@@ -349,7 +427,7 @@
           <div class="news-card-body">
             <h4>Actualizaciones en Registros Digitales 2026</h4>
             <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...</p>
-            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores. Con estas mejoras, los tiempos de procesamiento se reducen considerablemente permitiendo una gestión ágil desde cualquier dispositivo movil.')">Ver más</button>
+            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores.')">Ver más</button>
           </div>
         </div>
 
@@ -381,7 +459,7 @@
         <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
         
         <div style="margin-top:20px;">
-          <button id="btn-participate-action" onclick="procesarSolicitud('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
+          <button id="btn-participate-action" onclick="prepararTransaccion('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
         </div>
       </div>
     </div>
@@ -424,6 +502,37 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- VENTANA FLOTANTE / MODAL EXTRAÍDO DESDE LA CACHÉ CON FORMULARIO BLOGGER -->
+<div class="modal-overlay" id="cache-modal-overlay">
+  <div class="modal-card">
+    <h3>Confirmación de Registro</h3>
+    <p style="font-size: 13px; color: var(--text-muted);">Los siguientes datos fueron recopilados de su sesión y se enviarán mediante la pasarela oficial:</p>
+
+    <div class="cache-data-group">
+      <div class="cache-data-row"><strong>Acción:</strong> <span id="modal-c-accion"></span></div>
+      <div class="cache-data-row"><strong>Usuario:</strong> <span id="modal-c-nombre"></span></div>
+      <div class="cache-data-row"><strong>Email:</strong> <span id="modal-c-email"></span></div>
+      <div class="cache-data-row"><strong>Teléfono:</strong> <span id="modal-c-telefono"></span></div>
+    </div>
+
+    <div class="cache-data-group" style="background:#fffcf8; border-color:#ffe0b2;">
+      <strong>Detalles del Envío:</strong>
+      <p id="modal-c-detalle" style="margin: 5px 0 0 0; font-size: 13px;"></p>
+    </div>
+
+    <!-- FORMULARIO DIRECTO A BLOGGER -->
+    <form id="blogger-modal-form" method="POST" action="https://www.blogger.com/contact-form.do" target="_blank">
+      <input type="hidden" name="name" id="b-form-name">
+      <input type="hidden" name="email" id="b-form-email">
+      <input type="hidden" name="body" id="b-form-body">
+      
+      <button type="submit" class="btn-confirm-submit" onclick="finalizarEnvioModal()">✔ Confirmar y Enviar a Blogger</button>
+    </form>
+
+    <button type="button" class="btn-close-modal" onclick="cerrarModalFlotante()">Cancelar / Regresar</button>
   </div>
 </div>
 
@@ -554,34 +663,72 @@ function solicitarCambioDatos() {
     return;
   }
 
-  procesarSolicitud("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
+  prepararTransaccion("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
 }
 
-// ARMAR PAQUETE EN CACHÉ Y REDIRIGIR A LA PÁGINA DE CONFIRMACIÓN
-function procesarSolicitud(tipoAccion, detalle) {
+/* SCRAPING DE DOM, CONSTRUCCIÓN DE CACHÉ Y APERTURA DE VENTANA FLOTANTE */
+function prepararTransaccion(tipoAccion, detalle) {
   if (!currentUser) return;
 
+  // 1. Scraping directo de los datos visibles en pantalla
   const paqueteTransaccion = {
-    usuario: currentUser.nombreCompleto,
-    email: currentUser.email,
-    telefono: currentUser.telefono,
-    abono: currentUser.abonoMonto,
-    metodoPago: currentUser.metodoPago,
-    vencimiento: currentUser.proximoVencimiento,
+    usuario: document.getElementById("data-fullname")?.innerText || currentUser.nombreCompleto,
+    email: document.getElementById("data-email")?.innerText || currentUser.email,
+    telefono: document.getElementById("data-phone")?.innerText || currentUser.telefono,
+    abono: document.getElementById("data-abono")?.innerText || currentUser.abonoMonto,
+    metodoPago: document.getElementById("data-metodo-pago")?.innerText || currentUser.metodoPago,
+    vencimiento: document.getElementById("data-vencimiento")?.innerText || currentUser.proximoVencimiento,
     tipoAccion: tipoAccion,
     detalle: detalle,
     fecha: new Date().toLocaleString("es-AR")
   };
 
-  // 1. Guardar en la caché persistente del dispositivo
+  // 2. Guardado preventivo en la Caché Local
   localStorage.setItem("pending_transaction_cache", JSON.stringify(paqueteTransaccion));
 
   if (tipoAccion === "INSCRIPCION_CONCURSO") {
     localStorage.setItem("contest_participating_" + currentUser.email, "true");
   }
 
-  // 2. Redirección a la URL oficial
-  window.location.href = "https://www.prenoticia.com/p/mi-cuenta.html";
+  // 3. Abrir Ventana Flotante basada en la Caché
+  abrirModalFlotante();
+}
+
+function abrirModalFlotante() {
+  const cacheRaw = localStorage.getItem("pending_transaction_cache");
+  if (!cacheRaw) return;
+
+  const tx = JSON.parse(cacheRaw);
+
+  // Inyección de textos extraídos de la caché en el Modal
+  document.getElementById("modal-c-accion").textContent = tx.tipoAccion;
+  document.getElementById("modal-c-nombre").textContent = tx.usuario;
+  document.getElementById("modal-c-email").textContent = tx.email;
+  document.getElementById("modal-c-telefono").textContent = tx.telefono;
+  document.getElementById("modal-c-detalle").innerText = tx.detalle;
+
+  // Cargar variables ocultas del formulario oficial de Blogger
+  document.getElementById("b-form-name").value = tx.usuario;
+  document.getElementById("b-form-email").value = tx.email;
+  document.getElementById("b-form-body").value = `REGISTRO DE PORTAL\n\nAcción: ${tx.tipoAccion}\nUsuario: ${tx.usuario}\nEmail: ${tx.email}\nTeléfono: ${tx.telefono}\nMedio Pago: ${tx.metodoPago}\n\nDetalles:\n${tx.detalle}\n\nFecha Captura: ${tx.fecha}`;
+
+  // Desplegar Modal
+  document.getElementById("cache-modal-overlay").style.display = "flex";
+}
+
+function cerrarModalFlotante() {
+  document.getElementById("cache-modal-overlay").style.display = "none";
+}
+
+function finalizarEnvioModal() {
+  setTimeout(() => {
+    cerrarModalFlotante();
+    ocultarModificacion();
+    if (currentUser) {
+      const participando = localStorage.getItem("contest_participating_" + currentUser.email);
+      actualizarEstadoConcurso(participando === "true");
+    }
+  }, 1000);
 }
 
 function logout() {
@@ -590,86 +737,6 @@ function logout() {
   document.getElementById("dashboard-container").style.display = "none";
   document.getElementById("login-container").style.display = "block";
 }
-</script>
-
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Confirmación de Solicitud</title>
-<style>
-  .confirm-card {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 25px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    background: #ffffff;
-    font-family: 'Segoe UI', Arial, sans-serif;
-  }
-  .confirm-card h2 { color: #f58220; margin-top: 0; }
-  .data-group { background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
-  .data-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #ddd; font-size: 14px; }
-  .btn-submit { background: #2e7d32; color: #fff; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; width: 100%; }
-  .btn-back { background: #6c757d; color: #fff; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; margin-top: 10px; width: 100%; }
-</style>
-</head>
-<body>
-
-<div class="confirm-card">
-  <h2>Revisión de Solicitud</h2>
-  <p id="status-text">Cargando datos desde la sesión...</p>
-
-  <div id="confirm-body" style="display:none;">
-    <div class="data-group">
-      <div class="data-row"><strong>Usuario:</strong> <span id="c-nombre"></span></div>
-      <div class="data-row"><strong>Email:</strong> <span id="c-email"></span></div>
-      <div class="data-row"><strong>Teléfono:</strong> <span id="c-telefono"></span></div>
-      <div class="data-row"><strong>Acción:</strong> <span id="c-accion"></span></div>
-    </div>
-
-    <div class="data-group" style="background:#fffcf8; border: 1px solid #ffe0b2;">
-      <strong>Detalle enviado:</strong>
-      <p id="c-detalle" style="margin: 8px 0 0 0; font-size: 14px;"></p>
-    </div>
-
-    <!-- FORMULARIO OFICIAL BLOGGER -->
-    <form method="POST" action="https://www.blogger.com/contact-form.do">
-      <input type="hidden" name="name" id="b-name">
-      <input type="hidden" name="email" id="b-email">
-      <input type="hidden" name="body" id="b-body">
-      <button type="submit" class="btn-submit">Confirmar y Enviar</button>
-    </form>
-
-    <button type="button" class="btn-back" onclick="window.history.back()">← Regresar al Portal</button>
-  </div>
-</div>
-
-<script>
-window.addEventListener("load", () => {
-  const cacheRaw = localStorage.getItem("pending_transaction_cache");
-  if (!cacheRaw) {
-    document.getElementById("status-text").textContent = "No se encontraron datos en la caché. Por favor inicie la solicitud desde el portal.";
-    return;
-  }
-
-  const tx = JSON.parse(cacheRaw);
-  document.getElementById("status-text").style.display = "none";
-  document.getElementById("confirm-body").style.display = "block";
-
-  document.getElementById("c-nombre").textContent = tx.usuario;
-  document.getElementById("c-email").textContent = tx.email;
-  document.getElementById("c-telefono").textContent = tx.telefono;
-  document.getElementById("c-accion").textContent = tx.tipoAccion;
-  document.getElementById("c-detalle").innerText = tx.detalle;
-
-  document.getElementById("b-name").value = tx.usuario;
-  document.getElementById("b-email").value = tx.email;
-  document.getElementById("b-body").value = `SOLICITUD DE PORTAL\n\nUsuario: ${tx.usuario}\nEmail: ${tx.email}\nTeléfono: ${tx.telefono}\nAcción: ${tx.tipoAccion}\n\nDetalles:\n${tx.detalle}\n\nFecha: ${tx.fecha}`;
-});
 </script>
 
 </body>
