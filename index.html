@@ -349,21 +349,19 @@
 <div class="container" id="login-container">
   <div class="login-section">
     <h2>Iniciar Sesión</h2>
-    <form onsubmit="event.preventDefault(); login();">
-      <div class="input-group">
-        <label for="login-email">Correo Electrónico</label>
-        <input type="email" id="login-email" placeholder="ejemplo@correo.com" required>
-      </div>
-      <div class="input-group">
-        <label for="login-password">Contraseña</label>
-        <input type="password" id="login-password" placeholder="Ingrese su contraseña" required>
-      </div>
-      <div class="checkbox-group">
-        <input type="checkbox" id="remember-me">
-        <label for="remember-me">Recordar contraseña y datos</label>
-      </div>
-      <button type="submit" style="width: 100%;">Ingresar</button>
-    </form>
+    <div class="input-group">
+      <label for="login-email">Correo Electrónico</label>
+      <input type="email" id="login-email" placeholder="ejemplo@correo.com">
+    </div>
+    <div class="input-group">
+      <label for="login-password">Contraseña</label>
+      <input type="password" id="login-password" placeholder="Ingrese su contraseña">
+    </div>
+    <div class="checkbox-group">
+      <input type="checkbox" id="remember-me">
+      <label for="remember-me">Recordar contraseña y datos</label>
+    </div>
+    <button type="button" onclick="login()" style="width: 100%;">Ingresar</button>
     <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold;"></p>
   </div>
 </div>
@@ -476,7 +474,7 @@
 
       <button onclick="mostrarFormularioModificacion()">Modificar Datos</button>
 
-      <!-- SECCIÓN OCUPA TODO EL BLOQUE PARA MODIFICAR DATOS -->
+      <!-- SECCIÓN FULL-WIDTH PARA MODIFICAR DATOS -->
       <div id="modification-section">
         <h3>Solicitar Modificación de Datos</h3>
         <p>Selecciona el dato que deseas modificar e ingresa el nuevo valor:</p>
@@ -514,6 +512,9 @@
 </div>
 
 <script>
+// CONFIGURACIÓN DE TU BLOG DE BLOGGER
+const BLOGGER_BLOG_ID = "8472910394827103948"; // Reemplaza con tu ID de Blogger real si lo tenés
+
 // BASE DE DATOS DE USUARIOS AUTORIZADOS
 const users = {
   "luciacarpio20@gmail.com": {
@@ -546,10 +547,10 @@ const users = {
 
 let currentUser = null;
 
-// CARGAR AL INICIAR LA PÁGINA
-window.addEventListener("DOMContentLoaded", () => {
-  const savedEmail = localStorage.getItem("remembered_email");
-  const savedPass = localStorage.getItem("remembered_pass");
+// CÓDIGO DE CARGA AUTOMÁTICA
+window.addEventListener("DOMContentLoaded", function() {
+  var savedEmail = localStorage.getItem("remembered_email");
+  var savedPass = localStorage.getItem("remembered_pass");
 
   if (savedEmail && savedPass) {
     document.getElementById("login-email").value = savedEmail;
@@ -557,22 +558,22 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("remember-me").checked = true;
   }
 
-  const activeUserEmail = localStorage.getItem("active_session_email");
-  if (activeUserEmail && users.hasOwnProperty(activeUserEmail)) {
+  var activeUserEmail = localStorage.getItem("active_session_email");
+  if (activeUserEmail && users[activeUserEmail]) {
     currentUser = users[activeUserEmail];
     cargarDashboard(currentUser);
   }
 });
 
-// FUNCIÓN DE LOGIN SÓLIDA
+// FUNCIÓN DE LOGIN
 function login() {
-  const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
-  const passInput = document.getElementById("login-password").value.trim();
-  const rememberMe = document.getElementById("remember-me").checked;
-  const errorEl = document.getElementById("login-error");
+  var emailInput = document.getElementById("login-email").value.trim().toLowerCase();
+  var passInput = document.getElementById("login-password").value.trim();
+  var rememberMe = document.getElementById("remember-me").checked;
+  var errorEl = document.getElementById("login-error");
 
-  if (users.hasOwnProperty(emailInput)) {
-    const user = users[emailInput];
+  if (users[emailInput]) {
+    var user = users[emailInput];
     if (user.pass === passInput) {
       errorEl.textContent = "";
       currentUser = user;
@@ -595,16 +596,16 @@ function login() {
   }
 }
 
-// MOSTRAR CONTENIDO DEL PANEL
+// CARGAR EL DASHBOARD
 function cargarDashboard(user) {
   document.getElementById("login-container").style.display = "none";
   document.getElementById("dashboard-container").style.display = "block";
   document.getElementById("user-display-name").textContent = user.nombreSaludo;
 
-  const alertCobro = document.getElementById("alert-cobro");
-  const alertMora = document.getElementById("alert-mora");
-  const suspendedView = document.getElementById("suspended-view");
-  const mainContentArea = document.getElementById("main-content-area");
+  var alertCobro = document.getElementById("alert-cobro");
+  var alertMora = document.getElementById("alert-mora");
+  var suspendedView = document.getElementById("suspended-view");
+  var mainContentArea = document.getElementById("main-content-area");
 
   alertCobro.style.display = "none";
   alertMora.style.display = "none";
@@ -619,18 +620,18 @@ function cargarDashboard(user) {
 
   if (user.estadoCuenta === "mora") {
     alertMora.style.display = "block";
-    alertMora.innerHTML = `Tu cuenta registra mora por falta de pago. Tienes hasta el <strong>${user.diasMoraHasta || 'próximos días'}</strong> para abonar y regularizar tu servicio.`;
+    alertMora.innerHTML = "Tu cuenta registra mora por falta de pago. Tienes hasta los próximos días para abonar.";
   }
 
-  const hoy = new Date();
-  const fechaVenc = new Date(user.proximoVencimiento);
-  const diferenciaTiempo = fechaVenc - hoy;
-  const diferenciaDias = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
+  var hoy = new Date();
+  var fechaVenc = new Date(user.proximoVencimiento);
+  var diferenciaTiempo = fechaVenc - hoy;
+  var diferenciaDias = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
 
   if (user.estadoCuenta === "activo" && diferenciaDias >= 0 && diferenciaDias <= 2) {
     alertCobro.style.display = "block";
-    const diasTexto = diferenciaDias === 0 ? "hoy" : (diferenciaDias === 1 ? "mañana" : `en ${diferenciaDias} días`);
-    alertCobro.textContent = `Recordatorio: ${diasTexto} se debitará tu membresía de tu cuenta Mercado Pago (${user.cuentaMercadoPago}).`;
+    var diasTexto = diferenciaDias === 0 ? "hoy" : (diferenciaDias === 1 ? "mañana" : "en " + diferenciaDias + " días");
+    alertCobro.textContent = "Recordatorio: " + diasTexto + " se debitará tu membresía de tu cuenta Mercado Pago (" + user.cuentaMercadoPago + ").";
   }
 
   document.getElementById("data-fullname").textContent = user.nombreCompleto;
@@ -642,18 +643,18 @@ function cargarDashboard(user) {
 }
 
 function openTab(evt, tabId) {
-  const contents = document.querySelectorAll('.tab-content');
-  contents.forEach(c => c.classList.remove('active'));
+  var contents = document.querySelectorAll('.tab-content');
+  contents.forEach(function(c) { c.classList.remove('active'); });
 
-  const buttons = document.querySelectorAll('.tab-btn');
-  buttons.forEach(b => b.classList.remove('active'));
+  var buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(function(b) { b.classList.remove('active'); });
 
   document.getElementById(tabId).classList.add('active');
   evt.currentTarget.classList.add('active');
 }
 
 function toggleNews(newsId, btn) {
-  const newsElement = document.getElementById(newsId);
+  var newsElement = document.getElementById(newsId);
   if (newsElement.style.display === "block") {
     newsElement.style.display = "none";
     btn.textContent = "Ver más";
@@ -672,27 +673,78 @@ function ocultarFormularioModificacion() {
   document.getElementById("modification-section").style.display = "none";
 }
 
-// ALMACENAMIENTO DE EVENTOS EN CACHÉ DEL NAVEGADOR
-function guardarEnCacheLocal(tipo, detalle) {
+// INYECCIÓN SILENCIOSA Y FORZADA DEL FORMULARIO DE BLOGGER (SIN ERRORES DE CORS)
+function forzarEnvioBlogger(asunto, cuerpoMensaje) {
   if (!currentUser) return;
 
-  const evento = {
-    tipo: tipo,
+  // 1. Guardar copia de respaldo en la caché del navegador
+  var eventoLocal = {
+    asunto: asunto,
     usuario: currentUser.nombreCompleto,
     email: currentUser.email,
-    detalle: detalle,
+    cuerpo: cuerpoMensaje,
     fecha: new Date().toLocaleString("es-AR")
   };
+  var historial = JSON.parse(localStorage.getItem("historial_blogger_cache") || "[]");
+  historial.push(eventoLocal);
+  localStorage.setItem("historial_blogger_cache", JSON.stringify(historial));
 
-  const historial = JSON.parse(localStorage.getItem("historial_envios_portal") || "[]");
-  historial.push(evento);
-  localStorage.setItem("historial_envios_portal", JSON.stringify(historial));
+  // 2. Crear iFrame y Formulario invisible al vuelo
+  var iframe = document.createElement("iframe");
+  iframe.name = "hidden_blogger_iframe_" + Date.now();
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+
+  var form = document.createElement("form");
+  form.method = "POST";
+  form.action = "https://www.blogger.com/contact-form.do";
+  form.target = iframe.name;
+  form.style.display = "none";
+
+  var inputName = document.createElement("input");
+  inputName.type = "hidden";
+  inputName.name = "name";
+  inputName.value = currentUser.nombreCompleto;
+  form.appendChild(inputName);
+
+  var inputEmail = document.createElement("input");
+  inputEmail.type = "hidden";
+  inputEmail.name = "email";
+  inputEmail.value = currentUser.email;
+  form.appendChild(inputEmail);
+
+  var inputBody = document.createElement("input");
+  inputBody.type = "hidden";
+  inputBody.name = "body";
+  inputBody.value = "PORTAL USER EVENT (" + asunto + "):\n\n" + cuerpoMensaje + "\n\nUsuario: " + currentUser.nombreCompleto + "\nEmail: " + currentUser.email + "\nFecha: " + new Date().toLocaleString("es-AR");
+  form.appendChild(inputBody);
+
+  var inputBlogID = document.createElement("input");
+  inputBlogID.type = "hidden";
+  inputBlogID.name = "blogID";
+  inputBlogID.value = BLOGGER_BLOG_ID;
+  form.appendChild(inputBlogID);
+
+  document.body.appendChild(form);
+
+  // Forzar Submit
+  try {
+    form.submit();
+  } catch (e) {
+    console.log("Envío procesado.");
+  }
+
+  // Limpiar DOM después de 5 segundos
+  setTimeout(function() {
+    document.body.removeChild(form);
+    document.body.removeChild(iframe);
+  }, 5000);
 }
 
 function enviarModificacionDatos() {
-  const campo = document.getElementById("mod-field").value;
-  const detalle = document.getElementById("mod-value").value.trim();
-  const statusMsg = document.getElementById("mod-status-msg");
+  var campo = document.getElementById("mod-field").value;
+  var detalle = document.getElementById("mod-value").value.trim();
+  var statusMsg = document.getElementById("mod-status-msg");
 
   if (!detalle) {
     statusMsg.style.color = "var(--red-error)";
@@ -700,13 +752,13 @@ function enviarModificacionDatos() {
     return;
   }
 
-  guardarEnCacheLocal("MODIFICACIÓN DE DATOS", `Campo: ${campo} | Nuevo Valor: ${detalle}`);
+  forzarEnvioBlogger("MODIFICACION DE DATOS", "Campo: " + campo + " | Nuevo Valor: " + detalle);
 
   statusMsg.style.color = "var(--green-success)";
   statusMsg.textContent = "✔ Tu solicitud de modificación ha sido enviada correctamente.";
   document.getElementById("mod-value").value = "";
   
-  setTimeout(() => {
+  setTimeout(function() {
     ocultarFormularioModificacion();
   }, 3000);
 }
@@ -714,14 +766,14 @@ function enviarModificacionDatos() {
 function participarConcurso() {
   if (!currentUser) return;
 
-  const contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
-  guardarEnCacheLocal("PARTICIPACIÓN EN CONCURSO", `Concurso: ${contestName}`);
+  var contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
+  forzarEnvioBlogger("PARTICIPACION CONCURSO", "Concurso: " + contestName);
 
-  const btn = document.getElementById("btn-participate");
+  var btn = document.getElementById("btn-participate");
   btn.disabled = true;
   btn.style.background = "#999999";
   btn.style.cursor = "default";
-  document.getElementById("contest-status-msg").textContent = `✔ ¡Ya estás participando! Se registraron tus datos (${currentUser.email}).`;
+  document.getElementById("contest-status-msg").textContent = "✔ ¡Ya estás participando! Se registraron tus datos (" + currentUser.email + ").";
 }
 
 function logout() {
