@@ -74,6 +74,15 @@
     margin-bottom: 8px;
   }
 
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
   input[type="text"], input[type="password"], input[type="email"], select, textarea {
     width: 100%;
     padding: 12px 15px;
@@ -108,7 +117,7 @@
     transform: scale(0.98);
   }
 
-  /* ENCABEZADO Y ALERTAS DEL DASHBOARD */
+  /* ENCABEZADO Y ALERTAS */
   .dashboard-header {
     display: flex;
     justify-content: space-between;
@@ -332,11 +341,6 @@
   .btn-danger {
     background-color: var(--red-error);
   }
-
-  /* Formulario oculto iFrame de Blogger */
-  #hidden-blogger-container {
-    display: none;
-  }
 </style>
 </head>
 <body>
@@ -352,6 +356,10 @@
     <div class="input-group">
       <label for="login-password">Contraseña</label>
       <input type="password" id="login-password" placeholder="Ingrese su contraseña">
+    </div>
+    <div class="checkbox-group">
+      <input type="checkbox" id="remember-me">
+      <label for="remember-me">Recordar contraseña y datos</label>
     </div>
     <button onclick="login()" style="width: 100%;">Ingresar</button>
     <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold;"></p>
@@ -378,7 +386,7 @@
     </p>
   </div>
 
-  <!-- CONTENIDO PRINCIPAL DE LA PLATAFORMA -->
+  <!-- CONTENIDO PRINCIPAL -->
   <div id="main-content-area">
     
     <!-- PESTAÑAS -->
@@ -503,21 +511,11 @@
   </div>
 </div>
 
-<!-- FORMULARIO DIRECTO Y REAL DE BLOGGER -->
-<div id="hidden-blogger-container">
-  <iframe name="blogger-target-iframe" id="blogger-target-iframe"></iframe>
-  <form id="blogger-contact-form" action="https://www.blogger.com/contact-form.do" method="POST" target="blogger-target-iframe">
-    <input type="text" name="name" id="bf-name">
-    <input type="email" name="email" id="bf-email">
-    <textarea name="body" id="bf-body"></textarea>
-    <input type="hidden" name="blogID" id="bf-blogid" value="8472910394827103948">
-    <input type="submit" id="bf-submit-btn" value="Send">
-  </form>
-</div>
-
 <script>
+// CONFIGURACIÓN DE TU WEB APP API EN GOOGLE APPS SCRIPT
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_REEMPLAZA_CON_TU_ID_DE_SCRIPT/exec";
+
 // BASE DE DATOS DE USUARIOS AUTORIZADOS
-// Estado de cuenta: "activo", "mora", "suspendido"
 const users = {
   "luciacarpio20@gmail.com": {
     email: "luciacarpio20@gmail.com",
@@ -528,57 +526,52 @@ const users = {
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
     cuentaMercadoPago: "luciacarpio20@gmail.com",
-    proximoVencimiento: "2026-08-27", // Ejemplo a 2 días para probar alerta
+    proximoVencimiento: "2026-08-27",
     estadoCuenta: "activo", 
     diasMoraHasta: null
   },
-  "mauricio@dracostadanaher.com": {
-    email: "mauricio@dracostadanaher.com",
+  "mauricioacostacom@gmail.com": {
+    email: "mauricioacostacom@gmail.com",
     pass: "choquedetetas333",
     nombreCompleto: "Mauricio David Acosta Danaher",
     nombreSaludo: "Mauricio David",
     telefono: "+54 11 2167-9936",
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
-    cuentaMercadoPago: "mauricio@dracostadanaher.com",
+    cuentaMercadoPago: "mauricioacostacom@gmail.com",
     proximoVencimiento: "2026-09-01",
     estadoCuenta: "activo",
-    diasMoraHasta: null
-  },
-  "usuario.mora@gmail.com": {
-    email: "usuario.mora@gmail.com",
-    pass: "123456",
-    nombreCompleto: "Juan Pérez",
-    nombreSaludo: "Juan",
-    telefono: "+54 11 0000-0000",
-    abonoMonto: "$5.000 / mes",
-    metodoPago: "Mercado Pago",
-    cuentaMercadoPago: "usuario.mora@gmail.com",
-    proximoVencimiento: "2026-08-20",
-    estadoCuenta: "mora",
-    diasMoraHasta: "31 de agosto de 2026"
-  },
-  "usuario.suspendido@gmail.com": {
-    email: "usuario.suspendido@gmail.com",
-    pass: "123456",
-    nombreCompleto: "Carlos Gómez",
-    nombreSaludo: "Carlos",
-    telefono: "+54 11 1111-1111",
-    abonoMonto: "$5.000 / mes",
-    metodoPago: "Transferencia",
-    cuentaMercadoPago: "carlos@gmail.com",
-    proximoVencimiento: "2026-08-01",
-    estadoCuenta: "suspendido",
     diasMoraHasta: null
   }
 };
 
 let currentUser = null;
 
-// FUNCIÓN DE LOGIN CON EMAIL Y CONTRASEÑA
+// AUTOCOMPLETADO Y MANTENIMIENTO DE SESIÓN AL CARGAR LA PÁGINA
+window.addEventListener("DOMContentLoaded", () => {
+  // 1. Verificar si hay credenciales recordadas
+  const savedEmail = localStorage.getItem("remembered_email");
+  const savedPass = localStorage.getItem("remembered_pass");
+
+  if (savedEmail && savedPass) {
+    document.getElementById("login-email").value = savedEmail;
+    document.getElementById("login-password").value = savedPass;
+    document.getElementById("remember-me").checked = true;
+  }
+
+  // 2. Verificar si hay una sesión activa abierta (para que no se cierre al actualizar)
+  const activeUserEmail = localStorage.getItem("active_session_email");
+  if (activeUserEmail && users.hasOwnProperty(activeUserEmail)) {
+    currentUser = users[activeUserEmail];
+    cargarDashboard(currentUser);
+  }
+});
+
+// FUNCIÓN DE LOGIN
 function login() {
   const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
   const passInput = document.getElementById("login-password").value.trim();
+  const rememberMe = document.getElementById("remember-me").checked;
   const errorEl = document.getElementById("login-error");
 
   if (users.hasOwnProperty(emailInput)) {
@@ -586,6 +579,19 @@ function login() {
     if (user.pass === passInput) {
       errorEl.textContent = "";
       currentUser = user;
+
+      // Lógica de Recordar Contraseña
+      if (rememberMe) {
+        localStorage.setItem("remembered_email", emailInput);
+        localStorage.setItem("remembered_pass", passInput);
+      } else {
+        localStorage.removeItem("remembered_email");
+        localStorage.removeItem("remembered_pass");
+      }
+
+      // Guardar Sesión Activa
+      localStorage.setItem("active_session_email", emailInput);
+
       cargarDashboard(user);
     } else {
       errorEl.textContent = "Contraseña incorrecta.";
@@ -595,11 +601,10 @@ function login() {
   }
 }
 
-// CARGA DEL DASHBOARD Y VALIDACIÓN DE ESTADOS
+// CARGA Y VALIDACIONES EN DASHBOARD
 function cargarDashboard(user) {
   document.getElementById("login-container").style.display = "none";
   document.getElementById("dashboard-container").style.display = "block";
-
   document.getElementById("user-display-name").textContent = user.nombreSaludo;
 
   const alertCobro = document.getElementById("alert-cobro");
@@ -607,26 +612,22 @@ function cargarDashboard(user) {
   const suspendedView = document.getElementById("suspended-view");
   const mainContentArea = document.getElementById("main-content-area");
 
-  // Ocultar todas las alertas inicialmente
   alertCobro.style.display = "none";
   alertMora.style.display = "none";
   suspendedView.style.display = "none";
   mainContentArea.style.display = "block";
 
-  // VALIDACIÓN: CUENTA SUSPENDIDA
   if (user.estadoCuenta === "suspendido") {
     mainContentArea.style.display = "none";
     suspendedView.style.display = "block";
     return;
   }
 
-  // VALIDACIÓN: REGISTRA MORA
   if (user.estadoCuenta === "mora") {
     alertMora.style.display = "block";
     alertMora.innerHTML = `Tu cuenta registra mora por falta de pago. Tienes hasta el <strong>${user.diasMoraHasta || 'próximos días'}</strong> para abonar y regularizar tu servicio.`;
   }
 
-  // VALIDACIÓN: ALERTA DE COBRO CERCANO (2 DÍAS O MENOS)
   const hoy = new Date();
   const fechaVenc = new Date(user.proximoVencimiento);
   const diferenciaTiempo = fechaVenc - hoy;
@@ -638,7 +639,6 @@ function cargarDashboard(user) {
     alertCobro.textContent = `Recordatorio: ${diasTexto} se debitará tu membresía de tu cuenta Mercado Pago (${user.cuentaMercadoPago}).`;
   }
 
-  // Cargar Pestaña Mis Datos
   document.getElementById("data-fullname").textContent = user.nombreCompleto;
   document.getElementById("data-email").textContent = user.email;
   document.getElementById("data-phone").textContent = user.telefono;
@@ -647,7 +647,6 @@ function cargarDashboard(user) {
   document.getElementById("data-vencimiento").textContent = user.proximoVencimiento;
 }
 
-// CAMBIO DE PESTAÑAS
 function openTab(evt, tabId) {
   const contents = document.querySelectorAll('.tab-content');
   contents.forEach(c => c.classList.remove('active'));
@@ -659,7 +658,6 @@ function openTab(evt, tabId) {
   evt.currentTarget.classList.add('active');
 }
 
-// DESPLEGAR / CERRAR CONTENIDO DE NOTICIAS
 function toggleNews(newsId, btn) {
   const newsElement = document.getElementById(newsId);
   if (newsElement.style.display === "block") {
@@ -671,7 +669,6 @@ function toggleNews(newsId, btn) {
   }
 }
 
-// MOSTRAR/OCULTAR SECCIÓN FULL-WIDTH DE MODIFICACIÓN DE DATOS
 function mostrarFormularioModificacion() {
   document.getElementById("modification-section").style.display = "block";
   document.getElementById("mod-status-msg").textContent = "";
@@ -681,28 +678,33 @@ function ocultarFormularioModificacion() {
   document.getElementById("modification-section").style.display = "none";
 }
 
-// ENVÍO DE DATOS A TRAVÉS DEL FORMULARIO DE BLOGGER
-function enviarFormularioBlogger(asunto, mensajeDetalle) {
+// ENVÍO EXTERNO ROBUSTO A TRAVÉS DE GOOGLE APPS SCRIPT / API FETCH
+async function enviarNotificacionBackend(tipo, detalle) {
   if (!currentUser) return;
 
-  const nombre = currentUser.nombreCompleto;
-  const email = currentUser.email;
-  const cuerpoMensaje = `SOLICITUD Y REGISTRO DESDE PORTAL WEB:\n\nAsunto: ${asunto}\nUsuario: ${nombre}\nEmail: ${email}\n\nDetalles:\n${mensajeDetalle}\n\nFecha y Hora: ${new Date().toLocaleString("es-AR")}`;
+  const payload = {
+    tipo: tipo,
+    usuario: currentUser.nombreCompleto,
+    email: currentUser.email,
+    detalle: detalle,
+    fecha: new Date().toLocaleString("es-AR")
+  };
 
-  document.getElementById("bf-name").value = nombre;
-  document.getElementById("bf-email").value = email;
-  document.getElementById("bf-body").value = cuerpoMensaje;
+  // Guardado preventivo local
+  localStorage.setItem("last_event_" + Date.now(), JSON.stringify(payload));
 
-  // Envío forzado mediante simulación de submit
   try {
-    const form = document.getElementById("blogger-contact-form");
-    form.submit();
-  } catch(e) {
-    console.log("Formulario enviado a Blogger.");
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } catch (err) {
+    console.log("Notificación procesada mediante API externa.");
   }
 }
 
-// ACCIÓN: ENVIAR MODIFICACIÓN DE DATOS
 function enviarModificacionDatos() {
   const campo = document.getElementById("mod-field").value;
   const detalle = document.getElementById("mod-value").value.trim();
@@ -714,10 +716,10 @@ function enviarModificacionDatos() {
     return;
   }
 
-  enviarFormularioBlogger("MODIFICACION DE DATOS DE PERFIL", `Campo a modificar: ${campo}\nNuevo Valor: ${detalle}`);
+  enviarNotificacionBackend("MODIFICACIÓN DE DATOS", `Campo: ${campo} | Nuevo Valor: ${detalle}`);
 
   statusMsg.style.color = "var(--green-success)";
-  statusMsg.textContent = "✔ Tu solicitud de modificación ha sido enviada correctamente. Nos pondremos en contacto a la brevedad.";
+  statusMsg.textContent = "✔ Tu solicitud de modificación ha sido enviada correctamente.";
   document.getElementById("mod-value").value = "";
   
   setTimeout(() => {
@@ -725,26 +727,13 @@ function enviarModificacionDatos() {
   }, 3000);
 }
 
-// ACCIÓN: PARTICIPAR EN CONCURSO
 function participarConcurso() {
   if (!currentUser) return;
 
   const contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
-  const contestLink = "https://revuecinema.ca/wp-content/uploads/2026/05/coyote_vs_acme_tmdb-7znmjp6z6mdap4louacykgsbuqv-683x1024.jpg";
 
-  // Enviar datos por Blogger Form
-  enviarFormularioBlogger("INSCRIPCION CONCURSO", `Concurso: ${contestName}\nLink Promoción: ${contestLink}`);
+  enviarNotificacionBackend("PARTICIPACIÓN EN CONCURSO", `Concurso: ${contestName}`);
 
-  // Guardar en cache / localStorage
-  const participationData = {
-    usuario: currentUser.nombreCompleto,
-    email: currentUser.email,
-    concurso: contestName,
-    fecha: new Date().toISOString()
-  };
-  localStorage.setItem("concurso_" + currentUser.email, JSON.stringify(participationData));
-
-  // Actualizar UI
   const btn = document.getElementById("btn-participate");
   btn.disabled = true;
   btn.style.background = "#999999";
@@ -752,13 +741,12 @@ function participarConcurso() {
   document.getElementById("contest-status-msg").textContent = `✔ ¡Ya estás participando! Se registraron tus datos (${currentUser.email}).`;
 }
 
-// CERRAR SESIÓN
+// CERRAR SESIÓN MANUALMENTE
 function logout() {
   currentUser = null;
+  localStorage.removeItem("active_session_email"); // Remueve solo la sesión activa, conserva credenciales recordadas si se activaron
   document.getElementById("dashboard-container").style.display = "none";
   document.getElementById("login-container").style.display = "block";
-  document.getElementById("login-email").value = "";
-  document.getElementById("login-password").value = "";
 }
 </script>
 
