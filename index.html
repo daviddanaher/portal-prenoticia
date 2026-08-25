@@ -58,7 +58,7 @@
     margin-bottom: 25px;
   }
 
-  /* ESTILO DASHBOARD FULL (ANCHO TOTAL Y SIN MARGENES SUPERIORES/INFERIORES) */
+  /* ESTILO DASHBOARD FULL (ANCHO TOTAL Y SIN MARGENES) */
   .dashboard-full {
     width: 100%;
     min-height: 100vh;
@@ -196,7 +196,7 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* VISTA DE NOTICIAS */
+  /* NOTICIAS FULLSCREEN */
   .news-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -371,7 +371,7 @@
         <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
         
         <div style="margin-top:20px;">
-          <button id="btn-participate-action" onclick="solicitarAccionExterna('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
+          <button id="btn-participate-action" onclick="guardarYRedirigir('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
         </div>
       </div>
     </div>
@@ -542,14 +542,13 @@ function procesarModificacionDatos() {
     return;
   }
 
-  solicitarAccionExterna("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
+  guardarYRedirigir("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
 }
 
-/* SCRAPING DEL DOM EN TIEMPO REAL Y REDIRECCIÓN EXTERNA A BLOGGER */
-function solicitarAccionExterna(tipoAccion, detalle) {
+/* ESCANEO DE PANTALLA, GUARDADO EN CACHÉ Y REDIRECCIÓN INMEDIATA */
+function guardarYRedirigir(tipoAccion, detalle) {
   if (!currentUser) return;
 
-  // Extraer información en vivo directamente de lo que se ve en la pantalla
   const datosPantalla = {
     usuario: document.getElementById("data-fullname")?.innerText || currentUser.nombreCompleto,
     email: document.getElementById("data-email")?.innerText || currentUser.email,
@@ -562,14 +561,14 @@ function solicitarAccionExterna(tipoAccion, detalle) {
     fecha: new Date().toLocaleString("es-AR")
   };
 
-  // Guardar paquete en la caché del navegador
+  // Guardar paquete completo en la memoria local compartida
   localStorage.setItem("pending_transaction_cache", JSON.stringify(datosPantalla));
 
   if (tipoAccion === "INSCRIPCION_CONCURSO") {
     localStorage.setItem("contest_participating_" + currentUser.email, "true");
   }
 
-  // REDIRECCIÓN EXTERNA A LA PÁGINA DE BLOGGER QUE ENVIARÁ EL FORMULARIO NATIVO
+  // FORZAR REDIRECCIÓN EXTERNA
   window.location.href = "https://www.prenoticia.com/p/mi-cuenta.html";
 }
 
