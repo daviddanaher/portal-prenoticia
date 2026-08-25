@@ -14,275 +14,71 @@
     --text-color: #222222;
     --text-muted: #666666;
     --border-color: #e0e0e0;
-    --accent-blue: #1e88e5;
     --green-success: #2e7d32;
     --red-error: #c62828;
     --warning-yellow: #f57c00;
   }
 
-  * {
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  }
+  * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+  html, body { margin: 0; padding: 0; background-color: var(--bg-gray); color: var(--text-color); min-height: 100vh; width: 100%; overflow-x: hidden; }
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-gray);
-    color: var(--text-color);
-    min-height: 100vh;
-    width: 100%;
-    overflow-x: hidden;
-  }
+  .login-container { max-width: 420px; margin: 40px auto; padding: 20px; }
+  .login-section { padding: 30px; border: 1px solid var(--border-color); border-radius: 10px; text-align: center; background: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .login-section h2 { color: var(--header-bg); margin-top: 0; font-size: 26px; margin-bottom: 25px; }
 
-  /* ESTILO LOGIN */
-  .login-container {
-    max-width: 420px;
-    margin: 40px auto;
-    padding: 20px;
-  }
+  .dashboard-full { width: 100%; min-height: 100vh; background: #ffffff; margin: 0; padding: 0; }
+  .dashboard-header { background: #ffffff; padding: 15px 20px; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .header-info h2 { margin: 0; font-size: 22px; color: #111; }
+  .header-info .date-text { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
 
-  .login-section {
-    padding: 30px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    text-align: center;
-    background: #ffffff;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  }
+  .input-group { margin-bottom: 20px; text-align: left; }
+  .input-group label { display: block; font-size: 14px; font-weight: 600; color: var(--text-color); margin-bottom: 8px; }
+  .checkbox-group { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
 
-  .login-section h2 {
-    color: var(--header-bg);
-    margin-top: 0;
-    font-size: 26px;
-    margin-bottom: 25px;
-  }
+  input[type="text"], input[type="password"], input[type="email"], select, textarea { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
+  button { background-color: var(--header-bg); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; }
+  button:hover { background-color: var(--dark-orange); }
+  .btn-logout { background-color: var(--red-error); }
 
-  /* DASHBOARD A PANTALLA COMPLETA SIN MARGENES GRISES */
-  .dashboard-full {
-    width: 100%;
-    min-height: 100vh;
-    background: #ffffff;
-    margin: 0;
-    padding: 0;
-  }
-
-  .dashboard-header {
-    background: #ffffff;
-    padding: 15px 20px;
-    border-bottom: 2px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .header-info h2 {
-    margin: 0;
-    font-size: 22px;
-    color: #111;
-  }
-
-  .header-info .date-text {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    display: block;
-  }
-
-  .input-group {
-    margin-bottom: 20px;
-    text-align: left;
-  }
-
-  .input-group label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 8px;
-  }
-
-  .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    color: var(--text-muted);
-  }
-
-  input[type="text"], input[type="password"], input[type="email"], select, textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 15px;
-  }
-
-  button {
-    background-color: var(--header-bg);
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
-  }
-
-  button:hover {
-    background-color: var(--dark-orange);
-  }
-
-  .btn-logout {
-    background-color: var(--red-error);
-  }
-
-  /* ALERTAS DE ESTADO */
-  .alert-container {
-    padding: 10px 20px 0 20px;
-  }
-
-  .alert-box {
-    width: 100%;
-    padding: 15px;
-    border-radius: 8px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    display: none;
-    font-size: 14px;
-  }
-
+  .alert-container { padding: 10px 20px 0 20px; }
+  .alert-box { width: 100%; padding: 15px; border-radius: 8px; font-weight: 600; margin-bottom: 10px; display: none; font-size: 14px; }
   .alert-warning { background-color: #fff3e0; color: var(--warning-yellow); border: 1px solid #ffe0b2; }
   .alert-mora { background-color: #ffebee; color: var(--red-error); border: 1px solid #ffcdd2; }
   .alert-suspended { background-color: #333333; color: #ffffff; text-align: center; padding: 20px; }
 
-  /* PESTAÑAS FLOTANTES Y PERSISTENTES */
-  .tabs-header {
-    display: flex;
-    background: #ffffff;
-    border-bottom: 3px solid var(--header-bg);
-    padding: 10px 20px 0 20px;
-    gap: 5px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+  .tabs-header { display: flex; background: #ffffff; border-bottom: 3px solid var(--header-bg); padding: 10px 20px 0 20px; gap: 5px; position: sticky; top: 0; z-index: 100; }
+  .tab-btn { padding: 12px 18px; background: #e9ecef; color: #495057; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 14px; flex: 1; text-align: center; }
+  .tab-btn.active { background: var(--header-bg); color: #ffffff; }
 
-  .tab-btn {
-    padding: 12px 18px;
-    background: #e9ecef;
-    color: #495057;
-    border: none;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 14px;
-    flex: 1;
-    text-align: center;
-  }
-
-  .tab-btn.active {
-    background: var(--header-bg);
-    color: #ffffff;
-  }
-
-  .main-content {
-    padding: 20px;
-  }
-
+  .main-content { padding: 20px; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* NOTICIAS FULLSCREEN */
-  .news-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-  }
-
-  .news-card {
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fff;
-  }
-
-  .news-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-  }
-
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .news-card { border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; background: #fff; }
+  .news-card img { width: 100%; height: 180px; object-fit: cover; }
   .news-card-body { padding: 15px; }
 
-  #full-news-view {
-    display: none;
-    min-height: calc(100vh - 120px);
-    background: #ffffff;
-    padding: 10px 0;
-  }
-
-  #full-news-view img {
-    width: 100%;
-    max-height: 350px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-
+  #full-news-view { display: none; min-height: calc(100vh - 120px); background: #ffffff; padding: 10px 0; }
+  #full-news-view img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; }
   #full-news-view h2 { font-size: 24px; margin: 15px 0; }
   #full-news-view p { font-size: 16px; line-height: 1.6; color: #333; }
 
-  /* CONCURSOS */
-  .contest-card {
-    border: 2px solid var(--header-bg);
-    border-radius: 10px;
-    padding: 20px;
-    background: #fffcf8;
-  }
-
-  .contest-status-badge {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-
+  .contest-card { border: 2px solid var(--header-bg); border-radius: 10px; padding: 20px; background: #fffcf8; }
+  .contest-status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 15px; }
   .status-no { background: #ffebee; color: var(--red-error); }
   .status-yes { background: #e8f5e9; color: var(--green-success); }
 
-  /* TABLA DATOS */
-  .data-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-
-  .data-table th, .data-table td {
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    font-size: 14px;
-  }
-
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  .data-table th, .data-table td { padding: 12px; border: 1px solid var(--border-color); font-size: 14px; }
   .data-table th { background: #f8f9fa; width: 40%; text-align: left; }
 
-  #modification-section {
-    display: none;
-    background: #fdfdfd;
-    border: 2px solid var(--header-bg);
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-  }
+  #modification-section { display: none; background: #fdfdfd; border: 2px solid var(--header-bg); border-radius: 8px; padding: 20px; margin-top: 20px; }
 </style>
 </head>
 <body>
 
-<!-- PANTALLA DE LOGIN -->
+<!-- LOGIN -->
 <div class="login-container" id="login-container">
   <div class="login-section">
     <h2>Iniciar Sesión</h2>
@@ -303,9 +99,8 @@
   </div>
 </div>
 
-<!-- DASHBOARD COMPLETO -->
+<!-- DASHBOARD -->
 <div class="dashboard-full" id="dashboard-container" style="display:none;">
-  
   <div class="dashboard-header">
     <div class="header-info">
       <h2>Hola, <span id="user-display-name"></span></h2>
@@ -323,7 +118,6 @@
     </div>
   </div>
 
-  <!-- PESTAÑAS -->
   <div class="tabs-header">
     <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')">Noticias</button>
     <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')">Concursos</button>
@@ -331,8 +125,7 @@
   </div>
 
   <div class="main-content">
-    
-    <!-- NOTICIAS -->
+    <!-- PESTAÑA NOTICIAS -->
     <div id="tab-noticias" class="tab-content active">
       <div id="news-list-view" class="news-grid">
         <div class="news-card">
@@ -362,7 +155,7 @@
       </div>
     </div>
 
-    <!-- CONCURSOS -->
+    <!-- PESTAÑA CONCURSOS -->
     <div id="tab-concursos" class="tab-content">
       <div class="contest-card">
         <span id="contest-badge" class="contest-status-badge status-no">Aún no estás participando</span>
@@ -371,15 +164,16 @@
         <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
         
         <div style="margin-top:20px;">
-          <button id="btn-participate-action" onclick="abrirConfirmacionEnVentanaAparte('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
+          <button id="btn-participate-action" onclick="transferirYAbrirPestana('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
         </div>
       </div>
     </div>
 
-    <!-- MIS DATOS -->
+    <!-- PESTAÑA MIS DATOS -->
     <div id="tab-datos" class="tab-content">
       <table class="data-table">
         <tr><th>Nombre Completo</th><td id="data-fullname"></td></tr>
+        <tr><th>DNI / Identificación</th><td id="data-dni"></td></tr>
         <tr><th>Correo Electrónico</th><td id="data-email"></td></tr>
         <tr><th>Teléfono Asociado</th><td id="data-phone"></td></tr>
         <tr><th>Monto del Abono</th><td id="data-abono"></td></tr>
@@ -395,6 +189,7 @@
           <label>Campo a modificar</label>
           <select id="mod-field">
             <option value="Nombre Completo">Nombre Completo</option>
+            <option value="DNI / Identificación">DNI / Identificación</option>
             <option value="Correo Electrónico">Correo Electrónico</option>
             <option value="Teléfono Asociado">Teléfono Asociado</option>
             <option value="Modalidad de Pago">Modalidad de Pago</option>
@@ -413,7 +208,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -424,6 +218,7 @@ const users = {
     pass: "osotobi20",
     nombreCompleto: "María Lucía Carpio Peralta",
     nombreSaludo: "Maria Lucia",
+    dni: "38.123.456",
     telefono: "+54 11 2167-9936",
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
@@ -435,6 +230,7 @@ const users = {
     pass: "choquedetetas333",
     nombreCompleto: "Mauricio David Acosta Danaher",
     nombreSaludo: "Mauricio David",
+    dni: "32.987.654",
     telefono: "+54 11 2167-9936",
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
@@ -478,6 +274,7 @@ function cargarDashboard(user) {
   document.getElementById("user-display-name").textContent = user.nombreSaludo;
 
   document.getElementById("data-fullname").textContent = user.nombreCompleto;
+  document.getElementById("data-dni").textContent = user.dni;
   document.getElementById("data-email").textContent = user.email;
   document.getElementById("data-phone").textContent = user.telefono;
   document.getElementById("data-abono").textContent = user.abonoMonto;
@@ -493,7 +290,6 @@ function openTab(tabId) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
   document.getElementById(tabId).classList.add('active');
-  
   if(tabId === 'tab-noticias') document.getElementById('btn-tab-noticias').classList.add('active');
   if(tabId === 'tab-concursos') document.getElementById('btn-tab-concursos').classList.add('active');
   if(tabId === 'tab-datos') document.getElementById('btn-tab-datos').classList.add('active');
@@ -542,17 +338,18 @@ function procesarModificacionYEnviar() {
     return;
   }
 
-  abrirConfirmacionEnVentanaAparte("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
+  transferirYAbrirPestana("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
   ocultarModificacion();
 }
 
-/* SCRAPING DE PANTALLA + GUARDADO EN CACHÉ + APERTURA EN PESTAÑA/VENTANA EXTERNA INDEPENDIENTE */
-function abrirConfirmacionEnVentanaAparte(tipoAccion, detalle) {
+/* SCRAPING DE PANTALLA + TRANSFERENCIA DE DATOS VIA ENCODED URL A BLOGGER */
+function transferirYAbrirPestana(tipoAccion, detalle) {
   if (!currentUser) return;
 
-  // Extraer datos visibles directamente del DOM
+  // Extraer todos los datos relevados de la pantalla
   const paqueteTransaccion = {
     usuario: document.getElementById("data-fullname")?.innerText || currentUser.nombreCompleto,
+    dni: document.getElementById("data-dni")?.innerText || currentUser.dni,
     email: document.getElementById("data-email")?.innerText || currentUser.email,
     telefono: document.getElementById("data-phone")?.innerText || currentUser.telefono,
     abono: document.getElementById("data-abono")?.innerText || currentUser.abonoMonto,
@@ -560,19 +357,20 @@ function abrirConfirmacionEnVentanaAparte(tipoAccion, detalle) {
     vencimiento: document.getElementById("data-vencimiento")?.innerText || currentUser.proximoVencimiento,
     tipoAccion: tipoAccion,
     detalle: detalle,
-    fecha: new Date().toLocaleString("es-AR")
+    fecha: new Date().toLocaleDateString("es-AR")
   };
-
-  // Guardar en la caché local persistente
-  localStorage.setItem("pending_transaction_cache", JSON.stringify(paqueteTransaccion));
 
   if (tipoAccion === "INSCRIPCION_CONCURSO") {
     localStorage.setItem("contest_participating_" + currentUser.email, "true");
     actualizarEstadoConcurso(true);
   }
 
-  // ABRIR LA PÁGINA DE BLOGGER EN UNA VENTANA/PESTAÑA EXTERNA INDEPENDIENTE
-  window.open("https://www.prenoticia.com/p/mi-cuenta.html", "_blank");
+  // Codificar el paquete completo en la URL para superar bloqueos entre dominios
+  const payloadEncoded = encodeURIComponent(JSON.stringify(paqueteTransaccion));
+  const urlFinal = `https://www.prenoticia.com/p/mi-cuenta.html?data=${payloadEncoded}`;
+
+  // Abrir la ventana emergente/pestaña externa
+  window.open(urlFinal, "_blank");
 }
 
 function logout() {
@@ -582,6 +380,5 @@ function logout() {
   document.getElementById("login-container").style.display = "block";
 }
 </script>
-
 </body>
 </html>
