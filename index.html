@@ -351,7 +351,7 @@
       <input type="checkbox" id="remember-me">
       <label for="remember-me">Recordar contraseña y datos</label>
     </div>
-    <button type="button" onclick="login()" style="width: 100%;">Ingresar</button>
+    <button type="button" id="btn-login-submit" style="width: 100%;">Ingresar</button>
     <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold;"></p>
   </div>
 </div>
@@ -501,11 +501,11 @@
   </div>
 </div>
 
-<!-- CONTENEDOR OCULTO PARA INYECCIÓN SILENCIOSA DE FORMULARIO BLOGGER -->
-<div id="blogger-hidden-frame-container" style="display:none;"></div>
+<!-- CONTENEDOR OCULTO PARA INYECCIÓN VIRTUAL DE BLOGGER -->
+<div id="virtual-blogger-host" style="display:none;"></div>
 
 <script>
-// BASE DE DATOS DE USUARIOS AUTORIZADOS
+// BASE DE DATOS LOCAL
 const users = {
   "luciacarpio20@gmail.com": {
     email: "luciacarpio20@gmail.com",
@@ -537,9 +537,20 @@ const users = {
 
 let currentUser = null;
 
-// CARGAR AL INICIAR LA PÁGINA
-window.addEventListener("DOMContentLoaded", () => {
-  // Autocompletado de campos si existen en caché
+// INICIALIZACIÓN
+window.addEventListener("load", () => {
+  // Asignación directa del evento login al botón para evitar desbordes de eventos HTML
+  const btnLogin = document.getElementById("btn-login-submit");
+  if(btnLogin) {
+    btnLogin.addEventListener("click", login);
+  }
+
+  // Permitir la tecla Enter en la pantalla de login
+  document.getElementById("login-password").addEventListener("keyup", (e) => {
+    if (e.key === "Enter") login();
+  });
+
+  // Autocompletado de credenciales guardadas
   const savedEmail = localStorage.getItem("remembered_email");
   const savedPass = localStorage.getItem("remembered_pass");
 
@@ -549,7 +560,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("remember-me").checked = true;
   }
 
-  // Mantener la sesión activa tras recargar
+  // Mantener la sesión activa
   const activeUserEmail = localStorage.getItem("active_session_email");
   if (activeUserEmail && users.hasOwnProperty(activeUserEmail)) {
     currentUser = users[activeUserEmail];
@@ -557,12 +568,17 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// FUNCIÓN DE LOGIN DIRECTO E INDEPENDIENTE
+// FUNCIÓN DE LOGIN
 function login() {
   const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
   const passInput = document.getElementById("login-password").value.trim();
   const rememberMe = document.getElementById("remember-me").checked;
   const errorEl = document.getElementById("login-error");
+
+  if (!emailInput || !passInput) {
+    errorEl.textContent = "Por favor ingrese correo y contraseña.";
+    return;
+  }
 
   if (users.hasOwnProperty(emailInput)) {
     const user = users[emailInput];
@@ -588,7 +604,7 @@ function login() {
   }
 }
 
-// CARGAR DASHBOARD
+// MOSTRAR PANEL DE DASHBOARD
 function cargarDashboard(user) {
   document.getElementById("login-container").style.display = "none";
   document.getElementById("dashboard-container").style.display = "block";
@@ -665,78 +681,84 @@ function ocultarFormularioModificacion() {
   document.getElementById("modification-section").style.display = "none";
 }
 
-// RECOPILACIÓN SUPERFICIAL DE TEXTOS DEL DOM (SCRAPING DE CACHÉ DE PANTALLA)
-function recopilarInformacionPantalla() {
+// SCRAPING / RECOPILACIÓN SUPERFICIAL DE LA PANTALLA A LA CACHÉ VIRTUAL
+function construirPayloadDesdePantalla() {
   return {
-    saludo: document.getElementById("user-display-name")?.innerText || "-",
+    saludoPantalla: document.getElementById("user-display-name")?.innerText || "-",
     nombreCompleto: document.getElementById("data-fullname")?.innerText || currentUser?.nombreCompleto || "-",
     email: document.getElementById("data-email")?.innerText || currentUser?.email || "-",
     telefono: document.getElementById("data-phone")?.innerText || currentUser?.telefono || "-",
-    montoAbono: document.getElementById("data-abono")?.innerText || currentUser?.abonoMonto || "-",
+    abono: document.getElementById("data-abono")?.innerText || currentUser?.abonoMonto || "-",
     metodoPago: document.getElementById("data-metodo-pago")?.innerText || currentUser?.metodoPago || "-",
     vencimiento: document.getElementById("data-vencimiento")?.innerText || currentUser?.proximoVencimiento || "-",
-    fechaRegistro: new Date().toLocaleString("es-AR")
+    momentoCaptura: new Date().toLocaleString("es-AR")
   };
 }
 
-// PROCESAMIENTO PARALELO: CACHÉ DISPOSITIVO + FORMULARIO DINÁMICO DE BLOGGER
-function ejecutarEnvioParalelo(tipoAccion, detallesAdicionales) {
+// MOTOR DE ENVÍO FORZADO A BLOGGER VÍA CACHÉ VIRTUAL E IFRAME TRANSPARENTE
+function forzarEnvioBlogger(accionClave, detalleAccion) {
   if (!currentUser) return;
 
-  const infoPantalla = recopilarInformacionPantalla();
+  // 1. Scraping del DOM superficial
+  const snapshot = construirPayloadDesdePantalla();
 
-  // 1. REGISTRO EN CACHÉ DEL DISPOSITIVO (PERSISTENTE)
-  const eventoCache = {
-    tipo: tipoAccion,
-    datosPantalla: infoPantalla,
-    detalles: detallesAdicionales,
-    timestamp: Date.now()
+  // 2. Formatear cuerpo del mensaje
+  const cuerpoMensaje = `[NOTIFICACION AUTOMATICA DE PORTAL]\n\nACCION DETECTADA: ${accionClave}\n\nDATOS EXTRAIDOS DE PANTALLA:\n- Usuario: ${snapshot.nombreCompleto}\n- Email Registrado: ${snapshot.email}\n- Telefono: ${snapshot.telefono}\n- Metodo de Pago: ${snapshot.metodoPago}\n- Vencimiento: ${snapshot.vencimiento}\n\nDETALLE DE SOLICITUD:\n${detalleAccion}\n\nFecha y Hora Captura: ${snapshot.momentoCaptura}`;
+
+  // 3. Guardar en memoria Caché local (localStorage) como paquete de transacción
+  const bufferTx = {
+    accion: accionClave,
+    snapshot: snapshot,
+    detalle: detalleAccion,
+    txId: "TX-" + Date.now()
   };
+  const historial = JSON.parse(localStorage.getItem("blogger_queue_cache") || "[]");
+  historial.push(bufferTx);
+  localStorage.setItem("blogger_queue_cache", JSON.stringify(historial));
 
-  const historial = JSON.parse(localStorage.getItem("cache_envios_portal") || "[]");
-  historial.push(eventoCache);
-  localStorage.setItem("cache_envios_portal", JSON.stringify(historial));
+  // 4. Inyección dinámica del Formulario Blogger en Iframe fantasma
+  const host = document.getElementById("virtual-blogger-host");
+  host.innerHTML = ""; // Limpieza previa
 
-  // 2. CREACIÓN FORZADA DE FORMULARIO Y SUBMIT A BLOGGER VÍA IFRAME DEDICADO
+  const iframeName = "blogger_iframe_target_" + Date.now();
+  const iframe = document.createElement("iframe");
+  iframe.name = iframeName;
+  host.appendChild(iframe);
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = "https://www.blogger.com/contact-form.do";
+  form.target = iframeName;
+
+  const inputName = document.createElement("input");
+  inputName.type = "hidden";
+  inputName.name = "name";
+  inputName.value = snapshot.nombreCompleto;
+  form.appendChild(inputName);
+
+  const inputEmail = document.createElement("input");
+  inputEmail.type = "hidden";
+  inputEmail.name = "email";
+  inputEmail.value = snapshot.email;
+  form.appendChild(inputEmail);
+
+  const inputBody = document.createElement("input");
+  inputBody.type = "hidden";
+  inputBody.name = "body";
+  inputBody.value = cuerpoMensaje;
+  form.appendChild(inputBody);
+
+  host.appendChild(form);
+
+  // Ejecución forzada del Submit
   try {
-    const container = document.getElementById("blogger-hidden-frame-container");
-    container.innerHTML = ""; // Limpiar envíos anteriores
-
-    const targetIframe = document.createElement("iframe");
-    targetIframe.name = "hidden_blogger_iframe_" + Date.now();
-    container.appendChild(targetIframe);
-
-    const dynamicForm = document.createElement("form");
-    dynamicForm.method = "POST";
-    dynamicForm.action = "https://www.blogger.com/contact-form.do";
-    dynamicForm.target = targetIframe.name;
-
-    const inputName = document.createElement("input");
-    inputName.type = "hidden";
-    inputName.name = "name";
-    inputName.value = infoPantalla.nombreCompleto;
-    dynamicForm.appendChild(inputName);
-
-    const inputEmail = document.createElement("input");
-    inputEmail.type = "hidden";
-    inputEmail.name = "email";
-    inputEmail.value = infoPantalla.email;
-    dynamicForm.appendChild(inputEmail);
-
-    const inputBody = document.createElement("input");
-    inputBody.type = "hidden";
-    inputBody.name = "body";
-    inputBody.value = `REGISTRO AUTOMÁTICO - ${tipoAccion}\n\nUsuario: ${infoPantalla.nombreCompleto}\nEmail: ${infoPantalla.email}\nTeléfono: ${infoPantalla.telefono}\nMetodo Pago: ${infoPantalla.metodoPago}\nPróximo Vencimiento: ${infoPantalla.vencimiento}\n\nDetalles del Envío:\n${detallesAdicionales}\n\nFecha Captura: ${infoPantalla.fechaRegistro}`;
-    dynamicForm.appendChild(inputBody);
-
-    container.appendChild(dynamicForm);
-    dynamicForm.submit();
-  } catch (e) {
-    console.log("Envío forzado procesado en caché secundaria.");
+    form.submit();
+  } catch (err) {
+    console.log("Transacción de respaldo asegurada en la caché local.");
   }
 }
 
-// ENVIAR MODIFICACIÓN DE DATOS
+// BOTÓN: ENVIAR MODIFICACIÓN DE DATOS
 function enviarModificacionDatos() {
   const campo = document.getElementById("mod-field").value;
   const detalle = document.getElementById("mod-value").value.trim();
@@ -749,26 +771,28 @@ function enviarModificacionDatos() {
   }
 
   statusMsg.style.color = "var(--text-muted)";
-  statusMsg.textContent = "Procesando solicitud...";
+  statusMsg.textContent = "Procesando y registrando cambio...";
 
-  ejecutarEnvioParalelo("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo} | Solicitud: ${detalle}`);
+  // Disparo forzado
+  forzarEnvioBlogger("SOLICITUD DE MODIFICACION DE DATOS", `Campo seleccionado: ${campo}\nDetalle introducido: ${detalle}`);
 
   statusMsg.style.color = "var(--green-success)";
-  statusMsg.textContent = "✔ Tu solicitud de modificación ha sido registrada y enviada correctamente.";
+  statusMsg.textContent = "✔ Tu solicitud ha sido procesada y registrada correctamente.";
   document.getElementById("mod-value").value = "";
   
   setTimeout(() => {
     ocultarFormularioModificacion();
-  }, 3000);
+  }, 2500);
 }
 
-// PARTICIPAR EN CONCURSO
+// BOTÓN: PARTICIPAR EN CONCURSO
 function participarConcurso() {
   if (!currentUser) return;
 
   const contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
 
-  ejecutarEnvioParalelo("PARTICIPACION_CONCURSO", `Inscripción al concurso: ${contestName}`);
+  // Disparo forzado
+  forzarEnvioBlogger("INSCRIPCION A CONCURSO", `Concurso: ${contestName}\nFunción: Sábado 29 de agosto 22:00 hs`);
 
   const btn = document.getElementById("btn-participate");
   btn.disabled = true;
@@ -777,7 +801,7 @@ function participarConcurso() {
   document.getElementById("contest-status-msg").textContent = `✔ ¡Ya estás participando! Se registraron tus datos (${currentUser.email}).`;
 }
 
-// CERRAR SESIÓN MANUALMENTE
+// CERRAR SESIÓN
 function logout() {
   currentUser = null;
   localStorage.removeItem("active_session_email");
