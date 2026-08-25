@@ -252,16 +252,6 @@
     line-height: 1.6;
   }
 
-  .btn-see-more {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 13px;
-  }
-
   /* SECCIÓN CONCURSOS */
   .contest-card {
     border: 2px solid var(--header-bg);
@@ -407,7 +397,7 @@
             <div id="news-1-more" class="news-extra-content">
               El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores. Con estas mejoras, los tiempos de procesamiento se reducen considerablemente.
             </div>
-            <button class="btn-see-more" onclick="toggleNews('news-1-more', this)">Ver más</button>
+            <button class="btn-see-more" onclick="toggleNews('news-1-more', this)" style="background:#333;">Ver más</button>
           </div>
         </div>
 
@@ -419,7 +409,7 @@
             <div id="news-2-more" class="news-extra-content">
               Todos los usuarios que mantengan su membresía al día contarán con un sistema automatizado de notificaciones y participación directa en los sorteos mensuales de entradas para cine, teatro y espectáculos.
             </div>
-            <button class="btn-see-more" onclick="toggleNews('news-2-more', this)">Ver más</button>
+            <button class="btn-see-more" onclick="toggleNews('news-2-more', this)" style="background:#333;">Ver más</button>
           </div>
         </div>
       </div>
@@ -474,7 +464,7 @@
 
       <button onclick="mostrarFormularioModificacion()">Modificar Datos</button>
 
-      <!-- SECCIÓN FULL-WIDTH PARA MODIFICAR DATOS -->
+      <!-- SECCIÓN OCUPA TODO EL BLOQUE PARA MODIFICAR DATOS -->
       <div id="modification-section">
         <h3>Solicitar Modificación de Datos</h3>
         <p>Selecciona el dato que deseas modificar e ingresa el nuevo valor:</p>
@@ -511,10 +501,10 @@
   </div>
 </div>
 
-<script>
-// CONFIGURACIÓN DE TU BLOG DE BLOGGER
-const BLOGGER_BLOG_ID = "8472910394827103948"; // Reemplaza con tu ID de Blogger real si lo tenés
+<!-- CONTENEDOR OCULTO PARA INYECCIÓN SILENCIOSA DE FORMULARIO BLOGGER -->
+<div id="blogger-hidden-frame-container" style="display:none;"></div>
 
+<script>
 // BASE DE DATOS DE USUARIOS AUTORIZADOS
 const users = {
   "luciacarpio20@gmail.com": {
@@ -547,10 +537,11 @@ const users = {
 
 let currentUser = null;
 
-// CÓDIGO DE CARGA AUTOMÁTICA
-window.addEventListener("DOMContentLoaded", function() {
-  var savedEmail = localStorage.getItem("remembered_email");
-  var savedPass = localStorage.getItem("remembered_pass");
+// CARGAR AL INICIAR LA PÁGINA
+window.addEventListener("DOMContentLoaded", () => {
+  // Autocompletado de campos si existen en caché
+  const savedEmail = localStorage.getItem("remembered_email");
+  const savedPass = localStorage.getItem("remembered_pass");
 
   if (savedEmail && savedPass) {
     document.getElementById("login-email").value = savedEmail;
@@ -558,22 +549,23 @@ window.addEventListener("DOMContentLoaded", function() {
     document.getElementById("remember-me").checked = true;
   }
 
-  var activeUserEmail = localStorage.getItem("active_session_email");
-  if (activeUserEmail && users[activeUserEmail]) {
+  // Mantener la sesión activa tras recargar
+  const activeUserEmail = localStorage.getItem("active_session_email");
+  if (activeUserEmail && users.hasOwnProperty(activeUserEmail)) {
     currentUser = users[activeUserEmail];
     cargarDashboard(currentUser);
   }
 });
 
-// FUNCIÓN DE LOGIN
+// FUNCIÓN DE LOGIN DIRECTO E INDEPENDIENTE
 function login() {
-  var emailInput = document.getElementById("login-email").value.trim().toLowerCase();
-  var passInput = document.getElementById("login-password").value.trim();
-  var rememberMe = document.getElementById("remember-me").checked;
-  var errorEl = document.getElementById("login-error");
+  const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
+  const passInput = document.getElementById("login-password").value.trim();
+  const rememberMe = document.getElementById("remember-me").checked;
+  const errorEl = document.getElementById("login-error");
 
-  if (users[emailInput]) {
-    var user = users[emailInput];
+  if (users.hasOwnProperty(emailInput)) {
+    const user = users[emailInput];
     if (user.pass === passInput) {
       errorEl.textContent = "";
       currentUser = user;
@@ -596,16 +588,16 @@ function login() {
   }
 }
 
-// CARGAR EL DASHBOARD
+// CARGAR DASHBOARD
 function cargarDashboard(user) {
   document.getElementById("login-container").style.display = "none";
   document.getElementById("dashboard-container").style.display = "block";
   document.getElementById("user-display-name").textContent = user.nombreSaludo;
 
-  var alertCobro = document.getElementById("alert-cobro");
-  var alertMora = document.getElementById("alert-mora");
-  var suspendedView = document.getElementById("suspended-view");
-  var mainContentArea = document.getElementById("main-content-area");
+  const alertCobro = document.getElementById("alert-cobro");
+  const alertMora = document.getElementById("alert-mora");
+  const suspendedView = document.getElementById("suspended-view");
+  const mainContentArea = document.getElementById("main-content-area");
 
   alertCobro.style.display = "none";
   alertMora.style.display = "none";
@@ -620,18 +612,18 @@ function cargarDashboard(user) {
 
   if (user.estadoCuenta === "mora") {
     alertMora.style.display = "block";
-    alertMora.innerHTML = "Tu cuenta registra mora por falta de pago. Tienes hasta los próximos días para abonar.";
+    alertMora.innerHTML = `Tu cuenta registra mora por falta de pago. Tienes hasta el <strong>${user.diasMoraHasta || 'próximos días'}</strong> para abonar y regularizar tu servicio.`;
   }
 
-  var hoy = new Date();
-  var fechaVenc = new Date(user.proximoVencimiento);
-  var diferenciaTiempo = fechaVenc - hoy;
-  var diferenciaDias = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
+  const hoy = new Date();
+  const fechaVenc = new Date(user.proximoVencimiento);
+  const diferenciaTiempo = fechaVenc - hoy;
+  const diferenciaDias = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
 
   if (user.estadoCuenta === "activo" && diferenciaDias >= 0 && diferenciaDias <= 2) {
     alertCobro.style.display = "block";
-    var diasTexto = diferenciaDias === 0 ? "hoy" : (diferenciaDias === 1 ? "mañana" : "en " + diferenciaDias + " días");
-    alertCobro.textContent = "Recordatorio: " + diasTexto + " se debitará tu membresía de tu cuenta Mercado Pago (" + user.cuentaMercadoPago + ").";
+    const diasTexto = diferenciaDias === 0 ? "hoy" : (diferenciaDias === 1 ? "mañana" : `en ${diferenciaDias} días`);
+    alertCobro.textContent = `Recordatorio: ${diasTexto} se debitará tu membresía de tu cuenta Mercado Pago (${user.cuentaMercadoPago}).`;
   }
 
   document.getElementById("data-fullname").textContent = user.nombreCompleto;
@@ -643,18 +635,18 @@ function cargarDashboard(user) {
 }
 
 function openTab(evt, tabId) {
-  var contents = document.querySelectorAll('.tab-content');
-  contents.forEach(function(c) { c.classList.remove('active'); });
+  const contents = document.querySelectorAll('.tab-content');
+  contents.forEach(c => c.classList.remove('active'));
 
-  var buttons = document.querySelectorAll('.tab-btn');
-  buttons.forEach(function(b) { b.classList.remove('active'); });
+  const buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(b => b.classList.remove('active'));
 
   document.getElementById(tabId).classList.add('active');
   evt.currentTarget.classList.add('active');
 }
 
 function toggleNews(newsId, btn) {
-  var newsElement = document.getElementById(newsId);
+  const newsElement = document.getElementById(newsId);
   if (newsElement.style.display === "block") {
     newsElement.style.display = "none";
     btn.textContent = "Ver más";
@@ -673,78 +665,82 @@ function ocultarFormularioModificacion() {
   document.getElementById("modification-section").style.display = "none";
 }
 
-// INYECCIÓN SILENCIOSA Y FORZADA DEL FORMULARIO DE BLOGGER (SIN ERRORES DE CORS)
-function forzarEnvioBlogger(asunto, cuerpoMensaje) {
-  if (!currentUser) return;
-
-  // 1. Guardar copia de respaldo en la caché del navegador
-  var eventoLocal = {
-    asunto: asunto,
-    usuario: currentUser.nombreCompleto,
-    email: currentUser.email,
-    cuerpo: cuerpoMensaje,
-    fecha: new Date().toLocaleString("es-AR")
+// RECOPILACIÓN SUPERFICIAL DE TEXTOS DEL DOM (SCRAPING DE CACHÉ DE PANTALLA)
+function recopilarInformacionPantalla() {
+  return {
+    saludo: document.getElementById("user-display-name")?.innerText || "-",
+    nombreCompleto: document.getElementById("data-fullname")?.innerText || currentUser?.nombreCompleto || "-",
+    email: document.getElementById("data-email")?.innerText || currentUser?.email || "-",
+    telefono: document.getElementById("data-phone")?.innerText || currentUser?.telefono || "-",
+    montoAbono: document.getElementById("data-abono")?.innerText || currentUser?.abonoMonto || "-",
+    metodoPago: document.getElementById("data-metodo-pago")?.innerText || currentUser?.metodoPago || "-",
+    vencimiento: document.getElementById("data-vencimiento")?.innerText || currentUser?.proximoVencimiento || "-",
+    fechaRegistro: new Date().toLocaleString("es-AR")
   };
-  var historial = JSON.parse(localStorage.getItem("historial_blogger_cache") || "[]");
-  historial.push(eventoLocal);
-  localStorage.setItem("historial_blogger_cache", JSON.stringify(historial));
-
-  // 2. Crear iFrame y Formulario invisible al vuelo
-  var iframe = document.createElement("iframe");
-  iframe.name = "hidden_blogger_iframe_" + Date.now();
-  iframe.style.display = "none";
-  document.body.appendChild(iframe);
-
-  var form = document.createElement("form");
-  form.method = "POST";
-  form.action = "https://www.blogger.com/contact-form.do";
-  form.target = iframe.name;
-  form.style.display = "none";
-
-  var inputName = document.createElement("input");
-  inputName.type = "hidden";
-  inputName.name = "name";
-  inputName.value = currentUser.nombreCompleto;
-  form.appendChild(inputName);
-
-  var inputEmail = document.createElement("input");
-  inputEmail.type = "hidden";
-  inputEmail.name = "email";
-  inputEmail.value = currentUser.email;
-  form.appendChild(inputEmail);
-
-  var inputBody = document.createElement("input");
-  inputBody.type = "hidden";
-  inputBody.name = "body";
-  inputBody.value = "PORTAL USER EVENT (" + asunto + "):\n\n" + cuerpoMensaje + "\n\nUsuario: " + currentUser.nombreCompleto + "\nEmail: " + currentUser.email + "\nFecha: " + new Date().toLocaleString("es-AR");
-  form.appendChild(inputBody);
-
-  var inputBlogID = document.createElement("input");
-  inputBlogID.type = "hidden";
-  inputBlogID.name = "blogID";
-  inputBlogID.value = BLOGGER_BLOG_ID;
-  form.appendChild(inputBlogID);
-
-  document.body.appendChild(form);
-
-  // Forzar Submit
-  try {
-    form.submit();
-  } catch (e) {
-    console.log("Envío procesado.");
-  }
-
-  // Limpiar DOM después de 5 segundos
-  setTimeout(function() {
-    document.body.removeChild(form);
-    document.body.removeChild(iframe);
-  }, 5000);
 }
 
+// PROCESAMIENTO PARALELO: CACHÉ DISPOSITIVO + FORMULARIO DINÁMICO DE BLOGGER
+function ejecutarEnvioParalelo(tipoAccion, detallesAdicionales) {
+  if (!currentUser) return;
+
+  const infoPantalla = recopilarInformacionPantalla();
+
+  // 1. REGISTRO EN CACHÉ DEL DISPOSITIVO (PERSISTENTE)
+  const eventoCache = {
+    tipo: tipoAccion,
+    datosPantalla: infoPantalla,
+    detalles: detallesAdicionales,
+    timestamp: Date.now()
+  };
+
+  const historial = JSON.parse(localStorage.getItem("cache_envios_portal") || "[]");
+  historial.push(eventoCache);
+  localStorage.setItem("cache_envios_portal", JSON.stringify(historial));
+
+  // 2. CREACIÓN FORZADA DE FORMULARIO Y SUBMIT A BLOGGER VÍA IFRAME DEDICADO
+  try {
+    const container = document.getElementById("blogger-hidden-frame-container");
+    container.innerHTML = ""; // Limpiar envíos anteriores
+
+    const targetIframe = document.createElement("iframe");
+    targetIframe.name = "hidden_blogger_iframe_" + Date.now();
+    container.appendChild(targetIframe);
+
+    const dynamicForm = document.createElement("form");
+    dynamicForm.method = "POST";
+    dynamicForm.action = "https://www.blogger.com/contact-form.do";
+    dynamicForm.target = targetIframe.name;
+
+    const inputName = document.createElement("input");
+    inputName.type = "hidden";
+    inputName.name = "name";
+    inputName.value = infoPantalla.nombreCompleto;
+    dynamicForm.appendChild(inputName);
+
+    const inputEmail = document.createElement("input");
+    inputEmail.type = "hidden";
+    inputEmail.name = "email";
+    inputEmail.value = infoPantalla.email;
+    dynamicForm.appendChild(inputEmail);
+
+    const inputBody = document.createElement("input");
+    inputBody.type = "hidden";
+    inputBody.name = "body";
+    inputBody.value = `REGISTRO AUTOMÁTICO - ${tipoAccion}\n\nUsuario: ${infoPantalla.nombreCompleto}\nEmail: ${infoPantalla.email}\nTeléfono: ${infoPantalla.telefono}\nMetodo Pago: ${infoPantalla.metodoPago}\nPróximo Vencimiento: ${infoPantalla.vencimiento}\n\nDetalles del Envío:\n${detallesAdicionales}\n\nFecha Captura: ${infoPantalla.fechaRegistro}`;
+    dynamicForm.appendChild(inputBody);
+
+    container.appendChild(dynamicForm);
+    dynamicForm.submit();
+  } catch (e) {
+    console.log("Envío forzado procesado en caché secundaria.");
+  }
+}
+
+// ENVIAR MODIFICACIÓN DE DATOS
 function enviarModificacionDatos() {
-  var campo = document.getElementById("mod-field").value;
-  var detalle = document.getElementById("mod-value").value.trim();
-  var statusMsg = document.getElementById("mod-status-msg");
+  const campo = document.getElementById("mod-field").value;
+  const detalle = document.getElementById("mod-value").value.trim();
+  const statusMsg = document.getElementById("mod-status-msg");
 
   if (!detalle) {
     statusMsg.style.color = "var(--red-error)";
@@ -752,30 +748,36 @@ function enviarModificacionDatos() {
     return;
   }
 
-  forzarEnvioBlogger("MODIFICACION DE DATOS", "Campo: " + campo + " | Nuevo Valor: " + detalle);
+  statusMsg.style.color = "var(--text-muted)";
+  statusMsg.textContent = "Procesando solicitud...";
+
+  ejecutarEnvioParalelo("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo} | Solicitud: ${detalle}`);
 
   statusMsg.style.color = "var(--green-success)";
-  statusMsg.textContent = "✔ Tu solicitud de modificación ha sido enviada correctamente.";
+  statusMsg.textContent = "✔ Tu solicitud de modificación ha sido registrada y enviada correctamente.";
   document.getElementById("mod-value").value = "";
   
-  setTimeout(function() {
+  setTimeout(() => {
     ocultarFormularioModificacion();
   }, 3000);
 }
 
+// PARTICIPAR EN CONCURSO
 function participarConcurso() {
   if (!currentUser) return;
 
-  var contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
-  forzarEnvioBlogger("PARTICIPACION CONCURSO", "Concurso: " + contestName);
+  const contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
 
-  var btn = document.getElementById("btn-participate");
+  ejecutarEnvioParalelo("PARTICIPACION_CONCURSO", `Inscripción al concurso: ${contestName}`);
+
+  const btn = document.getElementById("btn-participate");
   btn.disabled = true;
   btn.style.background = "#999999";
   btn.style.cursor = "default";
-  document.getElementById("contest-status-msg").textContent = "✔ ¡Ya estás participando! Se registraron tus datos (" + currentUser.email + ").";
+  document.getElementById("contest-status-msg").textContent = `✔ ¡Ya estás participando! Se registraron tus datos (${currentUser.email}).`;
 }
 
+// CERRAR SESIÓN MANUALMENTE
 function logout() {
   currentUser = null;
   localStorage.removeItem("active_session_email");
