@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Portal de Usuarios</title>
 <style>
   :root {
@@ -31,22 +31,19 @@
     background-color: var(--bg-gray);
     color: var(--text-color);
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
   }
 
-  .container {
-    max-width: 1100px;
-    margin: 40px auto;
-    background: var(--card-bg);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  }
-
-  /* PANTALLA DE LOGIN */
-  .login-section {
+  /* ESTILO LOGIN (CON MARGEN) */
+  .login-container {
     max-width: 420px;
-    margin: 60px auto;
-    padding: 40px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+
+  .login-section {
+    padding: 30px;
     border: 1px solid var(--border-color);
     border-radius: 10px;
     text-align: center;
@@ -59,6 +56,39 @@
     margin-top: 0;
     font-size: 26px;
     margin-bottom: 25px;
+  }
+
+  /* ESTILO DASHBOARD (SIN MARGENES LATERALES NI BORDES GRISES) */
+  .dashboard-full {
+    width: 100%;
+    min-height: 100vh;
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .dashboard-header {
+    background: #ffffff;
+    padding: 15px 20px;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-info h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #111;
+  }
+
+  .header-info .date-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    display: block;
   }
 
   .input-group {
@@ -89,106 +119,69 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 15px;
-    transition: border-color 0.2s;
-  }
-
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--header-bg);
   }
 
   button {
     background-color: var(--header-bg);
     color: white;
     border: none;
-    padding: 12px 24px;
+    padding: 10px 18px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 15px;
-    transition: background 0.2s, transform 0.1s;
+    font-size: 14px;
   }
 
   button:hover {
     background-color: var(--dark-orange);
   }
 
-  button:active {
-    transform: scale(0.98);
+  .btn-logout {
+    background-color: var(--red-error);
   }
 
-  /* ENCABEZADO Y ALERTAS */
-  .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid var(--border-color);
-  }
-
-  .dashboard-header h2 {
-    margin: 0;
-    font-size: 28px;
-    color: #111;
+  /* ALERTAS */
+  .alert-container {
+    padding: 10px 20px 0 20px;
   }
 
   .alert-box {
     width: 100%;
-    padding: 15px 20px;
+    padding: 15px;
     border-radius: 8px;
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: none;
-    font-size: 15px;
-    line-height: 1.5;
+    font-size: 14px;
   }
 
-  .alert-warning {
-    background-color: #fff3e0;
-    color: var(--warning-yellow);
-    border: 1px solid #ffe0b2;
-  }
+  .alert-warning { background-color: #fff3e0; color: var(--warning-yellow); border: 1px solid #ffe0b2; }
+  .alert-mora { background-color: #ffebee; color: var(--red-error); border: 1px solid #ffcdd2; }
+  .alert-suspended { background-color: #333333; color: #ffffff; text-align: center; padding: 20px; }
 
-  .alert-mora {
-    background-color: #ffebee;
-    color: var(--red-error);
-    border: 1px solid #ffcdd2;
-  }
-
-  .alert-suspended {
-    background-color: #333333;
-    color: #ffffff;
-    border: 1px solid #111111;
-    text-align: center;
-    padding: 30px;
-    border-radius: 10px;
-  }
-
-  .alert-suspended a {
-    color: #ffb74d;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-
-  /* NAVEGACIÓN TABS */
+  /* PESTAÑAS FLOTANTES Y FIJAS */
   .tabs-header {
     display: flex;
+    background: #ffffff;
     border-bottom: 3px solid var(--header-bg);
-    margin-bottom: 25px;
-    gap: 8px;
+    padding: 10px 20px 0 20px;
+    gap: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
 
   .tab-btn {
-    padding: 12px 24px;
+    padding: 12px 18px;
     background: #e9ecef;
     color: #495057;
     border: none;
     border-radius: 8px 8px 0 0;
     cursor: pointer;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
+    flex: 1;
+    text-align: center;
   }
 
   .tab-btn.active {
@@ -196,19 +189,18 @@
     color: #ffffff;
   }
 
-  .tab-content {
-    display: none;
+  .main-content {
+    padding: 20px;
   }
 
-  .tab-content.active {
-    display: block;
-  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 
-  /* SECCIÓN NOTICIAS */
+  /* NOTICIAS FULLSCREEN */
   .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
   }
 
   .news-card {
@@ -216,188 +208,149 @@
     border-radius: 10px;
     overflow: hidden;
     background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   }
 
   .news-card img {
     width: 100%;
-    height: 200px;
+    height: 180px;
     object-fit: cover;
   }
 
-  .news-card-body {
-    padding: 20px;
-  }
+  .news-card-body { padding: 15px; }
 
-  .news-card h4 {
-    margin: 0 0 12px 0;
-    font-size: 18px;
-    color: #222;
-  }
-
-  .news-card p {
-    font-size: 14px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 15px;
-  }
-
-  .news-extra-content {
+  /* VISTA NOTICIA EXPANDIDA COMPLETA */
+  #full-news-view {
     display: none;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px dashed var(--border-color);
-    font-size: 14px;
-    color: #333;
-    line-height: 1.6;
+    min-height: calc(100vh - 120px);
+    background: #ffffff;
+    padding: 10px 0;
   }
 
-  /* SECCIÓN CONCURSOS */
+  #full-news-view img {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  #full-news-view h2 {
+    font-size: 24px;
+    margin: 15px 0;
+  }
+
+  #full-news-view p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  /* CONCURSOS */
   .contest-card {
     border: 2px solid var(--header-bg);
     border-radius: 10px;
-    padding: 25px;
+    padding: 20px;
     background: #fffcf8;
-    display: flex;
-    gap: 25px;
-    flex-wrap: wrap;
   }
 
-  .contest-img {
-    max-width: 240px;
-    width: 100%;
-    border-radius: 8px;
-    object-fit: cover;
+  .contest-status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 15px;
   }
 
-  .contest-info {
-    flex: 1;
-  }
+  .status-no { background: #ffebee; color: var(--red-error); }
+  .status-yes { background: #e8f5e9; color: var(--green-success); }
 
-  .contest-info h3 {
-    margin-top: 0;
-    color: var(--header-bg);
-  }
-
-  /* SECCIÓN MIS DATOS */
+  /* TABLA DATOS */
   .data-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
   }
 
   .data-table th, .data-table td {
-    padding: 15px;
+    padding: 12px;
     border: 1px solid var(--border-color);
-    text-align: left;
-    font-size: 15px;
+    font-size: 14px;
   }
 
-  .data-table th {
-    background-color: #f8f9fa;
-    width: 35%;
-    color: #444;
-  }
+  .data-table th { background: #f8f9fa; width: 40%; text-align: left; }
 
-  /* SECCIÓN FULL-WIDTH MODIFICAR DATOS */
   #modification-section {
     display: none;
-    width: 100%;
     background: #fdfdfd;
     border: 2px solid var(--header-bg);
-    border-radius: 10px;
-    padding: 30px;
-    margin-top: 25px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  }
-
-  #modification-section h3 {
-    margin-top: 0;
-    color: var(--header-bg);
-  }
-
-  .action-buttons {
-    margin-top: 35px;
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .btn-secondary {
-    background-color: #6c757d;
-  }
-
-  .btn-danger {
-    background-color: var(--red-error);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
   }
 </style>
 </head>
 <body>
 
 <!-- PANTALLA DE LOGIN -->
-<div class="container" id="login-container">
+<div class="login-container" id="login-container">
   <div class="login-section">
     <h2>Iniciar Sesión</h2>
     <div class="input-group">
-      <label for="login-email">Correo Electrónico</label>
+      <label>Correo Electrónico</label>
       <input type="email" id="login-email" placeholder="ejemplo@correo.com">
     </div>
     <div class="input-group">
-      <label for="login-password">Contraseña</label>
+      <label>Contraseña</label>
       <input type="password" id="login-password" placeholder="Ingrese su contraseña">
     </div>
     <div class="checkbox-group">
       <input type="checkbox" id="remember-me">
-      <label for="remember-me">Recordar contraseña y datos</label>
+      <label for="remember-me">Recordar credenciales</label>
     </div>
-    <button type="button" id="btn-login-submit" style="width: 100%;">Ingresar</button>
+    <button type="button" onclick="login()" style="width: 100%;">Ingresar</button>
     <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold;"></p>
   </div>
 </div>
 
-<!-- PANTALLA PRINCIPAL / DASHBOARD -->
-<div class="container" id="dashboard-container" style="display:none;">
+<!-- DASHBOARD COMPLETO (ANCHO TOTAL SIN MARGENES) -->
+<div class="dashboard-full" id="dashboard-container" style="display:none;">
   
   <div class="dashboard-header">
-    <h2>Hola, <span id="user-display-name"></span></h2>
-  </div>
-
-  <!-- ALERTAS DE ESTADO -->
-  <div id="alert-cobro" class="alert-box alert-warning"></div>
-  <div id="alert-mora" class="alert-box alert-mora"></div>
-
-  <!-- VISTA PARA CUENTA SUSPENDIDA -->
-  <div id="suspended-view" class="alert-box alert-suspended">
-    <h3>Cuenta Suspendida</h3>
-    <p>Tu cuenta ha sido suspendida momentáneamente. Por favor regulariza tu situación comunicándote a <a href="mailto:prenoticia@gmail.com">prenoticia@gmail.com</a> o abona parcial o total a través de este link para que tu cuenta sea rehabilitada:</p>
-    <p style="margin-top: 15px;">
-      <a href="https://link.mercadopago.com.ar/prenoticia" target="_blank" style="background: #009ee3; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px; display: inline-block;">Pagar en Mercado Pago</a>
-    </p>
-  </div>
-
-  <!-- CONTENIDO PRINCIPAL -->
-  <div id="main-content-area">
-    
-    <!-- PESTAÑAS -->
-    <div class="tabs-header">
-      <button class="tab-btn active" onclick="openTab(event, 'tab-noticias')">Noticias</button>
-      <button class="tab-btn" onclick="openTab(event, 'tab-concursos')">Concursos</button>
-      <button class="tab-btn" onclick="openTab(event, 'tab-datos')">Mis Datos</button>
+    <div class="header-info">
+      <h2>Hola, <span id="user-display-name"></span></h2>
+      <span class="date-text" id="current-date-display"></span>
     </div>
+    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+  </div>
 
-    <!-- PESTAÑA 1: NOTICIAS -->
+  <div class="alert-container">
+    <div id="alert-cobro" class="alert-box alert-warning"></div>
+    <div id="alert-mora" class="alert-box alert-mora"></div>
+    <div id="suspended-view" class="alert-box alert-suspended">
+      <h3>Cuenta Suspendida</h3>
+      <p>Tu cuenta está suspendida. Regularizá comunicándote a <a href="mailto:prenoticia@gmail.com" style="color:#ffb74d;">prenoticia@gmail.com</a></p>
+    </div>
+  </div>
+
+  <!-- PESTAÑAS SUPERIORES PERSISTENTES -->
+  <div class="tabs-header">
+    <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')">Noticias</button>
+    <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')">Concursos</button>
+    <button class="tab-btn" id="btn-tab-datos" onclick="openTab('tab-datos')">Mis Datos</button>
+  </div>
+
+  <div class="main-content">
+    
+    <!-- PESTAÑA NOTICIAS -->
     <div id="tab-noticias" class="tab-content active">
-      <div class="news-grid">
+      
+      <div id="news-list-view" class="news-grid">
         <div class="news-card">
           <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop&q=60" alt="Noticia 1">
           <div class="news-card-body">
             <h4>Actualizaciones en Registros Digitales 2026</h4>
-            <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección en plataformas online.</p>
-            <div id="news-1-more" class="news-extra-content">
-              El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores. Con estas mejoras, los tiempos de procesamiento se reducen considerablemente.
-            </div>
-            <button class="btn-see-more" onclick="toggleNews('news-1-more', this)" style="background:#333;">Ver más</button>
+            <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...</p>
+            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y un canal directo de atención prioritaria para suscriptores. Con estas mejoras, los tiempos de procesamiento se reducen considerablemente permitiendo una gestión ágil desde cualquier dispositivo movil.')">Ver más</button>
           </div>
         </div>
 
@@ -405,107 +358,77 @@
           <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60" alt="Noticia 2">
           <div class="news-card-body">
             <h4>Nuevos Beneficios para Suscriptores Activos</h4>
-            <p>Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada semanal.</p>
-            <div id="news-2-more" class="news-extra-content">
-              Todos los usuarios que mantengan su membresía al día contarán con un sistema automatizado de notificaciones y participación directa en los sorteos mensuales de entradas para cine, teatro y espectáculos.
-            </div>
-            <button class="btn-see-more" onclick="toggleNews('news-2-more', this)" style="background:#333;">Ver más</button>
+            <p>Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada...</p>
+            <button onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con un sistema automatizado de notificaciones y participación directa en los sorteos mensuales de entradas para cine, teatro y espectáculos de primer nivel.')">Ver más</button>
           </div>
         </div>
       </div>
+
+      <!-- VISTA EXTENDIDA DE NOTICIA -->
+      <div id="full-news-view">
+        <button onclick="volverANoticias()" style="margin-bottom: 15px; background: #333;">← Volver</button>
+        <img id="full-news-img" src="" alt="Noticia">
+        <h2 id="full-news-title"></h2>
+        <p id="full-news-body"></p>
+      </div>
+
     </div>
 
-    <!-- PESTAÑA 2: CONCURSOS -->
+    <!-- PESTAÑA CONCURSOS -->
     <div id="tab-concursos" class="tab-content">
       <div class="contest-card">
-        <img src="https://revuecinema.ca/wp-content/uploads/2026/05/coyote_vs_acme_tmdb-7znmjp6z6mdap4louacykgsbuqv-683x1024.jpg" alt="Coyote vs Acme" class="contest-img">
-        <div class="contest-info">
-          <h3>Sorteo de Entradas: COYOTE VS ACME</h3>
-          <p><strong>Cine:</strong> Cinemark Abasto</p>
-          <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs (Castellano)</p>
-          <p>Participá por pares de entradas. Al hacer clic en participar, tus datos se completan automáticamente.</p>
-          
-          <div style="margin-top:20px;">
-            <button id="btn-participate" onclick="participarConcurso()">¡Hacer clic para Participar!</button>
-          </div>
-          <div id="contest-status-msg" style="margin-top:15px; font-weight:bold; color:var(--green-success);"></div>
+        <span id="contest-badge" class="contest-status-badge status-no">Aún no estás participando</span>
+        <h3>Sorteo de Entradas: COYOTE VS ACME</h3>
+        <p><strong>Cine:</strong> Cinemark Abasto</p>
+        <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
+        
+        <div style="margin-top:20px;">
+          <button id="btn-participate-action" onclick="participarViaEmail()">¡Enviar Email para Participar!</button>
         </div>
       </div>
     </div>
 
-    <!-- PESTAÑA 3: MIS DATOS -->
+    <!-- PESTAÑA MIS DATOS -->
     <div id="tab-datos" class="tab-content">
       <table class="data-table">
-        <tr>
-          <th>Nombre Completo</th>
-          <td id="data-fullname"></td>
-        </tr>
-        <tr>
-          <th>Correo Electrónico</th>
-          <td id="data-email"></td>
-        </tr>
-        <tr>
-          <th>Teléfono Asociado</th>
-          <td id="data-phone"></td>
-        </tr>
-        <tr>
-          <th>Monto del Abono</th>
-          <td id="data-abono"></td>
-        </tr>
-        <tr>
-          <th>Modalidad de Pago</th>
-          <td id="data-metodo-pago"></td>
-        </tr>
-        <tr>
-          <th>Próximo Vencimiento</th>
-          <td id="data-vencimiento"></td>
-        </tr>
+        <tr><th>Nombre Completo</th><td id="data-fullname"></td></tr>
+        <tr><th>Correo Electrónico</th><td id="data-email"></td></tr>
+        <tr><th>Teléfono Asociado</th><td id="data-phone"></td></tr>
+        <tr><th>Monto del Abono</th><td id="data-abono"></td></tr>
+        <tr><th>Modalidad de Pago</th><td id="data-metodo-pago"></td></tr>
+        <tr><th>Próximo Vencimiento</th><td id="data-vencimiento"></td></tr>
       </table>
 
-      <button onclick="mostrarFormularioModificacion()">Modificar Datos</button>
+      <button onclick="mostrarModificacion()">Modificar Datos</button>
 
-      <!-- SECCIÓN OCUPA TODO EL BLOQUE PARA MODIFICAR DATOS -->
       <div id="modification-section">
         <h3>Solicitar Modificación de Datos</h3>
-        <p>Selecciona el dato que deseas modificar e ingresa el nuevo valor:</p>
-        
         <div class="input-group">
-          <label for="mod-field">Campo a modificar</label>
+          <label>Campo a modificar</label>
           <select id="mod-field">
             <option value="Nombre Completo">Nombre Completo</option>
             <option value="Correo Electrónico">Correo Electrónico</option>
             <option value="Teléfono Asociado">Teléfono Asociado</option>
             <option value="Modalidad de Pago">Modalidad de Pago</option>
-            <option value="Otro">Otro campo / Consulta</option>
           </select>
         </div>
 
         <div class="input-group">
-          <label for="mod-value">Nuevo Valor / Detalle del Cambio</label>
-          <textarea id="mod-value" rows="4" placeholder="Escriba aquí los nuevos datos a actualizar..."></textarea>
+          <label>Nuevo Valor / Detalle</label>
+          <textarea id="mod-value" rows="3" placeholder="Escriba los datos requeridos..."></textarea>
         </div>
 
-        <div style="display: flex; gap: 10px;">
-          <button onclick="enviarModificacionDatos()">Enviar Modificación</button>
-          <button class="btn-secondary" onclick="ocultarFormularioModificacion()">Cancelar</button>
+        <div style="display:flex; gap:10px;">
+          <button onclick="enviarModificacionEmail()">Enviar por Email</button>
+          <button onclick="ocultarModificacion()" style="background:#6c757d;">Cancelar</button>
         </div>
-        <p id="mod-status-msg" style="margin-top: 15px; font-weight: bold;"></p>
       </div>
-    </div>
-
-    <!-- ACCIONES INFERIORES -->
-    <div class="action-buttons">
-      <button class="btn-danger" onclick="logout()">Cerrar Sesión</button>
     </div>
 
   </div>
 </div>
 
-<!-- CONTENEDOR OCULTO PARA INYECCIÓN VIRTUAL DE BLOGGER -->
-<div id="virtual-blogger-host" style="display:none;"></div>
-
 <script>
-// BASE DE DATOS LOCAL
 const users = {
   "luciacarpio20@gmail.com": {
     email: "luciacarpio20@gmail.com",
@@ -515,10 +438,8 @@ const users = {
     telefono: "+54 11 2167-9936",
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
-    cuentaMercadoPago: "luciacarpio20@gmail.com",
     proximoVencimiento: "2026-08-27",
-    estadoCuenta: "activo", 
-    diasMoraHasta: null
+    estadoCuenta: "activo"
   },
   "mauricioacostacom@gmail.com": {
     email: "mauricioacostacom@gmail.com",
@@ -528,119 +449,46 @@ const users = {
     telefono: "+54 11 2167-9936",
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
-    cuentaMercadoPago: "mauricioacostacom@gmail.com",
     proximoVencimiento: "2026-09-01",
-    estadoCuenta: "activo",
-    diasMoraHasta: null
+    estadoCuenta: "activo"
   }
 };
 
 let currentUser = null;
 
-// INICIALIZACIÓN
 window.addEventListener("load", () => {
-  // Asignación directa del evento login al botón para evitar desbordes de eventos HTML
-  const btnLogin = document.getElementById("btn-login-submit");
-  if(btnLogin) {
-    btnLogin.addEventListener("click", login);
-  }
+  // Mostrar fecha actual
+  const hoy = new Date();
+  const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById("current-date-display").textContent = hoy.toLocaleDateString('es-AR', opciones);
 
-  // Permitir la tecla Enter en la pantalla de login
-  document.getElementById("login-password").addEventListener("keyup", (e) => {
-    if (e.key === "Enter") login();
-  });
-
-  // Autocompletado de credenciales guardadas
-  const savedEmail = localStorage.getItem("remembered_email");
-  const savedPass = localStorage.getItem("remembered_pass");
-
-  if (savedEmail && savedPass) {
-    document.getElementById("login-email").value = savedEmail;
-    document.getElementById("login-password").value = savedPass;
-    document.getElementById("remember-me").checked = true;
-  }
-
-  // Mantener la sesión activa
+  // Cargar sesión guardada
   const activeUserEmail = localStorage.getItem("active_session_email");
-  if (activeUserEmail && users.hasOwnProperty(activeUserEmail)) {
+  if (activeUserEmail && users[activeUserEmail]) {
     currentUser = users[activeUserEmail];
     cargarDashboard(currentUser);
   }
 });
 
-// FUNCIÓN DE LOGIN
 function login() {
   const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
   const passInput = document.getElementById("login-password").value.trim();
-  const rememberMe = document.getElementById("remember-me").checked;
   const errorEl = document.getElementById("login-error");
 
-  if (!emailInput || !passInput) {
-    errorEl.textContent = "Por favor ingrese correo y contraseña.";
-    return;
-  }
-
-  if (users.hasOwnProperty(emailInput)) {
-    const user = users[emailInput];
-    if (user.pass === passInput) {
-      errorEl.textContent = "";
-      currentUser = user;
-
-      if (rememberMe) {
-        localStorage.setItem("remembered_email", emailInput);
-        localStorage.setItem("remembered_pass", passInput);
-      } else {
-        localStorage.removeItem("remembered_email");
-        localStorage.removeItem("remembered_pass");
-      }
-
-      localStorage.setItem("active_session_email", emailInput);
-      cargarDashboard(user);
-    } else {
-      errorEl.textContent = "Contraseña incorrecta.";
-    }
+  if (users[emailInput] && users[emailInput].pass === passInput) {
+    errorEl.textContent = "";
+    currentUser = users[emailInput];
+    localStorage.setItem("active_session_email", emailInput);
+    cargarDashboard(currentUser);
   } else {
-    errorEl.textContent = "Correo electrónico no registrado.";
+    errorEl.textContent = "Credenciales incorrectas.";
   }
 }
 
-// MOSTRAR PANEL DE DASHBOARD
 function cargarDashboard(user) {
   document.getElementById("login-container").style.display = "none";
   document.getElementById("dashboard-container").style.display = "block";
   document.getElementById("user-display-name").textContent = user.nombreSaludo;
-
-  const alertCobro = document.getElementById("alert-cobro");
-  const alertMora = document.getElementById("alert-mora");
-  const suspendedView = document.getElementById("suspended-view");
-  const mainContentArea = document.getElementById("main-content-area");
-
-  alertCobro.style.display = "none";
-  alertMora.style.display = "none";
-  suspendedView.style.display = "none";
-  mainContentArea.style.display = "block";
-
-  if (user.estadoCuenta === "suspendido") {
-    mainContentArea.style.display = "none";
-    suspendedView.style.display = "block";
-    return;
-  }
-
-  if (user.estadoCuenta === "mora") {
-    alertMora.style.display = "block";
-    alertMora.innerHTML = `Tu cuenta registra mora por falta de pago. Tienes hasta el <strong>${user.diasMoraHasta || 'próximos días'}</strong> para abonar y regularizar tu servicio.`;
-  }
-
-  const hoy = new Date();
-  const fechaVenc = new Date(user.proximoVencimiento);
-  const diferenciaTiempo = fechaVenc - hoy;
-  const diferenciaDias = Math.ceil(diferenciaTiempo / (1000 * 60 * 60 * 24));
-
-  if (user.estadoCuenta === "activo" && diferenciaDias >= 0 && diferenciaDias <= 2) {
-    alertCobro.style.display = "block";
-    const diasTexto = diferenciaDias === 0 ? "hoy" : (diferenciaDias === 1 ? "mañana" : `en ${diferenciaDias} días`);
-    alertCobro.textContent = `Recordatorio: ${diasTexto} se debitará tu membresía de tu cuenta Mercado Pago (${user.cuentaMercadoPago}).`;
-  }
 
   document.getElementById("data-fullname").textContent = user.nombreCompleto;
   document.getElementById("data-email").textContent = user.email;
@@ -648,160 +496,92 @@ function cargarDashboard(user) {
   document.getElementById("data-abono").textContent = user.abonoMonto;
   document.getElementById("data-metodo-pago").textContent = user.metodoPago;
   document.getElementById("data-vencimiento").textContent = user.proximoVencimiento;
+
+  // Verificar estado del concurso local
+  const participando = localStorage.getItem("contest_participating_" + user.email);
+  actualizarEstadoConcurso(participando === "true");
 }
 
-function openTab(evt, tabId) {
-  const contents = document.querySelectorAll('.tab-content');
-  contents.forEach(c => c.classList.remove('active'));
-
-  const buttons = document.querySelectorAll('.tab-btn');
-  buttons.forEach(b => b.classList.remove('active'));
+function openTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
   document.getElementById(tabId).classList.add('active');
-  evt.currentTarget.classList.add('active');
+  
+  if(tabId === 'tab-noticias') document.getElementById('btn-tab-noticias').classList.add('active');
+  if(tabId === 'tab-concursos') document.getElementById('btn-tab-concursos').classList.add('active');
+  if(tabId === 'tab-datos') document.getElementById('btn-tab-datos').classList.add('active');
+
+  // Si cambia de pestaña, resetear vista ampliada de noticias
+  volverANoticias();
 }
 
-function toggleNews(newsId, btn) {
-  const newsElement = document.getElementById(newsId);
-  if (newsElement.style.display === "block") {
-    newsElement.style.display = "none";
-    btn.textContent = "Ver más";
+/* FUNCIONALIDAD NOTICIAS FULLSCREEN */
+function verNoticiaCompleta(titulo, imgUrl, cuerpo) {
+  document.getElementById('news-list-view').style.display = 'none';
+  const fullView = document.getElementById('full-news-view');
+  
+  document.getElementById('full-news-title').textContent = titulo;
+  document.getElementById('full-news-img').src = imgUrl;
+  document.getElementById('full-news-body').textContent = cuerpo;
+  
+  fullView.style.display = 'block';
+}
+
+function volverANoticias() {
+  document.getElementById('full-news-view').style.display = 'none';
+  document.getElementById('news-list-view').style.display = 'grid';
+}
+
+/* FUNCIONALIDAD CONCURSOS CON MAILTO */
+function actualizarEstadoConcurso(estaParticipando) {
+  const badge = document.getElementById("contest-badge");
+  const btn = document.getElementById("btn-participate-action");
+
+  if (estaParticipando) {
+    badge.textContent = "✔ Ya estás participando";
+    badge.className = "contest-status-badge status-yes";
+    btn.textContent = "Reenviar Email de Confirmación";
   } else {
-    newsElement.style.display = "block";
-    btn.textContent = "Ver menos";
+    badge.textContent = "Aún no estás participando";
+    badge.className = "contest-status-badge status-no";
+    btn.textContent = "¡Enviar Email para Participar!";
   }
 }
 
-function mostrarFormularioModificacion() {
-  document.getElementById("modification-section").style.display = "block";
-  document.getElementById("mod-status-msg").textContent = "";
-}
-
-function ocultarFormularioModificacion() {
-  document.getElementById("modification-section").style.display = "none";
-}
-
-// SCRAPING / RECOPILACIÓN SUPERFICIAL DE LA PANTALLA A LA CACHÉ VIRTUAL
-function construirPayloadDesdePantalla() {
-  return {
-    saludoPantalla: document.getElementById("user-display-name")?.innerText || "-",
-    nombreCompleto: document.getElementById("data-fullname")?.innerText || currentUser?.nombreCompleto || "-",
-    email: document.getElementById("data-email")?.innerText || currentUser?.email || "-",
-    telefono: document.getElementById("data-phone")?.innerText || currentUser?.telefono || "-",
-    abono: document.getElementById("data-abono")?.innerText || currentUser?.abonoMonto || "-",
-    metodoPago: document.getElementById("data-metodo-pago")?.innerText || currentUser?.metodoPago || "-",
-    vencimiento: document.getElementById("data-vencimiento")?.innerText || currentUser?.proximoVencimiento || "-",
-    momentoCaptura: new Date().toLocaleString("es-AR")
-  };
-}
-
-// MOTOR DE ENVÍO FORZADO A BLOGGER VÍA CACHÉ VIRTUAL E IFRAME TRANSPARENTE
-function forzarEnvioBlogger(accionClave, detalleAccion) {
+function participarViaEmail() {
   if (!currentUser) return;
 
-  // 1. Scraping del DOM superficial
-  const snapshot = construirPayloadDesdePantalla();
+  const mailTo = "prenoticia@gmail.com";
+  const asunto = encodeURIComponent("INSCRIPCIÓN A CONCURSO: COYOTE VS ACME");
+  const cuerpo = encodeURIComponent(`Hola, quiero inscribirme al concurso.\n\nMis datos extraídos del portal:\n- Nombre: ${currentUser.nombreCompleto}\n- Email: ${currentUser.email}\n- Teléfono: ${currentUser.telefono}`);
 
-  // 2. Formatear cuerpo del mensaje
-  const cuerpoMensaje = `[NOTIFICACION AUTOMATICA DE PORTAL]\n\nACCION DETECTADA: ${accionClave}\n\nDATOS EXTRAIDOS DE PANTALLA:\n- Usuario: ${snapshot.nombreCompleto}\n- Email Registrado: ${snapshot.email}\n- Telefono: ${snapshot.telefono}\n- Metodo de Pago: ${snapshot.metodoPago}\n- Vencimiento: ${snapshot.vencimiento}\n\nDETALLE DE SOLICITUD:\n${detalleAccion}\n\nFecha y Hora Captura: ${snapshot.momentoCaptura}`;
+  // Registrar participación local
+  localStorage.setItem("contest_participating_" + currentUser.email, "true");
+  actualizarEstadoConcurso(true);
 
-  // 3. Guardar en memoria Caché local (localStorage) como paquete de transacción
-  const bufferTx = {
-    accion: accionClave,
-    snapshot: snapshot,
-    detalle: detalleAccion,
-    txId: "TX-" + Date.now()
-  };
-  const historial = JSON.parse(localStorage.getItem("blogger_queue_cache") || "[]");
-  historial.push(bufferTx);
-  localStorage.setItem("blogger_queue_cache", JSON.stringify(historial));
-
-  // 4. Inyección dinámica del Formulario Blogger en Iframe fantasma
-  const host = document.getElementById("virtual-blogger-host");
-  host.innerHTML = ""; // Limpieza previa
-
-  const iframeName = "blogger_iframe_target_" + Date.now();
-  const iframe = document.createElement("iframe");
-  iframe.name = iframeName;
-  host.appendChild(iframe);
-
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = "https://www.blogger.com/contact-form.do";
-  form.target = iframeName;
-
-  const inputName = document.createElement("input");
-  inputName.type = "hidden";
-  inputName.name = "name";
-  inputName.value = snapshot.nombreCompleto;
-  form.appendChild(inputName);
-
-  const inputEmail = document.createElement("input");
-  inputEmail.type = "hidden";
-  inputEmail.name = "email";
-  inputEmail.value = snapshot.email;
-  form.appendChild(inputEmail);
-
-  const inputBody = document.createElement("input");
-  inputBody.type = "hidden";
-  inputBody.name = "body";
-  inputBody.value = cuerpoMensaje;
-  form.appendChild(inputBody);
-
-  host.appendChild(form);
-
-  // Ejecución forzada del Submit
-  try {
-    form.submit();
-  } catch (err) {
-    console.log("Transacción de respaldo asegurada en la caché local.");
-  }
+  // Abrir cliente de correo del usuario
+  window.location.href = `mailto:${mailTo}?subject=${asunto}&body=${cuerpo}`;
 }
 
-// BOTÓN: ENVIAR MODIFICACIÓN DE DATOS
-function enviarModificacionDatos() {
+/* MODIFICACIÓN DE DATOS CON MAILTO */
+function mostrarModificacion() { document.getElementById("modification-section").style.display = "block"; }
+function ocultarModificacion() { document.getElementById("modification-section").style.display = "none"; }
+
+function enviarModificacionEmail() {
   const campo = document.getElementById("mod-field").value;
   const detalle = document.getElementById("mod-value").value.trim();
-  const statusMsg = document.getElementById("mod-status-msg");
 
-  if (!detalle) {
-    statusMsg.style.color = "var(--red-error)";
-    statusMsg.textContent = "Por favor, escriba los detalles de los datos a modificar.";
-    return;
-  }
+  if (!detalle) return alert("Ingrese el detalle a modificar.");
 
-  statusMsg.style.color = "var(--text-muted)";
-  statusMsg.textContent = "Procesando y registrando cambio...";
+  const mailTo = "prenoticia@gmail.com";
+  const asunto = encodeURIComponent(`SOLICITUD MODIFICACIÓN DE DATOS: ${campo}`);
+  const cuerpo = encodeURIComponent(`Hola, solicito cambiar el siguiente dato:\n\nUsuario: ${currentUser.nombreCompleto}\nEmail: ${currentUser.email}\nCampo a Modificar: ${campo}\nNuevo Valor: ${detalle}`);
 
-  // Disparo forzado
-  forzarEnvioBlogger("SOLICITUD DE MODIFICACION DE DATOS", `Campo seleccionado: ${campo}\nDetalle introducido: ${detalle}`);
-
-  statusMsg.style.color = "var(--green-success)";
-  statusMsg.textContent = "✔ Tu solicitud ha sido procesada y registrada correctamente.";
-  document.getElementById("mod-value").value = "";
-  
-  setTimeout(() => {
-    ocultarFormularioModificacion();
-  }, 2500);
+  window.location.href = `mailto:${mailTo}?subject=${asunto}&body=${cuerpo}`;
+  ocultarModificacion();
 }
 
-// BOTÓN: PARTICIPAR EN CONCURSO
-function participarConcurso() {
-  if (!currentUser) return;
-
-  const contestName = "Sorteo Entradas Cinemark Abasto - COYOTE VS ACME";
-
-  // Disparo forzado
-  forzarEnvioBlogger("INSCRIPCION A CONCURSO", `Concurso: ${contestName}\nFunción: Sábado 29 de agosto 22:00 hs`);
-
-  const btn = document.getElementById("btn-participate");
-  btn.disabled = true;
-  btn.style.background = "#999999";
-  btn.style.cursor = "default";
-  document.getElementById("contest-status-msg").textContent = `✔ ¡Ya estás participando! Se registraron tus datos (${currentUser.email}).`;
-}
-
-// CERRAR SESIÓN
 function logout() {
   currentUser = null;
   localStorage.removeItem("active_session_email");
