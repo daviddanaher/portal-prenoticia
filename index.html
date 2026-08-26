@@ -40,9 +40,9 @@
       padding: 0 !important;
   }
 
-  /* LOGIN Y REGISTRO BANNER */
-  .login-container { max-width: 480px; margin: 30px auto; padding: 15px; }
-  .login-section { padding: 30px 25px; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  /* LOGIN CONTENEDOR */
+  .login-container { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: var(--bg-gray); }
+  .login-section { width: 100%; max-width: 460px; padding: 35px 25px; border: 1px solid var(--border-color); border-radius: 14px; text-align: center; background: #ffffff; box-shadow: 0 4px 25px rgba(0,0,0,0.06); }
   .login-section h2 { color: var(--header-bg); margin-top: 0; font-size: 24px; margin-bottom: 20px; font-weight: 700; }
 
   .unregistered-banner {
@@ -70,371 +70,395 @@
     box-shadow: 0 4px 12px rgba(245, 130, 32, 0.3);
     transition: all 0.2s;
   }
-  .btn-register-trigger:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(245, 130, 32, 0.4); }
 
-  /* DASHBOARD HEADER & TABS */
+  /* DASHBOARD FULL WIDTH (SIN MÁRGENES RESTRICTIVOS) */
   .dashboard-full { width: 100%; min-height: 100vh; background: #ffffff; margin: 0; padding: 0; }
-  .dashboard-header { background: #ffffff; padding: 15px 20px; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .dashboard-header { background: #ffffff; padding: 15px 25px; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; width: 100%; }
   .header-info h2 { margin: 0; font-size: 20px; color: #111; }
   .header-info .date-text { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
 
-  .input-group { margin-bottom: 18px; text-align: left; }
-  .input-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .checkbox-group { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
+  .btn-menu-trigger { background: var(--header-bg); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-size: 18px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; }
+  .btn-menu-trigger:hover { background: var(--dark-orange); }
 
-  input[type="text"], input[type="password"], input[type="email"], select, textarea { width: 100%; padding: 12px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 14.5px; outline: none; transition: border 0.2s; }
-  input:focus, select:focus, textarea:focus { border-color: var(--primary-orange); }
+  /* DRAWER MENU LATERAL */
+  .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99999; backdrop-filter: blur(2px); }
+  .drawer-content { position: fixed; top: 0; right: -320px; width: 320px; height: 100%; background: #ffffff; z-index: 100000; transition: right 0.3s ease; box-shadow: -5px 0 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; }
+  .drawer-content.open { right: 0; }
+  .drawer-header { background: var(--primary-orange); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+  .drawer-header h3 { margin: 0; font-size: 18px; }
+  .close-drawer-btn { background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
+  
+  .drawer-menu-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
+  .drawer-menu-item { border-bottom: 1px solid var(--border-color); }
+  .drawer-menu-item button { width: 100%; background: none; color: #333; text-align: left; padding: 16px 20px; border-radius: 0; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 12px; }
+  .drawer-menu-item button:hover { background: #f8f9fa; color: var(--primary-orange); }
 
-  button { background-color: var(--header-bg); color: white; border: none; padding: 11px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; }
-  button:hover { background-color: var(--dark-orange); }
-  .btn-logout { background-color: var(--red-error); }
+  /* TABS CON SCROLL HORIZONTAL */
+  .tabs-scroll-container { display: flex; background: #ffffff; border-bottom: 3px solid var(--header-bg); padding: 10px 15px 0 15px; gap: 8px; position: sticky; top: 0; z-index: 100; overflow-x: auto; scrollbar-width: thin; width: 100%; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+  .tabs-scroll-container::-webkit-scrollbar { height: 4px; }
+  .tabs-scroll-container::-webkit-scrollbar-thumb { background: var(--primary-orange); border-radius: 4px; }
 
-  .tabs-header { display: flex; background: #ffffff; border-bottom: 3px solid var(--header-bg); padding: 10px 20px 0 20px; gap: 6px; position: sticky; top: 0; z-index: 100; overflow-x: auto; }
-  .tab-btn { padding: 12px 16px; background: #e9ecef; color: #495057; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 13.5px; flex: 1; text-align: center; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .tab-btn { padding: 12px 18px; background: #e9ecef; color: #495057; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 13.5px; display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
   .tab-btn.active { background: var(--header-bg); color: #ffffff; }
+  .btn-add-interest-tab { background: #fff3e0; color: var(--dark-orange); border: 2px dashed var(--primary-orange); border-radius: 8px 8px 0 0; padding: 10px 16px; font-weight: 800; cursor: pointer; flex-shrink: 0; display: inline-flex; align-items: center; gap: 5px; }
 
-  .main-content { padding: 20px; max-width: 1100px; margin: 0 auto; }
-  .tab-content { display: none; }
+  /* CONTENIDO PRINCIPAL ANCHO COMPLETO */
+  .main-content-full { padding: 25px 20px; width: 100%; margin: 0; }
+  .tab-content { display: none; width: 100%; }
   .tab-content.active { display: block; }
 
-  /* TARJETAS DE NOTICIAS Y BUSCADOR */
-  .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .news-card { border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-  .news-card img { width: 100%; height: 180px; object-fit: cover; }
-  .news-card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-  .news-card-body h4 { margin: 0 0 10px 0; font-size: 16px; color: #111; }
-  .news-card-body p { font-size: 13.5px; color: #555; line-height: 1.5; margin-bottom: 15px; }
+  /* TARJETAS NOTICIAS FULL ANCHO RESPONSIVE */
+  .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; width: 100%; }
+  .news-card { border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+  .news-card img { width: 100%; height: 200px; object-fit: cover; }
+  .news-card-body { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .news-card-body h4 { margin: 0 0 10px 0; font-size: 17px; color: #111; }
+  .news-card-body p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 15px; }
   
   .card-actions-bar { display: flex; gap: 8px; margin-top: 10px; }
-  .btn-card-primary { flex: 1; background: var(--header-bg); color: #fff; font-size: 13px; padding: 8px 12px; border-radius: 6px; }
-  .btn-card-save { background: #f8f9fa; color: #333; border: 1px solid #ccc; font-size: 13px; padding: 8px 12px; border-radius: 6px; display: flex; align-items: center; gap: 5px; }
-  .btn-card-save:hover { background: #e2e6ea; }
+  .btn-card-primary { flex: 1; background: var(--header-bg); color: #fff; font-size: 13px; padding: 10px 12px; border-radius: 6px; }
+  .btn-card-save { background: #f8f9fa; color: #333; border: 1px solid #ccc; font-size: 13px; padding: 10px 12px; border-radius: 6px; display: flex; align-items: center; gap: 5px; }
 
   /* SEARCH PANEL */
-  .search-box-wrapper { background: #fff; padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-  .search-input-group { position: relative; display: flex; gap: 10px; }
-  .search-input-group input { padding-left: 40px; }
+  .search-box-wrapper { background: #fff; padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); width: 100%; }
+  .search-input-group { position: relative; display: flex; gap: 10px; width: 100%; }
+  .search-input-group input { padding-left: 42px; width: 100%; }
   .search-input-group i.search-icon-inside { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #888; font-size: 16px; }
-  
-  .predictive-loader { display: none; text-align: center; padding: 25px 0; color: var(--primary-orange); }
 
-  /* MODALES Y OVERLAYS */
+  /* INPUTS & FORMULARIOS */
+  .input-group { margin-bottom: 18px; text-align: left; }
+  .input-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  input[type="text"], input[type="password"], input[type="email"], select, textarea { width: 100%; padding: 12px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 14.5px; outline: none; }
+
+  /* MODALES SUPERPUESTOS */
   .custom-modal-backdrop { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; padding: 15px; }
-  .custom-modal-card { background: #ffffff; border-radius: 12px; max-width: 440px; width: 100%; padding: 25px; text-align: center; border-top: 5px solid var(--primary-orange); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-  .custom-modal-card h3 { color: var(--dark-orange); margin-top: 0; font-size: 20px; }
-  .custom-modal-card p { font-size: 14px; color: #444; line-height: 1.6; margin-bottom: 20px; }
-
-  /* ESTILOS MULTI-PASO (WIZARD REGISTRO NUEVO USUARIO) */
-  .wizard-card-root { background: #ffffff; max-width: 650px; margin: 20px auto; padding: 30px; border-radius: 14px; border: 1px solid var(--border-color); border-top: 6px solid var(--primary-orange); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+  .custom-modal-card { background: #ffffff; border-radius: 14px; max-width: 500px; width: 100%; padding: 25px; text-align: center; border-top: 5px solid var(--primary-orange); box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
   
-  .wizard-steps-indicator { display: flex; justify-content: center; gap: 12px; margin-bottom: 25px; }
-  .step-dot { width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #666; transition: all 0.3s; }
-  .step-dot.active { border-color: var(--primary-orange); background: #fff3e0; color: var(--primary-orange); box-shadow: 0 0 10px rgba(245, 130, 32, 0.3); }
-  .step-dot.completed { background: var(--primary-orange); border-color: var(--primary-orange); color: #ffffff; }
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; background: #fff; }
+  .data-table th, .data-table td { padding: 14px; border: 1px solid var(--border-color); font-size: 14px; }
+  .data-table th { background: #f8f9fa; width: 35%; text-align: left; }
 
-  .wizard-step-panel { display: none; opacity: 0; transition: opacity 0.3s; }
-  .wizard-step-panel.active-step { display: block; opacity: 1; }
+  #full-news-view { display: none; background: #ffffff; padding: 15px; width: 100%; }
+  #full-news-view img { width: 100%; max-height: 420px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
 
-  /* BOTONES SELECCIÓN INTERESES */
-  .interests-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
-  .btn-interest-tag {
-    background: #f8f9fa;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 12px 10px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #444;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-  .btn-interest-tag:hover { border-color: var(--primary-orange); background: #fff8f0; }
-  .btn-interest-tag.selected { background: #fff3e0; border-color: var(--primary-orange); color: var(--dark-orange); box-shadow: 0 2px 8px rgba(245, 130, 32, 0.2); }
-
-  .nav-buttons-container { display: flex; justify-content: space-between; gap: 12px; margin-top: 25px; flex-wrap: wrap; }
-  .btn-nav-step { padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 13.5px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #ccc; background: #f8f9fa; color: #333; }
-  .btn-nav-step:hover { background: #e2e6ea; }
-  .btn-nav-next { background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange)); color: #fff; border: none; margin-left: auto; }
-  .btn-nav-next:hover { opacity: 0.95; box-shadow: 0 4px 12px rgba(245, 130, 32, 0.3); }
-  .btn-nav-cancel { background: rgba(198, 40, 40, 0.1); border-color: rgba(198, 40, 40, 0.3); color: var(--red-error); }
-  .btn-nav-cancel:hover { background: rgba(198, 40, 40, 0.2); }
-
-  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  .data-table th, .data-table td { padding: 12px; border: 1px solid var(--border-color); font-size: 14px; }
-  .data-table th { background: #f8f9fa; width: 40%; text-align: left; }
-
-  #full-news-view { display: none; background: #ffffff; padding: 10px 0; }
-  #full-news-view img { width: 100%; max-height: 380px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
-
-  .contest-card { border: 2px solid var(--header-bg); border-radius: 10px; padding: 20px; background: #fffcf8; }
-  .contest-status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 15px; }
-  .status-no { background: #ffebee; color: var(--red-error); }
-  .status-yes { background: #e8f5e9; color: var(--green-success); }
+  .chat-box { border: 1px solid var(--border-color); border-radius: 10px; background: #fff; padding: 15px; display: flex; flex-direction: column; height: 320px; margin-top: 15px; }
+  .chat-messages { flex-grow: 1; overflow-y: auto; padding: 10px; background: #f9f9f9; border-radius: 8px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
+  .chat-msg { max-width: 80%; padding: 10px 14px; border-radius: 10px; font-size: 13.5px; line-height: 1.4; }
+  .chat-msg.user { background: var(--primary-orange); color: white; align-self: flex-end; }
+  .chat-msg.system { background: #e9ecef; color: #333; align-self: flex-start; }
 </style>
 </head>
 <body>
 
-<!-- CONTENEDOR VISTA MODAL ALERTA CREACIÓN DE CUENTA (SÓLO TRAS REGISTRO NUEVO) -->
-<div class="custom-modal-backdrop" id="modal-creation-success">
+<!-- DRAWER MENU LATERAL DESPLEGABLE -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer(false)"></div>
+<div class="drawer-content" id="drawer-content">
+  <div class="drawer-header">
+    <h3>Menú de Opciones</h3>
+    <button class="close-drawer-btn" onclick="toggleDrawer(false)"><i class="fas fa-times"></i></button>
+  </div>
+  <ul class="drawer-menu-list">
+    <li class="drawer-menu-item"><button onclick="abrirSeccionDrawer('mi-usuario')"><i class="fas fa-user-circle"></i> Mi Usuario</button></li>
+    <li class="drawer-menu-item"><button onclick="abrirSeccionDrawer('configuracion')"><i class="fas fa-cog"></i> Configuración</button></li>
+    <li class="drawer-menu-item"><button onclick="abrirSeccionDrawer('guardados')"><i class="fas fa-bookmark"></i> Guardados</button></li>
+    <li class="drawer-menu-item"><button onclick="abrirSeccionDrawer('ayuda')"><i class="fas fa-headset"></i> Ayuda / Soporte</button></li>
+    <li class="drawer-menu-item"><button onclick="logout()" style="color: var(--red-error);"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button></li>
+  </ul>
+</div>
+
+<!-- MODAL PARA SOLICITAR AGREGAR MÁS TEMAS/INTERESES DE SU INTERÉS -->
+<div class="custom-modal-backdrop" id="modal-add-interest">
   <div class="custom-modal-card">
-    <i class="fas fa-check-circle" style="font-size: 3.5rem; color: var(--green-success); margin-bottom: 15px;"></i>
-    <h3>¡Solicitud Recibida!</h3>
-    <p>Estamos creando tu cuenta y validando tu pago en Mercado Pago. Aguarda unos minutos, podrás acceder al contenido exclusivo al reingresar.</p>
-    <button type="button" onclick="cerrarModalExitoRegistro()" style="width: 100%; background: var(--green-success);">Entendido / Cerrar</button>
+    <h3 style="color: var(--dark-orange);">Solicitar Nuevos Temas</h3>
+    <p style="font-size: 13.5px; color: #555;">Seleccione las categorías adicionales que desea habilitar en su portal. Su solicitud se enviará para ser cargada en su perfil:</p>
+    <div id="missing-interests-list" style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px; text-align:left;"></div>
+    <div style="display:flex; gap:10px;">
+      <button onclick="enviarSolicitudNuevosIntereses()" style="flex:1;">Enviar Solicitud</button>
+      <button onclick="cerrarModalIntereses()" style="background:#6c757d;">Cancelar</button>
+    </div>
   </div>
 </div>
 
-<!-- VISTA 1: FORMULARIO WIZARD REGISTRO NUEVO USUARIO (SE ABRE EN PESTAÑA APARTE) -->
-<div id="registration-wizard-root" style="display:none; padding: 20px;">
-  <div class="wizard-card-root">
-    
-    <div style="text-align: center; margin-bottom: 20px;">
-      <h2 style="color: var(--primary-orange); margin: 0 0 6px 0; font-size: 22px;">Suscripción al Portal Prenoticia</h2>
-      <p style="font-size: 13.5px; color: #666; margin: 0;">Acceso ilimitado a contenidos exclusivos y sorteos mensuales por $5.000 / mes</p>
-    </div>
-
-    <!-- INDICADOR DE PASOS -->
-    <div class="wizard-steps-indicator">
-      <div class="step-dot active" id="dot-1">1</div>
-      <div class="step-dot" id="dot-2">2</div>
-      <div class="step-dot" id="dot-3">3</div>
-    </div>
-
-    <form name="contact-form" id="contact-form" onsubmit="return false;">
-      
-      <!-- PASO 1: DATOS PERSONALES -->
-      <div class="wizard-step-panel active-step" id="step-panel-1">
-        <h4 style="color: var(--dark-orange); font-size: 14px; text-transform: uppercase; margin-bottom: 15px;">Paso 1: Datos Personales del Titular</h4>
-        
-        <div class="input-group">
-          <label>Nombre y Apellido Completo *</label>
-          <input type="text" id="reg_nombre" placeholder="Ingrese su nombre y apellido" oninput="capitalizarTexto(this)">
-        </div>
-
-        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-          <div class="input-group" style="flex:1; min-width: 220px;">
-            <label>DNI / Documento *</label>
-            <input type="text" id="reg_dni" placeholder="Ej: 38123456">
-          </div>
-          <div class="input-group" style="flex:1; min-width: 220px;">
-            <label>Localidad *</label>
-            <input type="text" id="reg_localidad" placeholder="Ej: Liniers, CABA">
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-          <div class="input-group" style="flex:1; min-width: 220px;">
-            <label>Correo Electrónico *</label>
-            <input type="email" id="reg_email" placeholder="ejemplo@correo.com">
-          </div>
-          <div class="input-group" style="flex:1; min-width: 220px;">
-            <label>Teléfono Celular / WhatsApp *</label>
-            <input type="text" id="reg_telefono" placeholder="Ej: 1121679936">
-          </div>
-        </div>
-
-        <div class="nav-buttons-container">
-          <button type="button" class="btn-nav-step btn-nav-next" onclick="irAlPasoWizard(2)">Siguiente <i class="fas fa-arrow-right"></i></button>
-        </div>
-      </div>
-
-      <!-- PASO 2: SELECCIÓN DE INTERESES -->
-      <div class="wizard-step-panel" id="step-panel-2">
-        <h4 style="color: var(--dark-orange); font-size: 14px; text-transform: uppercase; margin-bottom: 12px;">Paso 2: Selección de Intereses Preferenciales</h4>
-        <p style="font-size: 13px; color: #666; margin-bottom: 18px;">Seleccione los temas sobre los cuales desea recibir alertas e invitaciones a sorteos:</p>
-
-        <div class="interests-grid">
-          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Deportes"><i class="fas fa-football-ball"></i> Deportes</div>
-          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Cine"><i class="fas fa-film"></i> Cine</div>
-          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Espectáculos"><i class="fas fa-theater-masks"></i> Espectáculos</div>
-          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Noticias"><i class="fas fa-newspaper"></i> Noticias</div>
-          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Sociedad"><i class="fas fa-users"></i> Sociedad</div>
-          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Sorteo Cine"><i class="fas fa-ticket-alt"></i> Entradas Cine</div>
-          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Sorteo Espectáculos"><i class="fas fa-star"></i> Entradas Shows</div>
-        </div>
-
-        <div class="nav-buttons-container">
-          <button type="button" class="btn-nav-step" onclick="irAlPasoWizard(1)"><i class="fas fa-arrow-left"></i> Atrás</button>
-          <button type="button" class="btn-nav-step btn-nav-cancel" onclick="cancelarWizard()"><i class="fas fa-times"></i> Cancelar</button>
-          <button type="button" class="btn-nav-step btn-nav-next" onclick="irAlPasoWizard(3)">Siguiente <i class="fas fa-arrow-right"></i></button>
-        </div>
-      </div>
-
-      <!-- PASO 3: MEDIO DE PAGO Y CONFIRMACIÓN -->
-      <div class="wizard-step-panel" id="step-panel-3">
-        <h4 style="color: var(--dark-orange); font-size: 14px; text-transform: uppercase; margin-bottom: 12px;">Paso 3: Confirmación y Medio de Pago</h4>
-        
-        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; border: 1px solid #ffe0b2; margin-bottom: 20px; font-size: 13.5px;">
-          <strong>Abono Mensual:</strong> $5.000 / mes<br>
-          <strong>Medio de Pago Seleccionado:</strong> Mercado Pago (Digital Seguro)
-        </div>
-
-        <p style="font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 20px;">
-          Al hacer clic en <strong>"Pagar con Mercado Pago"</strong>, sus datos se registrarán en nuestro sistema y será derivado automáticamente a la plataforma oficial para completar la suscripción.
-        </p>
-
-        <button type="button" class="btn-register-trigger" style="background: linear-gradient(135deg, #009ee3, #0081b8);" onclick="finalizarRegistroYRedirigirMP()">
-          <i class="fas fa-lock"></i> Pagar $5.000 con Mercado Pago
-        </button>
-
-        <div class="nav-buttons-container">
-          <button type="button" class="btn-nav-step" onclick="irAlPasoWizard(2)"><i class="fas fa-arrow-left"></i> Atrás</button>
-          <button type="button" class="btn-nav-step btn-nav-cancel" onclick="cancelarWizard()"><i class="fas fa-times"></i> Cancelar</button>
-        </div>
-      </div>
-
-      <!-- CAMPOS OCULTOS INTEGRACIÓN NATIVA BLOGGER -->
-      <input type="hidden" id="ContactForm1_contact-form-name" name="name" value="" />
-      <input type="hidden" id="ContactForm1_contact-form-email" name="email" value="" />
-      <textarea id="ContactForm1_contact-form-email-message" name="email-message" style="display:none !important;"></textarea>
-      <input type="button" id="ContactForm1_contact-form-submit" value="Send" style="display:none !important;" />
-    </form>
-  </div>
-</div>
-
-<!-- VISTA 2: LOGIN PRINCIPAL (USUARIOS REGISTRADOS Y ACCESO A NUEVOS) -->
+<!-- VISTA 1: LOGIN -->
 <div class="login-container" id="login-container">
   <div class="login-section">
     <h2>Iniciar Sesión</h2>
     <div class="input-group">
       <label>Correo Electrónico</label>
-      <input type="email" id="login-email" placeholder="ejemplo@correo.com">
+      <input type="email" id="login-email" placeholder="ejemplo@gmail.com">
     </div>
     <div class="input-group">
       <label>Contraseña</label>
       <input type="password" id="login-password" placeholder="Ingrese su contraseña">
     </div>
-    <div class="checkbox-group">
-      <input type="checkbox" id="remember-me">
-      <label for="remember-me">Recordar credenciales</label>
-    </div>
     <button type="button" onclick="login()" style="width: 100%;">Ingresar</button>
     <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold;"></p>
 
-    <!-- BANNER DESTACADO PARA USUARIOS NO REGISTRADOS -->
     <div class="unregistered-banner">
       <h3>¿Aún no tenés una cuenta?</h3>
-      <p>Accedé a contenido exclusivo, noticias al instante y participá de sorteos exclusivos por solo <strong>$5.000 / mes</strong>.</p>
-      <button type="button" class="btn-register-trigger" onclick="abrirFormularioRegistroPestanaAparte()">
+      <p>Accedé a contenido exclusivo y participá de sorteos por $5.000 / mes.</p>
+      <button type="button" class="btn-register-trigger" onclick="window.location.href='/p/crear-nueva-cuenta.html'">
         <i class="fas fa-user-plus"></i> Registrarme Ahora
       </button>
     </div>
   </div>
 </div>
 
-<!-- VISTA 3: DASHBOARD COMPLETO (USUARIOS LOGUEADOS) -->
+<!-- VISTA 2: DASHBOARD COMPLETO (ANCHO COMPLETO) -->
 <div class="dashboard-full" id="dashboard-container" style="display:none;">
   <div class="dashboard-header">
     <div class="header-info">
       <h2>Hola, <span id="user-display-name"></span></h2>
       <span class="date-text" id="current-date-display"></span>
     </div>
-    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+    <button class="btn-menu-trigger" onclick="toggleDrawer(true)">
+      <i class="fas fa-bars"></i> Menú
+    </button>
   </div>
 
-  <div class="tabs-header">
-    <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')"><i class="fas fa-newspaper"></i> Noticias</button>
-    <button class="tab-btn" id="btn-tab-buscador" onclick="openTab('tab-buscador')"><i class="fas fa-search"></i> Buscador</button>
-    <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')"><i class="fas fa-ticket-alt"></i> Concursos</button>
-    <button class="tab-btn" id="btn-tab-datos" onclick="openTab('tab-datos')"><i class="fas fa-user-cog"></i> Mis Datos</button>
+  <!-- SCROLL HORIZONTAL DE SECCIONES / PESTAÑAS DIVERSIFICADAS -->
+  <div class="tabs-scroll-container" id="tabs-scroll-bar">
+    <!-- Pestañas dinámicas según preferencias -->
   </div>
 
-  <div class="main-content">
+  <div class="main-content-full">
     
-    <!-- PESTAÑA NOTICIAS -->
+    <!-- PESTAÑA DINÁMICA NOTICIAS -->
     <div id="tab-noticias" class="tab-content active">
-      <div id="news-list-view" class="news-grid">
-        
+      <div id="news-list-view" class="news-grid"></div>
+    </div>
+
+    <!-- PESTAÑA DINÁMICA EXCLUSIVOS -->
+    <div id="tab-exclusivos" class="tab-content">
+      <div class="news-grid">
         <div class="news-card">
-          <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop&q=60" alt="Noticia 1">
+          <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&auto=format&fit=crop&q=80" alt="Exclusivo">
           <div class="news-card-body">
-            <h4>Actualizaciones en Registros Digitales 2026</h4>
-            <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...</p>
+            <h4>Informe Exclusivo: Innovación Digital 2026</h4>
+            <p>Acceso prioritario a reportes de tecnología y regulaciones vigentes...</p>
             <div class="card-actions-bar">
-              <button class="btn-card-primary" onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.', 'Nota Informativa')">Leer Nota</button>
-              <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('Actualizaciones en Registros Digitales 2026', 'Nota Informativa')"><i class="far fa-bookmark"></i> Guardar</button>
+              <button class="btn-card-primary" onclick="verNoticiaCompleta('Informe Exclusivo: Innovación Digital 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'Contenido reservado para suscriptores de nivel superior con desglose de normativas.', 'Exclusivo')">Leer Nota</button>
+              <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('Informe Exclusivo: Innovación Digital 2026', 'Exclusivo')"><i class="far fa-bookmark"></i> Guardar</button>
             </div>
           </div>
         </div>
-
-        <div class="news-card">
-          <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60" alt="Noticia 2">
-          <div class="news-card-body">
-            <h4>Nuevos Beneficios para Suscriptores Activos</h4>
-            <p>Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada...</p>
-            <div class="card-actions-bar">
-              <button class="btn-card-primary" onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.', 'Nota de Beneficios')">Leer Nota</button>
-              <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('Nuevos Beneficios para Suscriptores Activos', 'Nota de Beneficios')"><i class="far fa-bookmark"></i> Guardar</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div id="full-news-view">
-        <button onclick="volverANoticias()" style="margin-bottom: 15px; background: #333;"><i class="fas fa-arrow-left"></i> Volver</button>
-        <img id="full-news-img" src="" alt="Noticia">
-        <h2 id="full-news-title"></h2>
-        <p id="full-news-body"></p>
       </div>
     </div>
 
-    <!-- PESTAÑA BUSCADOR (BOTÓN LUPA) -->
+    <!-- PESTAÑA DINÁMICA CINE -->
+    <div id="tab-cine" class="tab-content">
+      <div class="news-grid">
+        <div class="news-card">
+          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&auto=format&fit=crop&q=80" alt="Cine">
+          <div class="news-card-body">
+            <h4>Próximos Estrenos de la Cartelera</h4>
+            <p>Revisión completa de las películas más esperadas del mes en salas locales...</p>
+            <div class="card-actions-bar">
+              <button class="btn-card-primary" onclick="verNoticiaCompleta('Próximos Estrenos de la Cartelera', 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&auto=format&fit=crop&q=80', 'Te traemos las fechas confirmadas y preventas exclusivas.', 'Cine')">Leer Nota</button>
+              <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('Próximos Estrenos de la Cartelera', 'Cine')"><i class="far fa-bookmark"></i> Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA DINÁMICA DEPORTES -->
+    <div id="tab-deportes" class="tab-content">
+      <div class="news-grid">
+        <div class="news-card">
+          <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&auto=format&fit=crop&q=80" alt="Deportes">
+          <div class="news-card-body">
+            <h4>Cobertura Especial de Torneos Locales</h4>
+            <p>Resultados, tablas de posiciones y cobertura periodística independiente...</p>
+            <div class="card-actions-bar">
+              <button class="btn-card-primary" onclick="verNoticiaCompleta('Cobertura Especial de Torneos Locales', 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800&auto=format&fit=crop&q=80', 'Resumen deportivo con fixture actualizado.', 'Deportes')">Leer Nota</button>
+              <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('Cobertura Especial de Torneos Locales', 'Deportes')"><i class="far fa-bookmark"></i> Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA DINÁMICA CULTURA -->
+    <div id="tab-cultura" class="tab-content">
+      <div class="news-grid">
+        <div class="news-card">
+          <img src="https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=600&auto=format&fit=crop&q=80" alt="Cultura">
+          <div class="news-card-body">
+            <h4>Agenda Cultural en Buenos Aires</h4>
+            <p>Muestras de arte, obras teatrales e itinerarios de fin de semana...</p>
+            <div class="card-actions-bar">
+              <button class="btn-card-primary" onclick="verNoticiaCompleta('Agenda Cultural en Buenos Aires', 'https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=800&auto=format&fit=crop&q=80', 'Guía completa de actividades gratuitas y con descuento.', 'Cultura')">Leer Nota</button>
+              <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('Agenda Cultural en Buenos Aires', 'Cultura')"><i class="far fa-bookmark"></i> Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA DINÁMICA BENEFICIOS -->
+    <div id="tab-beneficios" class="tab-content">
+      <div class="news-grid">
+        <div class="news-card">
+          <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80" alt="Beneficios">
+          <div class="news-card-body">
+            <h4>Descuentos Exclusivos en Comercios Adheridos</h4>
+            <p>Presentando tu credencial digital de suscriptor accedes a 20% OFF...</p>
+            <div class="card-actions-bar">
+              <button class="btn-card-primary" onclick="verNoticiaCompleta('Descuentos Exclusivos en Comercios Adheridos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Lista completa de locales adheridos en la red.', 'Beneficios')">Leer Nota</button>
+              <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('Descuentos Exclusivos en Comercios Adheridos', 'Beneficios')"><i class="far fa-bookmark"></i> Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA DINÁMICA SORTEOS -->
+    <div id="tab-sorteos" class="tab-content">
+      <div class="news-card" style="max-width: 500px; margin: 0 auto;">
+        <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&auto=format&fit=crop&q=80" alt="Sorteo">
+        <div class="news-card-body">
+          <h4>Sorteo de Entradas: COYOTE VS ACME</h4>
+          <p><strong>Cine:</strong> Cinemark Abasto - Sábado 22:00 hs</p>
+          <div class="card-actions-bar" style="margin-top:15px;">
+            <button class="btn-card-primary" onclick="inscribirEnSorteo('Sorteo de Entradas: COYOTE VS ACME')">Participar del Sorteo</button>
+            <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('Sorteo de Entradas: COYOTE VS ACME', 'Sorteos')"><i class="far fa-bookmark"></i> Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PESTAÑA BUSCADOR PREDICTIVO -->
     <div id="tab-buscador" class="tab-content">
       <div class="search-box-wrapper">
         <div class="search-input-group">
           <i class="fas fa-search search-icon-inside"></i>
-          <input type="text" id="predictive-search-input" placeholder="Escriba para buscar artículos, noticias o sorteos..." oninput="ejecutarBusquedaPredictiva()">
+          <input type="text" id="predictive-search-input" placeholder="Buscar artículos, publicaciones o sorteos..." oninput="ejecutarBusquedaPredictiva()">
         </div>
       </div>
-
-      <div id="search-loading-spinner" class="predictive-loader">
-        <i class="fas fa-spinner fa-spin fa-2x"></i>
-        <p style="margin-top: 10px; font-size: 14px;">Buscando contenido exclusivo...</p>
-      </div>
-
       <div id="search-results-grid" class="news-grid"></div>
     </div>
 
-    <!-- PESTAÑA CONCURSOS -->
-    <div id="tab-concursos" class="tab-content">
-      <div class="contest-card">
-        <span id="contest-badge" class="contest-status-badge status-no">Aún no estás participando</span>
-        <h3>Sorteo de Entradas: COYOTE VS ACME</h3>
-        <p><strong>Cine:</strong> Cinemark Abasto</p>
-        <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
+    <!-- SECCIÓN DRAWER: MI USUARIO -->
+    <div id="drawer-sec-mi-usuario" class="tab-content">
+      <h3 style="color:var(--primary-orange); margin-bottom:15px;">Información Completa de Usuario</h3>
+      <table class="data-table">
+        <tr><th>Nombre Completo</th><td id="usr-data-fullname"></td></tr>
+        <tr><th>DNI / Identificación</th><td id="usr-data-dni"></td></tr>
+        <tr><th>Correo Electrónico</th><td id="usr-data-email"></td></tr>
+        <tr><th>Localidad</th><td id="usr-data-localidad"></td></tr>
+        <tr><th>Teléfono Asociado</th><td id="usr-data-phone"></td></tr>
+        <tr><th>Intereses Habilitados</th><td id="usr-data-intereses"></td></tr>
+      </table>
+
+      <button onclick="toggleFormModificarDatos(true)" style="margin-top:10px;"><i class="fas fa-edit"></i> Solicitar Modificación de Datos</button>
+
+      <div id="form-modificar-datos-wrapper" style="display:none; background:#f8f9fa; border:1px solid #ddd; padding:20px; border-radius:10px; margin-top:20px;">
+        <h4 style="margin-top:0; color:var(--dark-orange);">Seleccione el dato a modificar:</h4>
+        <div class="input-group">
+          <label>Campo a Modificar</label>
+          <select id="mod-campo-select">
+            <option value="Nombre Completo">Nombre Completo</option>
+            <option value="DNI">DNI</option>
+            <option value="Correo Electrónico">Correo Electrónico</option>
+            <option value="Localidad">Localidad</option>
+            <option value="Teléfono / WhatsApp">Teléfono / WhatsApp</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Nuevo Valor Solicitado *</label>
+          <input type="text" id="mod-nuevo-valor" placeholder="Ingrese el nuevo dato correcto">
+        </div>
+        <button onclick="enviarSolicitudModificacionDatos()">Enviar Solicitud de Cambio</button>
+      </div>
+    </div>
+
+    <!-- SECCIÓN DRAWER: CONFIGURACIÓN -->
+    <div id="drawer-sec-configuracion" class="tab-content">
+      <h3 style="color:var(--primary-orange); margin-bottom:15px;">Configuración de Suscripción y Medio de Pago</h3>
+      <table class="data-table">
+        <tr><th>Modalidad Actual</th><td id="cfg-medio-pago">Mercado Pago</td></tr>
+        <tr><th>Monto de Abono</th><td id="cfg-monto">$5.000 / mes</td></tr>
+        <tr><th>Estado de Cuenta</th><td><span style="color:var(--green-success); font-weight:bold;">Suscripción Activa</span></td></tr>
+      </table>
+
+      <div style="background:#fff; border:1px solid var(--border-color); padding:20px; border-radius:10px; margin-top:20px;">
+        <h4 style="margin-top:0; color:var(--dark-orange);">Solicitar Cambio de Medio de Pago</h4>
+        <p style="font-size:13.5px; color:#555;">Si desea cambiar su débito por Mercado Pago a Transferencia Bancaria Directa (CBU/CVU), complete sus datos a continuación:</p>
         
-        <div class="card-actions-bar" style="margin-top:20px; max-width: 320px;">
-          <button id="btn-participate-action" style="width: 100%;" onclick="transferirYAbrirPestana('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
-          <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('Sorteo de Entradas: COYOTE VS ACME', 'Sorteo de Entradas')"><i class="far fa-bookmark"></i> Guardar</button>
+        <div class="input-group">
+          <label>Medio de Pago Deseado</label>
+          <select id="cfg-nuevo-medio">
+            <option value="Transferencia Bancaria Directa (CBU)">Transferencia Bancaria Directa (CBU/CVU)</option>
+            <option value="Tarjeta de Débito Alternativa">Tarjeta de Débito Alternativa</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label>Nombre del Titular de la Cuenta *</label>
+          <input type="text" id="cfg-titular-cuenta" placeholder="Ingrese nombre completo del titular">
+        </div>
+        <div class="input-group">
+          <label>DNI del Titular *</label>
+          <input type="text" id="cfg-dni-titular" placeholder="Ingrese DNI del titular">
+        </div>
+        <div class="input-group">
+          <label>CBU / CVU o Alias para Vinculación *</label>
+          <input type="text" id="cfg-cbu-alias" placeholder="Ej: 0000003100012345678901 o alias.mp">
+        </div>
+        <button onclick="enviarSolicitudCambioMedioPago()">Solicitar Cambio de Medio de Pago</button>
+      </div>
+    </div>
+
+    <!-- SECCIÓN DRAWER: GUARDADOS -->
+    <div id="drawer-sec-guardados" class="tab-content">
+      <h3 style="color:var(--primary-orange); margin-bottom:15px;">Contenidos Guardados en Favoritos</h3>
+      <div id="favoritos-container-list" class="news-grid">
+        <!-- Lista de guardados -->
+      </div>
+    </div>
+
+    <!-- SECCIÓN DRAWER: AYUDA -->
+    <div id="drawer-sec-ayuda" class="tab-content">
+      <h3 style="color:var(--primary-orange); margin-bottom:15px;">Centro de Ayuda y Contacto</h3>
+      <p style="font-size:14px; color:#444;">Canales oficiales de asistencia directa:</p>
+      <ul style="line-height:1.8; font-size:14px;">
+        <li><strong>E-mail Central:</strong> contacto@prenoticia.com</li>
+        <li><strong>WhatsApp de Atención:</strong> +54 11 2167-9936</li>
+      </ul>
+
+      <h4 style="color:var(--dark-orange); margin-top:25px;">Chat de Asistencia en Vivo</h4>
+      <div class="chat-box">
+        <div class="chat-messages" id="chat-messages-container">
+          <div class="chat-msg system">Hola, ¿en qué podemos ayudarte hoy? Escribe tu mensaje y lo derivaremos de inmediato.</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="chat-input-text" placeholder="Escriba su consulta..." onkeypress="if(event.key==='Enter') enviarMensajeChat()">
+          <button onclick="enviarMensajeChat()"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
     </div>
 
-    <!-- PESTAÑA MIS DATOS -->
-    <div id="tab-datos" class="tab-content">
-      <table class="data-table">
-        <tr><th>Nombre Completo</th><td id="data-fullname"></td></tr>
-        <tr><th>DNI / Identificación</th><td id="data-dni"></td></tr>
-        <tr><th>Correo Electrónico</th><td id="data-email"></td></tr>
-        <tr><th>Teléfono Asociado</th><td id="data-phone"></td></tr>
-        <tr><th>Monto del Abono</th><td id="data-abono"></td></tr>
-        <tr><th>Modalidad de Pago</th><td id="data-metodo-pago"></td></tr>
-        <tr><th>Próximo Vencimiento</th><td id="data-vencimiento"></td></tr>
-      </table>
+    <!-- LECTOR DE NOTICIA COMPLETA FULL WIDTH -->
+    <div id="full-news-view">
+      <button onclick="volverDesdeLectorCompleto()" style="margin-bottom: 15px; background: #333;"><i class="fas fa-arrow-left"></i> Volver</button>
+      <img id="full-news-img" src="" alt="Noticia">
+      <h2 id="full-news-title" style="color:#111;"></h2>
+      <p id="full-news-body" style="font-size:15px; line-height:1.7; color:#333;"></p>
     </div>
 
   </div>
 </div>
 
+<!-- COMPONENTES NATIVOS OCULTOS DE BLOGGER PARA ENVÍO FORMULARIO SILENCIOSO -->
+<form name="contact-form" id="contact-form" onsubmit="return false;" style="display:none !important;">
+  <input type="hidden" id="ContactForm1_contact-form-name" name="name" value="" />
+  <input type="hidden" id="ContactForm1_contact-form-email" name="email" value="" />
+  <textarea id="ContactForm1_contact-form-email-message" name="email-message"></textarea>
+  <input type="button" id="ContactForm1_contact-form-submit" value="Send" />
+</form>
+
 <script>
-// BASE DE DATOS LOCAL DE USUARIOS
+// BASE DE DATOS LOCAL DE USUARIOS CON PREFERENCIAS
 const users = {
   "luciacarpio20@gmail.com": {
     email: "luciacarpio20@gmail.com",
@@ -442,10 +466,9 @@ const users = {
     nombreCompleto: "María Lucía Carpio Peralta",
     nombreSaludo: "Maria Lucia",
     dni: "38.123.456",
+    localidad: "Liniers, CABA",
     telefono: "+54 11 2167-9936",
-    abonoMonto: "$5.000 / mes",
-    metodoPago: "Mercado Pago",
-    proximoVencimiento: "2026-08-27"
+    intereses: ["Noticias", "Cine", "Sorteos", "Beneficios"]
   },
   "mauricioacostacom@gmail.com": {
     email: "mauricioacostacom@gmail.com",
@@ -453,61 +476,25 @@ const users = {
     nombreCompleto: "Mauricio David Acosta Danaher",
     nombreSaludo: "Mauricio David",
     dni: "32.987.654",
+    localidad: "Liniers, CABA",
     telefono: "+54 11 2167-9936",
-    abonoMonto: "$5.000 / mes",
-    metodoPago: "Mercado Pago",
-    proximoVencimiento: "2026-09-01"
+    intereses: ["Noticias", "Exclusivos", "Deportes", "Cultura", "Sorteos"]
   }
 };
 
-// ARTÍCULOS BASE PARA BUSCADOR Y SECCIÓN
+const todasLasCategoriasPosibles = ["Noticias", "Exclusivos", "Cine", "Deportes", "Cultura", "Beneficios", "Sorteos"];
+
 const articulosRepositorio = [
-  { id: 1, titulo: 'Actualizaciones en Registros Digitales 2026', tipo: 'Nota Informativa', img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop&q=60', cuerpo: 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.' },
-  { id: 2, titulo: 'Nuevos Beneficios para Suscriptores Activos', tipo: 'Nota de Beneficios', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60', cuerpo: 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.' },
-  { id: 3, titulo: 'Sorteo de Entradas: COYOTE VS ACME', tipo: 'Sorteo de Entradas', img: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=60', cuerpo: 'Función exclusiva el sábado 29 de agosto a las 22:00 hs en Cinemark Abasto.' }
+  { id: 1, titulo: 'Actualizaciones en Registros Digitales 2026', tipo: 'Noticias', img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&auto=format&fit=crop&q=80', cuerpo: 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.' },
+  { id: 2, titulo: 'Informe Exclusivo: Innovación Digital 2026', tipo: 'Exclusivos', img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&auto=format&fit=crop&q=80', cuerpo: 'Contenido reservado para suscriptores de nivel superior con desglose de normativas.' },
+  { id: 3, titulo: 'Próximos Estrenos de la Cartelera', tipo: 'Cine', img: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=600&auto=format&fit=crop&q=80', cuerpo: 'Te traemos las fechas confirmadas y preventas exclusivas.' },
+  { id: 4, titulo: 'Cobertura Especial de Torneos Locales', tipo: 'Deportes', img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600&auto=format&fit=crop&q=80', cuerpo: 'Resumen deportivo con fixture actualizado.' }
 ];
 
 let currentUser = null;
-let pasoWizardActual = 1;
-let interesesSeleccionados = [];
-let searchTimeout = null;
+let listaFavoritosMemoria = [];
 
 window.addEventListener("load", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  // MODO 1: VENTANA INDEPENDIENTE DE REGISTRO WIZARD
-  if (urlParams.get("mode") === "register_wizard") {
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("dashboard-container").style.display = "none";
-    document.getElementById("registration-wizard-root").style.display = "block";
-    return;
-  }
-
-  // MODO 2: CONFIRMACIÓN Y MANEJO DE FAVORITOS
-  if (urlParams.get("action") === "confirm_favorite") {
-    const title = urlParams.get("title");
-    const type = urlParams.get("type");
-    document.body.innerHTML = `
-      <div class="wizard-card-root" style="text-align:center; margin-top:50px;">
-        <i class="fas fa-bookmark" style="font-size:3rem; color:var(--primary-orange); margin-bottom:15px;"></i>
-        <h3 style="color:var(--dark-orange);">¿Te gustaría guardar en tus favoritos este artículo?</h3>
-        <p style="font-size:16px; font-weight:700; margin:15px 0;">"${title}"</p>
-        <p style="font-size:13px; color:#666;">Categoría / Tipo: ${type}</p>
-        <div style="display:flex; gap:10px; margin-top:25px;">
-          <button onclick="confirmarGuardadoFavorito('${encodeURIComponent(title)}', '${encodeURIComponent(type)}')" style="flex:1;">Sí, Guardar en Favoritos</button>
-          <button onclick="window.close()" style="background:#6c757d;">Cancelar</button>
-        </div>
-      </div>
-    `;
-    return;
-  }
-
-  // DETECTAR REGRESO DE REGISTRO NUEVO
-  if (localStorage.getItem("show_registration_pending_msg") === "true") {
-    document.getElementById("modal-creation-success").style.display = "flex";
-    localStorage.removeItem("show_registration_pending_msg");
-  }
-
   const hoy = new Date();
   const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   document.getElementById("current-date-display").textContent = hoy.toLocaleDateString('es-AR', opciones);
@@ -519,106 +506,6 @@ window.addEventListener("load", () => {
   }
 });
 
-/* LÓGICA DEL ASISTENTE REGISTRO PASO A PASO (WIZARD) */
-function abrirFormularioRegistroPestanaAparte() {
-  window.open(window.location.pathname + "?mode=register_wizard", "_blank");
-}
-
-function capitalizarTexto(input) {
-  input.value = input.value.toLowerCase().replace(/(?:^|\s|-|\/)\S/g, a => a.toUpperCase());
-}
-
-function toggleInteres(el) {
-  const val = el.getAttribute("data-value");
-  if (el.classList.contains("selected")) {
-    el.classList.remove("selected");
-    interesesSeleccionados = interesesSeleccionados.filter(i => i !== val);
-  } else {
-    el.classList.add("selected");
-    interesesSeleccionados.push(val);
-  }
-}
-
-function irAlPasoWizard(paso) {
-  if (paso > pasoWizardActual && !validarPasoWizard(pasoWizardActual)) return;
-
-  document.querySelectorAll('.wizard-step-panel').forEach(p => p.classList.remove('active-step'));
-  document.getElementById('step-panel-' + paso).classList.add('active-step');
-
-  for (let i = 1; i <= 3; i++) {
-    const dot = document.getElementById('dot-' + i);
-    if (i === paso) dot.className = "step-dot active";
-    else if (i < paso) dot.className = "step-dot completed";
-    else dot.className = "step-dot";
-  }
-  pasoWizardActual = paso;
-}
-
-function validarPasoWizard(paso) {
-  if (paso === 1) {
-    const nom = document.getElementById('reg_nombre').value.trim();
-    const dni = document.getElementById('reg_dni').value.trim();
-    const loc = document.getElementById('reg_localidad').value.trim();
-    const email = document.getElementById('reg_email').value.trim();
-    const tel = document.getElementById('reg_telefono').value.trim();
-
-    if (!nom || !dni || !loc || !email || !tel) {
-      alert("Por favor complete todos los datos personales solicitados.");
-      return false;
-    }
-    if (email.indexOf('@') === -1) {
-      alert("Ingrese un correo electrónico válido.");
-      return false;
-    }
-  } else if (paso === 2) {
-    if (interesesSeleccionados.length === 0) {
-      alert("Por favor seleccione al menos un interés preferencial.");
-      return false;
-    }
-  }
-  return true;
-}
-
-function cancelarWizard() { window.close(); }
-
-function finalizarRegistroYRedirigirMP() {
-  const nom = document.getElementById('reg_nombre').value.trim();
-  const dni = document.getElementById('reg_dni').value.trim();
-  const loc = document.getElementById('reg_localidad').value.trim();
-  const email = document.getElementById('reg_email').value.trim();
-  const tel = document.getElementById('reg_telefono').value.trim();
-
-  document.getElementById('ContactForm1_contact-form-name').value = nom;
-  document.getElementById('ContactForm1_contact-form-email').value = email;
-
-  let cuerpoEmail = `ALTA DE NUEVO USUARIO SUSCRIPTOR ($5.000)\n`;
-  cuerpoEmail += `----------------------------------------\n`;
-  cuerpoEmail += `Nombre Completo: ${nom}\n`;
-  cuerpoEmail += `DNI: ${dni}\n`;
-  cuerpoEmail += `Localidad: ${loc}\n`;
-  cuerpoEmail += `Correo Electrónico: ${email}\n`;
-  cuerpoEmail += `Teléfono: ${tel}\n`;
-  cuerpoEmail += `Intereses Seleccionados: ${interesesSeleccionados.join(', ')}\n`;
-  cuerpoEmail += `Medio de Pago: Mercado Pago ($5.000)\n`;
-  cuerpoEmail += `Fecha de Solicitud: ${new Date().toLocaleDateString("es-AR")}`;
-
-  document.getElementById('ContactForm1_contact-form-email-message').value = cuerpoEmail;
-
-  try {
-    const btnSubmit = document.getElementById('ContactForm1_contact-form-submit');
-    if (btnSubmit) btnSubmit.click();
-  } catch(e){}
-
-  if (window.opener) {
-    try { window.opener.localStorage.setItem("show_registration_pending_msg", "true"); } catch(e){}
-  }
-
-  setTimeout(() => {
-    window.location.href = "https://mpago.la/2QtxSKp";
-  }, 1000);
-}
-
-/* LÓGICA DE LOGIN Y DASHBOARD */
 function login() {
   const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
   const passInput = document.getElementById("login-password").value.trim();
@@ -639,30 +526,118 @@ function cargarDashboard(user) {
   document.getElementById("dashboard-container").style.display = "block";
   document.getElementById("user-display-name").textContent = user.nombreSaludo;
 
-  document.getElementById("data-fullname").textContent = user.nombreCompleto;
-  document.getElementById("data-dni").textContent = user.dni;
-  document.getElementById("data-email").textContent = user.email;
-  document.getElementById("data-phone").textContent = user.telefono;
-  document.getElementById("data-abono").textContent = user.abonoMonto;
-  document.getElementById("data-metodo-pago").textContent = user.metodoPago;
-  document.getElementById("data-vencimiento").textContent = user.proximoVencimiento;
+  // Llenar Ficha Mi Usuario
+  document.getElementById("usr-data-fullname").textContent = user.nombreCompleto;
+  document.getElementById("usr-data-dni").textContent = user.dni;
+  document.getElementById("usr-data-email").textContent = user.email;
+  document.getElementById("usr-data-localidad").textContent = user.localidad;
+  document.getElementById("usr-data-phone").textContent = user.telefono;
+  document.getElementById("usr-data-intereses").textContent = user.intereses.join(", ");
+
+  construirPestañasScrollHorizontales(user.intereses);
+  renderizarArticulosNoticias();
+}
+
+function construirPestañasScrollHorizontales(interesesUsuario) {
+  const scrollBar = document.getElementById("tabs-scroll-bar");
+  scrollBar.innerHTML = "";
+
+  // 1. Pestaña de Buscador (Fija para todos)
+  const btnBuscador = document.createElement("button");
+  btnBuscador.className = "tab-btn";
+  btnBuscador.id = "btn-tab-buscador";
+  btnBuscador.innerHTML = `<i class="fas fa-search"></i> Buscador`;
+  btnBuscador.onclick = () => openTab("tab-buscador");
+  scrollBar.appendChild(btnBuscador);
+
+  // 2. Pestañas según Intereses
+  interesesUsuario.forEach((interes, idx) => {
+    const idTab = "tab-" + interes.toLowerCase();
+    const btn = document.createElement("button");
+    btn.className = "tab-btn" + (idx === 0 ? " active" : "");
+    btn.id = "btn-" + idTab;
+    btn.innerHTML = `<i class="fas fa-tag"></i> ${interes}`;
+    btn.onclick = () => openTab(idTab);
+    scrollBar.appendChild(btn);
+  });
+
+  // 3. Botón (+) para agregar más temas
+  const btnAdd = document.createElement("button");
+  btnAdd.className = "btn-add-interest-tab";
+  btnAdd.innerHTML = `<i class="fas fa-plus-circle"></i> Agregar Tema`;
+  btnAdd.onclick = abrirModalNuevosIntereses;
+  scrollBar.appendChild(btnAdd);
+
+  // Activar primera pestaña si existe
+  if (interesesUsuario.length > 0) {
+    openTab("tab-" + interesesUsuario[0].toLowerCase());
+  } else {
+    openTab("tab-buscador");
+  }
 }
 
 function openTab(tabId) {
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
-  document.getElementById(tabId).classList.add('active');
-  document.getElementById('btn-' + tabId).classList.add('active');
+  const targetTab = document.getElementById(tabId);
+  const targetBtn = document.getElementById('btn-' + tabId);
+
+  if (targetTab) targetTab.classList.add('active');
+  if (targetBtn) targetBtn.classList.add('active');
 
   if (tabId === 'tab-buscador') {
     ejecutarBusquedaPredictiva();
   }
-  volverANoticias();
+  volverDesdeLectorCompleto();
+}
+
+/* DRAWER MENU DESPLEGABLE */
+function toggleDrawer(open) {
+  const overlay = document.getElementById("drawer-overlay");
+  const content = document.getElementById("drawer-content");
+  if (open) {
+    overlay.style.display = "block";
+    content.classList.add("open");
+  } else {
+    overlay.style.display = "none";
+    content.classList.remove("open");
+  }
+}
+
+function abrirSeccionDrawer(seccionId) {
+  toggleDrawer(false);
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+  document.getElementById("drawer-sec-" + seccionId).classList.add('active');
+  volverDesdeLectorCompleto();
+}
+
+/* RENDER DE ARTÍCULOS */
+function renderizarArticulosNoticias() {
+  const grid = document.getElementById("news-list-view");
+  grid.innerHTML = "";
+  articulosRepositorio.forEach(a => {
+    const card = document.createElement("div");
+    card.className = "news-card";
+    card.innerHTML = `
+      <img src="${a.img}" alt="${a.titulo}">
+      <div class="news-card-body">
+        <h4>${a.titulo}</h4>
+        <p>${a.cuerpo}</p>
+        <div class="card-actions-bar">
+          <button class="btn-card-primary" onclick="verNoticiaCompleta('${a.titulo}', '${a.img}', '${a.cuerpo}', '${a.tipo}')">Leer Nota</button>
+          <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('${a.titulo}', '${a.tipo}')"><i class="far fa-bookmark"></i> Guardar</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
 }
 
 function verNoticiaCompleta(titulo, imgUrl, cuerpo, tipo) {
-  document.getElementById('news-list-view').style.display = 'none';
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   const fullView = document.getElementById('full-news-view');
   document.getElementById('full-news-title').textContent = titulo;
   document.getElementById('full-news-img').src = imgUrl;
@@ -670,95 +645,176 @@ function verNoticiaCompleta(titulo, imgUrl, cuerpo, tipo) {
   fullView.style.display = 'block';
 }
 
-function volverANoticias() {
+function volverDesdeLectorCompleto() {
   document.getElementById('full-news-view').style.display = 'none';
-  document.getElementById('news-list-view').style.display = 'grid';
 }
 
-/* BUSCADOR PREDICTIVO EN TIEMPO REAL */
+/* BUSCADOR PREDICTIVO */
 function ejecutarBusquedaPredictiva() {
   const query = document.getElementById("predictive-search-input").value.trim().toLowerCase();
-  const spinner = document.getElementById("search-loading-spinner");
   const resultsGrid = document.getElementById("search-results-grid");
-
-  spinner.style.display = "block";
   resultsGrid.innerHTML = "";
 
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(() => {
-    spinner.style.display = "none";
-    
-    const filtrados = articulosRepositorio.filter(a => 
-      a.titulo.toLowerCase().includes(query) || 
-      a.tipo.toLowerCase().includes(query) ||
-      a.cuerpo.toLowerCase().includes(query)
-    );
+  const filtrados = articulosRepositorio.filter(a => 
+    a.titulo.toLowerCase().includes(query) || 
+    a.tipo.toLowerCase().includes(query) ||
+    a.cuerpo.toLowerCase().includes(query)
+  );
 
-    if (filtrados.length === 0) {
-      resultsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#666; padding:20px;">No se encontraron artículos o noticias que coincidan.</p>`;
-      return;
-    }
-
-    filtrados.forEach(a => {
-      const card = document.createElement("div");
-      card.className = "news-card";
-      card.innerHTML = `
-        <img src="${a.img}" alt="${a.titulo}">
-        <div class="news-card-body">
-          <h4>${a.titulo}</h4>
-          <p>${a.cuerpo}</p>
-          <div class="card-actions-bar">
-            <button class="btn-card-primary" onclick="verNoticiaCompleta('${a.titulo}', '${a.img}', '${a.cuerpo}', '${a.tipo}')">Leer Nota</button>
-            <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('${a.titulo}', '${a.tipo}')"><i class="far fa-bookmark"></i> Guardar</button>
-          </div>
+  filtrados.forEach(a => {
+    const card = document.createElement("div");
+    card.className = "news-card";
+    card.innerHTML = `
+      <img src="${a.img}" alt="${a.titulo}">
+      <div class="news-card-body">
+        <h4>${a.titulo}</h4>
+        <p>${a.cuerpo}</p>
+        <div class="card-actions-bar">
+          <button class="btn-card-primary" onclick="verNoticiaCompleta('${a.titulo}', '${a.img}', '${a.cuerpo}', '${a.tipo}')">Leer Nota</button>
+          <button class="btn-card-save" onclick="guardarEnFavoritosDirecto('${a.titulo}', '${a.tipo}')"><i class="far fa-bookmark"></i> Guardar</button>
         </div>
+      </div>
+    `;
+    resultsGrid.appendChild(card);
+  });
+}
+
+/* GUARDADOS EN FAVORITOS */
+function guardarEnFavoritosDirecto(titulo, tipo) {
+  if (!listaFavoritosMemoria.some(f => f.titulo === titulo)) {
+    listaFavoritosMemoria.push({ titulo, tipo });
+    renderizarFavoritosEnDrawer();
+    alert("¡Artículo guardado en Favoritos!");
+  } else {
+    alert("El artículo ya se encuentra guardado.");
+  }
+}
+
+function renderizarFavoritosEnDrawer() {
+  const container = document.getElementById("favoritos-container-list");
+  container.innerHTML = "";
+  if (listaFavoritosMemoria.length === 0) {
+    container.innerHTML = `<p style="grid-column:1/-1; color:#666;">No posees contenidos guardados aún.</p>`;
+    return;
+  }
+  listaFavoritosMemoria.forEach(f => {
+    const card = document.createElement("div");
+    card.className = "news-card";
+    card.innerHTML = `
+      <div class="news-card-body">
+        <h4>${f.titulo}</h4>
+        <p><strong>Categoría:</strong> ${f.tipo}</p>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+/* MODAL DE AGREGAR INTERESES (+ ) */
+function abrirModalNuevosIntereses() {
+  const list = document.getElementById("missing-interests-list");
+  list.innerHTML = "";
+  const noInscritos = todasLasCategoriasPosibles.filter(c => !currentUser.intereses.includes(c));
+
+  if (noInscritos.length === 0) {
+    list.innerHTML = `<p style="font-size:13px; color:#666;">Ya se encuentra suscripto a todas las categorías disponibles.</p>`;
+  } else {
+    noInscritos.forEach(cat => {
+      list.innerHTML += `
+        <label style="font-size:14px; cursor:pointer;">
+          <input type="checkbox" class="chk-new-int" value="${cat}"> ${cat}
+        </label>
       `;
-      resultsGrid.appendChild(card);
     });
-  }, 400);
+  }
+  document.getElementById("modal-add-interest").style.display = "flex";
 }
 
-/* GUARDAR ARTÍCULOS EN FAVORITOS */
-function solicitarGuardarEnFavoritos(titulo, tipo) {
-  const urlModal = window.location.pathname + `?action=confirm_favorite&title=${encodeURIComponent(titulo)}&type=${encodeURIComponent(tipo)}`;
-  window.open(urlModal, "_blank", "width=500,height=450");
+function cerrarModalIntereses() {
+  document.getElementById("modal-add-interest").style.display = "none";
 }
 
-function confirmarGuardadoFavorito(titleEnc, typeEnc) {
-  const title = decodeURIComponent(titleEnc);
-  const type = decodeURIComponent(typeEnc);
-
-  // Enviar e-mail de notificación en segundo plano a Blogger
-  const form = document.createElement("form");
-  form.style.display = "none";
-  form.action = "https://www.blogger.com/contact-form.do";
-  form.method = "POST";
-
-  let msg = `SOLICITUD DE ARTÍCULO GUARDADO EN FAVORITOS\n`;
-  msg += `----------------------------------------\n`;
-  msg += `Título del Artículo: ${title}\n`;
-  msg += `Tipo / Categoría: ${type}\n`;
-  msg += `Fecha de Guardado: ${new Date().toLocaleDateString("es-AR")}`;
-
-  document.body.innerHTML = `
-    <div class="wizard-card-root" style="text-align:center; margin-top:50px;">
-      <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--green-success); margin-bottom:15px;"></i>
-      <h3 style="color:var(--green-success);">¡Artículo Guardado!</h3>
-      <p>El contenido se guardó correctamente en tus favoritos. Podrás acceder desde tu panel personal.</p>
-      <button onclick="window.close()" style="background:var(--green-success);">Cerrar Pestaña</button>
-    </div>
-  `;
+function enviarSolicitudNuevosIntereses() {
+  const seleccionados = Array.from(document.querySelectorAll('.chk-new-int:checked')).map(cb => cb.value);
+  if (seleccionados.length === 0) {
+    alert("Seleccione al menos un tema.");
+    return;
+  }
+  dispararFormularioBloggerSilencioso("SOLICITUD DE ADICIÓN DE NUEVOS TEMAS", `El usuario ${currentUser.nombreCompleto} (${currentUser.email}) solicita agregar los siguientes temas: ${seleccionados.join(", ")}`);
+  cerrarModalIntereses();
+  alert("Solicitud enviada correctamente.");
 }
 
-function cerrarModalExitoRegistro() {
-  document.getElementById("modal-creation-success").style.display = "none";
+/* FORMULARIOS SILENCIOSOS BLOGGER */
+function toggleFormModificarDatos(show) {
+  document.getElementById("form-modificar-datos-wrapper").style.display = show ? "block" : "none";
+}
+
+function enviarSolicitudModificacionDatos() {
+  const campo = document.getElementById("mod-campo-select").value;
+  const nuevoVal = document.getElementById("mod-nuevo-valor").value.trim();
+
+  if (!nuevoVal) {
+    alert("Ingrese el nuevo valor.");
+    return;
+  }
+
+  dispararFormularioBloggerSilencioso("SOLICITUD DE MODIFICACIÓN DE DATOS DE USUARIO", `Usuario: ${currentUser.nombreCompleto}\nCorreo: ${currentUser.email}\nCampo a Modificar: ${campo}\nNuevo Valor: ${nuevoVal}`);
+  alert("Solicitud enviada. Nos pondremos en contacto.");
+  toggleFormModificarDatos(false);
+}
+
+function enviarSolicitudCambioMedioPago() {
+  const nuevoMedio = document.getElementById("cfg-nuevo-medio").value;
+  const titular = document.getElementById("cfg-titular-cuenta").value.trim();
+  const dni = document.getElementById("cfg-dni-titular").value.trim();
+  const cbu = document.getElementById("cfg-cbu-alias").value.trim();
+
+  if (!titular || !dni || !cbu) {
+    alert("Complete todos los campos solicitados.");
+    return;
+  }
+
+  dispararFormularioBloggerSilencioso("SOLICITUD DE CAMBIO DE MEDIO DE PAGO", `Usuario: ${currentUser.nombreCompleto}\nCorreo: ${currentUser.email}\nNuevo Medio: ${nuevoMedio}\nTitular: ${titular}\nDNI Titular: ${dni}\nCBU/Alias: ${cbu}`);
+  alert("Solicitud enviada correctamente.");
+}
+
+function enviarMensajeChat() {
+  const txt = document.getElementById("chat-input-text").value.trim();
+  if (!txt) return;
+
+  const container = document.getElementById("chat-messages-container");
+  container.innerHTML += `<div class="chat-msg user">${txt}</div>`;
+  document.getElementById("chat-input-text").value = "";
+
+  dispararFormularioBloggerSilencioso("CONSULTA DE CHAT EN VIVO DE AYUDA", `Usuario: ${currentUser.nombreCompleto}\nCorreo: ${currentUser.email}\nMensaje: ${txt}`);
+
+  setTimeout(() => {
+    container.innerHTML += `<div class="chat-msg system">Hemos recibido tu consulta. Te responderemos a la brevedad a tu correo.</div>`;
+    container.scrollTop = container.scrollHeight;
+  }, 800);
+}
+
+function dispararFormularioBloggerSilencioso(asunto, detalle) {
+  document.getElementById("ContactForm1_contact-form-name").value = currentUser.nombreCompleto;
+  document.getElementById("ContactForm1_contact-form-email").value = currentUser.email;
+  document.getElementById("ContactForm1_contact-form-email-message").value = `${asunto}\n-------------------------------\n${detalle}`;
+
+  try {
+    document.getElementById("ContactForm1_contact-form-submit").click();
+  } catch (e) {}
+}
+
+function inscribirEnSorteo(nombreSorteo) {
+  dispararFormularioBloggerSilencioso("INSCRIPCIÓN A SORTEO", `El usuario ${currentUser.nombreCompleto} (${currentUser.email}) se ha inscripto en: ${nombreSorteo}`);
+  alert("¡Inscripción confirmada! Te hemos registrado en el sorteo.");
 }
 
 function logout() {
   currentUser = null;
   localStorage.removeItem("active_session_email");
   document.getElementById("dashboard-container").style.display = "none";
-  document.getElementById("login-container").style.display = "block";
+  document.getElementById("login-container").style.display = "flex";
 }
 </script>
 
