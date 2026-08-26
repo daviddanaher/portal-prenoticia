@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Portal de Usuarios - Prenoticia</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
@@ -23,187 +23,285 @@
     --mp-blue: #009ee3;
   }
 
-  * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+  * { box-sizing: border-box; font-family: 'Segoe UI', 'Montserrat', Roboto, Helvetica, Arial, sans-serif; }
   html, body { margin: 0; padding: 0; background-color: var(--bg-gray); color: var(--text-color); min-height: 100vh; width: 100%; overflow-x: hidden; }
 
-  /* OCULTAR ELEMENTOS NATIVOS DE BLOGGER */
+  /* OCULTAR MENSAJES NATIVOS DE BLOGGER */
   #ContactForm1_contact-form-error-message,
   #ContactForm1_contact-form-success-message,
   .contact-form-error-message,
   .contact-form-success-message,
   .widget-content .contact-form-success-message {
-    display: none !important; opacity: 0 !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important;
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
   }
 
-  /* LOGIN & REGISTRO CARD CONTAINER */
+  /* LOGIN Y REGISTRO BANNER */
   .login-container { max-width: 480px; margin: 30px auto; padding: 15px; }
-  .login-section { padding: 30px 25px; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-top: 5px solid var(--primary-orange); }
-  .login-section h2 { color: var(--primary-orange); margin-top: 0; font-size: 24px; margin-bottom: 20px; font-weight: 800; text-transform: uppercase; }
+  .login-section { padding: 30px 25px; border: 1px solid var(--border-color); border-radius: 12px; text-align: center; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .login-section h2 { color: var(--header-bg); margin-top: 0; font-size: 24px; margin-bottom: 20px; font-weight: 700; }
 
-  .promo-banner-registration {
+  .unregistered-banner {
     background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
     border: 2px dashed var(--primary-orange);
-    border-radius: 10px;
-    padding: 18px;
+    border-radius: 12px;
+    padding: 22px;
     margin-top: 25px;
     text-align: center;
   }
-  .promo-banner-registration h3 { margin: 0 0 8px 0; color: var(--dark-orange); font-size: 16px; font-weight: 800; text-transform: uppercase; }
-  .promo-banner-registration p { margin: 0 0 12px 0; font-size: 13px; line-height: 1.5; color: #444; }
-  .promo-banner-registration .badge-price { display: inline-block; background: var(--primary-orange); color: #fff; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 14px; margin-bottom: 12px; }
+  .unregistered-banner h3 { color: var(--dark-orange); margin: 0 0 10px 0; font-size: 18px; font-weight: 800; }
+  .unregistered-banner p { font-size: 13.5px; color: #444; line-height: 1.5; margin-bottom: 15px; }
+  .btn-register-trigger {
+    background: linear-gradient(135deg, var(--primary-orange) 0%, var(--dark-orange) 100%);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(245, 130, 32, 0.3);
+    transition: all 0.2s;
+  }
+  .btn-register-trigger:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(245, 130, 32, 0.4); }
 
-  /* DASHBOARD ESTILOS */
+  /* DASHBOARD HEADER & TABS */
   .dashboard-full { width: 100%; min-height: 100vh; background: #ffffff; margin: 0; padding: 0; }
   .dashboard-header { background: #ffffff; padding: 15px 20px; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-  .header-info h2 { margin: 0; font-size: 20px; color: #111; font-weight: 800; }
-  .header-info .date-text { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; font-weight: 600; }
+  .header-info h2 { margin: 0; font-size: 20px; color: #111; }
+  .header-info .date-text { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
 
   .input-group { margin-bottom: 18px; text-align: left; }
-  .input-group label { display: block; font-size: 12px; font-weight: 800; color: var(--primary-orange); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-  
-  input[type="text"], input[type="password"], input[type="email"], select, textarea { 
-    width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; transition: all 0.3s;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--primary-orange); outline: none; box-shadow: 0 0 8px rgba(245, 130, 32, 0.2); }
+  .input-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text-color); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .checkbox-group { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
 
-  button { background-color: var(--header-bg); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s; }
-  button:hover { background-color: var(--dark-orange); transform: translateY(-1px); }
+  input[type="text"], input[type="password"], input[type="email"], select, textarea { width: 100%; padding: 12px 14px; border: 1px solid #ccc; border-radius: 8px; font-size: 14.5px; outline: none; transition: border 0.2s; }
+  input:focus, select:focus, textarea:focus { border-color: var(--primary-orange); }
+
+  button { background-color: var(--header-bg); color: white; border: none; padding: 11px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; }
+  button:hover { background-color: var(--dark-orange); }
   .btn-logout { background-color: var(--red-error); }
-  .btn-logout:hover { background-color: #9a0007; }
 
-  /* ALERTAS Y MENSAJES DE ESTADO */
-  .alert-container { padding: 10px 20px 0 20px; }
-  .alert-box { width: 100%; padding: 15px; border-radius: 8px; font-weight: 600; margin-bottom: 10px; display: none; font-size: 14px; }
-  .alert-warning { background-color: #fff3e0; color: var(--warning-yellow); border: 1px solid #ffe0b2; }
-
-  /* PESTAÑAS Y BUSCADOR COMPACTO */
-  .tabs-header { display: flex; background: #ffffff; border-bottom: 3px solid var(--header-bg); padding: 10px 20px 0 20px; gap: 6px; position: sticky; top: 0; z-index: 100; align-items: center; flex-wrap: wrap; }
-  .tab-btn { padding: 12px 16px; background: #e9ecef; color: #495057; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 13px; flex: 1; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .tabs-header { display: flex; background: #ffffff; border-bottom: 3px solid var(--header-bg); padding: 10px 20px 0 20px; gap: 6px; position: sticky; top: 0; z-index: 100; overflow-x: auto; }
+  .tab-btn { padding: 12px 16px; background: #e9ecef; color: #495057; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 13.5px; flex: 1; text-align: center; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .tab-btn.active { background: var(--header-bg); color: #ffffff; }
-  .tab-btn-search { flex: 0 0 auto; min-width: 45px; background: #333; color: #fff; }
-  .tab-btn-search.active { background: var(--primary-orange); }
 
-  .main-content { padding: 20px; }
+  .main-content { padding: 20px; max-width: 1100px; margin: 0 auto; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
 
-  /* TARJETAS Y GRID DE NOTICIAS */
+  /* TARJETAS DE NOTICIAS Y BUSCADOR */
   .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .news-card { border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between; }
+  .news-card { border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; background: #fff; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
   .news-card img { width: 100%; height: 180px; object-fit: cover; }
   .news-card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
   .news-card-body h4 { margin: 0 0 10px 0; font-size: 16px; color: #111; }
-  .news-card-body p { margin: 0 0 15px 0; font-size: 13px; color: #555; line-height: 1.5; }
-  .card-actions-row { display: flex; gap: 8px; margin-top: auto; }
-  .btn-save-fav { background: #6c757d; padding: 10px; }
-  .btn-save-fav:hover { background: #495057; }
+  .news-card-body p { font-size: 13.5px; color: #555; line-height: 1.5; margin-bottom: 15px; }
+  
+  .card-actions-bar { display: flex; gap: 8px; margin-top: 10px; }
+  .btn-card-primary { flex: 1; background: var(--header-bg); color: #fff; font-size: 13px; padding: 8px 12px; border-radius: 6px; }
+  .btn-card-save { background: #f8f9fa; color: #333; border: 1px solid #ccc; font-size: 13px; padding: 8px 12px; border-radius: 6px; display: flex; align-items: center; gap: 5px; }
+  .btn-card-save:hover { background: #e2e6ea; }
+
+  /* SEARCH PANEL */
+  .search-box-wrapper { background: #fff; padding: 20px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+  .search-input-group { position: relative; display: flex; gap: 10px; }
+  .search-input-group input { padding-left: 40px; }
+  .search-input-group i.search-icon-inside { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #888; font-size: 16px; }
+  
+  .predictive-loader { display: none; text-align: center; padding: 25px 0; color: var(--primary-orange); }
+
+  /* MODALES Y OVERLAYS */
+  .custom-modal-backdrop { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 99999; align-items: center; justify-content: center; padding: 15px; }
+  .custom-modal-card { background: #ffffff; border-radius: 12px; max-width: 440px; width: 100%; padding: 25px; text-align: center; border-top: 5px solid var(--primary-orange); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+  .custom-modal-card h3 { color: var(--dark-orange); margin-top: 0; font-size: 20px; }
+  .custom-modal-card p { font-size: 14px; color: #444; line-height: 1.6; margin-bottom: 20px; }
+
+  /* ESTILOS MULTI-PASO (WIZARD REGISTRO NUEVO USUARIO) */
+  .wizard-card-root { background: #ffffff; max-width: 650px; margin: 20px auto; padding: 30px; border-radius: 14px; border: 1px solid var(--border-color); border-top: 6px solid var(--primary-orange); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+  
+  .wizard-steps-indicator { display: flex; justify-content: center; gap: 12px; margin-bottom: 25px; }
+  .step-dot { width: 36px; height: 36px; border-radius: 50%; background: #f0f0f0; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #666; transition: all 0.3s; }
+  .step-dot.active { border-color: var(--primary-orange); background: #fff3e0; color: var(--primary-orange); box-shadow: 0 0 10px rgba(245, 130, 32, 0.3); }
+  .step-dot.completed { background: var(--primary-orange); border-color: var(--primary-orange); color: #ffffff; }
+
+  .wizard-step-panel { display: none; opacity: 0; transition: opacity 0.3s; }
+  .wizard-step-panel.active-step { display: block; opacity: 1; }
+
+  /* BOTONES SELECCIÓN INTERESES */
+  .interests-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .btn-interest-tag {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #444;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-interest-tag:hover { border-color: var(--primary-orange); background: #fff8f0; }
+  .btn-interest-tag.selected { background: #fff3e0; border-color: var(--primary-orange); color: var(--dark-orange); box-shadow: 0 2px 8px rgba(245, 130, 32, 0.2); }
+
+  .nav-buttons-container { display: flex; justify-content: space-between; gap: 12px; margin-top: 25px; flex-wrap: wrap; }
+  .btn-nav-step { padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 13.5px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #ccc; background: #f8f9fa; color: #333; }
+  .btn-nav-step:hover { background: #e2e6ea; }
+  .btn-nav-next { background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange)); color: #fff; border: none; margin-left: auto; }
+  .btn-nav-next:hover { opacity: 0.95; box-shadow: 0 4px 12px rgba(245, 130, 32, 0.3); }
+  .btn-nav-cancel { background: rgba(198, 40, 40, 0.1); border-color: rgba(198, 40, 40, 0.3); color: var(--red-error); }
+  .btn-nav-cancel:hover { background: rgba(198, 40, 40, 0.2); }
+
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  .data-table th, .data-table td { padding: 12px; border: 1px solid var(--border-color); font-size: 14px; }
+  .data-table th { background: #f8f9fa; width: 40%; text-align: left; }
 
   #full-news-view { display: none; background: #ffffff; padding: 10px 0; }
   #full-news-view img { width: 100%; max-height: 380px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
-  #full-news-view h2 { font-size: 22px; margin: 10px 0; color: #111; }
-  #full-news-view p { font-size: 15px; line-height: 1.7; color: #333; }
-
-  /* REGISTRO MULTI-STEP CON DISEÑO PROFESIONAL */
-  .wizard-header { text-align: center; margin-bottom: 25px; }
-  .wizard-steps-indicator { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-  .step-dot {
-    width: 36px; height: 36px; border-radius: 50%; background: #e9ecef; border: 2px solid #ccc;
-    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #666; transition: all 0.3s;
-  }
-  .step-dot.active { border-color: var(--primary-orange); background: #fff3e0; color: var(--primary-orange); box-shadow: 0 0 10px rgba(245,130,32,0.3); }
-  .step-dot.completed { background: var(--primary-orange); border-color: var(--primary-orange); color: #ffffff; }
-
-  .wizard-step-panel { display: none; text-align: left; }
-  .wizard-step-panel.active-step { display: block; }
-
-  .interest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 20px; }
-  .btn-interest-chip {
-    padding: 10px 12px; background: #f8f9fa; border: 2px solid var(--border-color); border-radius: 8px;
-    font-size: 12px; font-weight: 700; color: #444; cursor: pointer; text-align: center; transition: all 0.2s; user-select: none;
-  }
-  .btn-interest-chip:hover { border-color: var(--primary-orange); color: var(--primary-orange); }
-  .btn-interest-chip.selected { background: #fff3e0; border-color: var(--primary-orange); color: var(--dark-orange); box-shadow: 0 2px 6px rgba(245,130,32,0.2); }
-
-  .nav-buttons-container { display: flex; justify-content: space-between; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
-  .btn-nav-step { padding: 12px 20px; border-radius: 8px; font-weight: 800; font-size: 13px; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-  .btn-nav-next { background: var(--primary-orange); color: #fff; margin-left: auto; }
-  .btn-nav-next:hover { background: var(--dark-orange); }
-  .btn-nav-cancel { background: #e9ecef; color: #495057; }
-  .btn-nav-cancel:hover { background: #ced4da; }
-
-  /* OVERLAY Y MODAL */
-  #redirect-overlay {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.95); z-index: 99999; align-items: center; justify-content: center;
-    flex-direction: column; text-align: center; padding: 20px;
-  }
-  #custom-alert {
-    display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 90%; max-width: 420px; background: #ffffff; color: var(--text-color); padding: 25px;
-    border-radius: 12px; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; border-top: 5px solid var(--primary-orange);
-  }
-
-  /* MODAL PERSISTENTE DE CREACIÓN DE CUENTA POST-PAGO */
-  #account-creating-modal {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.75); z-index: 999999; align-items: center; justify-content: center; padding: 20px;
-  }
-  .account-creating-box {
-    background: #ffffff; max-width: 450px; width: 100%; padding: 30px 25px; border-radius: 12px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.3); border-top: 6px solid var(--primary-orange);
-  }
 
   .contest-card { border: 2px solid var(--header-bg); border-radius: 10px; padding: 20px; background: #fffcf8; }
-  .contest-status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; margin-bottom: 15px; }
+  .contest-status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 15px; }
   .status-no { background: #ffebee; color: var(--red-error); }
   .status-yes { background: #e8f5e9; color: var(--green-success); }
-
-  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  .data-table th, .data-table td { padding: 12px; border: 1px solid var(--border-color); font-size: 13px; }
-  .data-table th { background: #f8f9fa; width: 40%; text-align: left; color: var(--primary-orange); font-weight: 800; }
-
-  @media (max-width: 600px) {
-    .tabs-header { padding: 8px 10px 0 10px; }
-    .tab-btn { padding: 10px 8px; font-size: 11px; }
-    .nav-buttons-container { flex-direction: column; }
-    .btn-nav-step { width: 100%; justify-content: center; }
-    .btn-nav-next { margin-left: 0; }
-  }
 </style>
 </head>
 <body>
 
-<!-- OVERLAY DE PROCESAMIENTO GENERAL -->
-<div id="redirect-overlay">
-  <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
-  <h3 id="overlay-title" style="color: var(--primary-orange); font-size: 1.2rem; margin-bottom: 10px; text-transform: uppercase; font-weight: 800;">Procesando Solicitud...</h3>
-  <p id="redirect-overlay-txt" style="font-size: 0.95rem; color: #555; max-width: 380px; line-height: 1.5;">Sincronizando datos con el servidor central...</p>
-</div>
-
-<!-- MODAL ALERTA PERSONALIZADO -->
-<div id="custom-alert">
-  <span style="font-weight: 800; font-size: 1.1rem; display: block; margin-bottom: 12px; color: var(--primary-orange); text-transform: uppercase;">Atención</span>
-  <p id="alert-text" style="font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; color: #444;"></p>
-  <button onclick="cerrarAlerta()" style="width: 100%;">Entendido</button>
-</div>
-
-<!-- MODAL PERSISTENTE POST-PAGO / NAVEGACIÓN RETORNO -->
-<div id="account-creating-modal">
-  <div class="account-creating-box">
-    <i class="fas fa-user-clock" style="font-size: 3.5rem; color: var(--primary-orange); margin-bottom: 15px;"></i>
-    <h3 style="color: #222; font-size: 1.25rem; margin: 0 0 12px 0; font-weight: 800;">¡Registro recibido con éxito!</h3>
-    <p style="font-size: 0.92rem; color: #555; line-height: 1.6; margin-bottom: 25px;">
-      Estamos creando tu cuenta y validando tu pago en Mercado Pago. Aguarda unos minutos, podrás acceder al contenido exclusivo al reingresar.
-    </p>
-    <button onclick="cerrarModalCuentaCreada()" style="width: 100%; background: #333;">Comprendido / Cerrar Ventana</button>
+<!-- CONTENEDOR VISTA MODAL ALERTA CREACIÓN DE CUENTA (SÓLO TRAS REGISTRO NUEVO) -->
+<div class="custom-modal-backdrop" id="modal-creation-success">
+  <div class="custom-modal-card">
+    <i class="fas fa-check-circle" style="font-size: 3.5rem; color: var(--green-success); margin-bottom: 15px;"></i>
+    <h3>¡Solicitud Recibida!</h3>
+    <p>Estamos creando tu cuenta y validando tu pago en Mercado Pago. Aguarda unos minutos, podrás acceder al contenido exclusivo al reingresar.</p>
+    <button type="button" onclick="cerrarModalExitoRegistro()" style="width: 100%; background: var(--green-success);">Entendido / Cerrar</button>
   </div>
 </div>
 
-<!-- VISTA 1: LOGIN Y ACCESO PARA USUARIOS NUEVOS -->
+<!-- VISTA 1: FORMULARIO WIZARD REGISTRO NUEVO USUARIO (SE ABRE EN PESTAÑA APARTE) -->
+<div id="registration-wizard-root" style="display:none; padding: 20px;">
+  <div class="wizard-card-root">
+    
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h2 style="color: var(--primary-orange); margin: 0 0 6px 0; font-size: 22px;">Suscripción al Portal Prenoticia</h2>
+      <p style="font-size: 13.5px; color: #666; margin: 0;">Acceso ilimitado a contenidos exclusivos y sorteos mensuales por $5.000 / mes</p>
+    </div>
+
+    <!-- INDICADOR DE PASOS -->
+    <div class="wizard-steps-indicator">
+      <div class="step-dot active" id="dot-1">1</div>
+      <div class="step-dot" id="dot-2">2</div>
+      <div class="step-dot" id="dot-3">3</div>
+    </div>
+
+    <form name="contact-form" id="contact-form" onsubmit="return false;">
+      
+      <!-- PASO 1: DATOS PERSONALES -->
+      <div class="wizard-step-panel active-step" id="step-panel-1">
+        <h4 style="color: var(--dark-orange); font-size: 14px; text-transform: uppercase; margin-bottom: 15px;">Paso 1: Datos Personales del Titular</h4>
+        
+        <div class="input-group">
+          <label>Nombre y Apellido Completo *</label>
+          <input type="text" id="reg_nombre" placeholder="Ingrese su nombre y apellido" oninput="capitalizarTexto(this)">
+        </div>
+
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+          <div class="input-group" style="flex:1; min-width: 220px;">
+            <label>DNI / Documento *</label>
+            <input type="text" id="reg_dni" placeholder="Ej: 38123456">
+          </div>
+          <div class="input-group" style="flex:1; min-width: 220px;">
+            <label>Localidad *</label>
+            <input type="text" id="reg_localidad" placeholder="Ej: Liniers, CABA">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+          <div class="input-group" style="flex:1; min-width: 220px;">
+            <label>Correo Electrónico *</label>
+            <input type="email" id="reg_email" placeholder="ejemplo@correo.com">
+          </div>
+          <div class="input-group" style="flex:1; min-width: 220px;">
+            <label>Teléfono Celular / WhatsApp *</label>
+            <input type="text" id="reg_telefono" placeholder="Ej: 1121679936">
+          </div>
+        </div>
+
+        <div class="nav-buttons-container">
+          <button type="button" class="btn-nav-step btn-nav-next" onclick="irAlPasoWizard(2)">Siguiente <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- PASO 2: SELECCIÓN DE INTERESES -->
+      <div class="wizard-step-panel" id="step-panel-2">
+        <h4 style="color: var(--dark-orange); font-size: 14px; text-transform: uppercase; margin-bottom: 12px;">Paso 2: Selección de Intereses Preferenciales</h4>
+        <p style="font-size: 13px; color: #666; margin-bottom: 18px;">Seleccione los temas sobre los cuales desea recibir alertas e invitaciones a sorteos:</p>
+
+        <div class="interests-grid">
+          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Deportes"><i class="fas fa-football-ball"></i> Deportes</div>
+          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Cine"><i class="fas fa-film"></i> Cine</div>
+          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Espectáculos"><i class="fas fa-theater-masks"></i> Espectáculos</div>
+          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Noticias"><i class="fas fa-newspaper"></i> Noticias</div>
+          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Sociedad"><i class="fas fa-users"></i> Sociedad</div>
+          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Sorteo Cine"><i class="fas fa-ticket-alt"></i> Entradas Cine</div>
+          <div class="btn-interest-tag" onclick="toggleInteres(this)" data-value="Sorteo Espectáculos"><i class="fas fa-star"></i> Entradas Shows</div>
+        </div>
+
+        <div class="nav-buttons-container">
+          <button type="button" class="btn-nav-step" onclick="irAlPasoWizard(1)"><i class="fas fa-arrow-left"></i> Atrás</button>
+          <button type="button" class="btn-nav-step btn-nav-cancel" onclick="cancelarWizard()"><i class="fas fa-times"></i> Cancelar</button>
+          <button type="button" class="btn-nav-step btn-nav-next" onclick="irAlPasoWizard(3)">Siguiente <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- PASO 3: MEDIO DE PAGO Y CONFIRMACIÓN -->
+      <div class="wizard-step-panel" id="step-panel-3">
+        <h4 style="color: var(--dark-orange); font-size: 14px; text-transform: uppercase; margin-bottom: 12px;">Paso 3: Confirmación y Medio de Pago</h4>
+        
+        <div style="background: #fff3e0; padding: 15px; border-radius: 8px; border: 1px solid #ffe0b2; margin-bottom: 20px; font-size: 13.5px;">
+          <strong>Abono Mensual:</strong> $5.000 / mes<br>
+          <strong>Medio de Pago Seleccionado:</strong> Mercado Pago (Digital Seguro)
+        </div>
+
+        <p style="font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 20px;">
+          Al hacer clic en <strong>"Pagar con Mercado Pago"</strong>, sus datos se registrarán en nuestro sistema y será derivado automáticamente a la plataforma oficial para completar la suscripción.
+        </p>
+
+        <button type="button" class="btn-register-trigger" style="background: linear-gradient(135deg, #009ee3, #0081b8);" onclick="finalizarRegistroYRedirigirMP()">
+          <i class="fas fa-lock"></i> Pagar $5.000 con Mercado Pago
+        </button>
+
+        <div class="nav-buttons-container">
+          <button type="button" class="btn-nav-step" onclick="irAlPasoWizard(2)"><i class="fas fa-arrow-left"></i> Atrás</button>
+          <button type="button" class="btn-nav-step btn-nav-cancel" onclick="cancelarWizard()"><i class="fas fa-times"></i> Cancelar</button>
+        </div>
+      </div>
+
+      <!-- CAMPOS OCULTOS INTEGRACIÓN NATIVA BLOGGER -->
+      <input type="hidden" id="ContactForm1_contact-form-name" name="name" value="" />
+      <input type="hidden" id="ContactForm1_contact-form-email" name="email" value="" />
+      <textarea id="ContactForm1_contact-form-email-message" name="email-message" style="display:none !important;"></textarea>
+      <input type="button" id="ContactForm1_contact-form-submit" value="Send" style="display:none !important;" />
+    </form>
+  </div>
+</div>
+
+<!-- VISTA 2: LOGIN PRINCIPAL (USUARIOS REGISTRADOS Y ACCESO A NUEVOS) -->
 <div class="login-container" id="login-container">
-  
-  <!-- FORMULARIO LOGIN USUARIO REGISTRADO -->
-  <div class="login-section" id="section-login-form">
-    <h2><i class="fas fa-user-circle"></i> Iniciar Sesión</h2>
+  <div class="login-section">
+    <h2>Iniciar Sesión</h2>
     <div class="input-group">
       <label>Correo Electrónico</label>
       <input type="email" id="login-email" placeholder="ejemplo@correo.com">
@@ -212,156 +310,44 @@
       <label>Contraseña</label>
       <input type="password" id="login-password" placeholder="Ingrese su contraseña">
     </div>
-    <button type="button" onclick="login()" style="width: 100%; margin-top: 5px;">
-      <i class="fas fa-sign-in-alt"></i> Ingresar al Portal
-    </button>
-    <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold; font-size: 13px; margin-bottom: 0;"></p>
+    <div class="checkbox-group">
+      <input type="checkbox" id="remember-me">
+      <label for="remember-me">Recordar credenciales</label>
+    </div>
+    <button type="button" onclick="login()" style="width: 100%;">Ingresar</button>
+    <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold;"></p>
 
-    <!-- BLOQUE PROMOCIONAL PARA USUARIOS NO REGISTRADOS -->
-    <div class="promo-banner-registration">
-      <h3>¿Aún no tienes cuenta?</h3>
-      <div class="badge-price">Suscripción Exclusiva: $5.000 / mes</div>
-      <p>Accede de inmediato a contenido exclusivo, noticias al instante y participación automática en sorteos especiales.</p>
-      <button type="button" onclick="iniciarProcesoRegistro()" style="width: 100%; background: var(--green-success);">
-        <i class="fas fa-user-plus"></i> Registrarme Ahora ($5.000)
+    <!-- BANNER DESTACADO PARA USUARIOS NO REGISTRADOS -->
+    <div class="unregistered-banner">
+      <h3>¿Aún no tenés una cuenta?</h3>
+      <p>Accedé a contenido exclusivo, noticias al instante y participá de sorteos exclusivos por solo <strong>$5.000 / mes</strong>.</p>
+      <button type="button" class="btn-register-trigger" onclick="abrirFormularioRegistroPestanaAparte()">
+        <i class="fas fa-user-plus"></i> Registrarme Ahora
       </button>
     </div>
   </div>
-
-  <!-- WIZARD REGISTRO NUEVO USUARIO (MULTI-PASO ESTILO PROFESIONAL) -->
-  <div class="login-section" id="section-register-wizard" style="display: none;">
-    
-    <div class="wizard-header">
-      <h2 style="margin-bottom: 10px;"><i class="fas fa-id-card"></i> Registro de Usuario</h2>
-      <p style="font-size: 12px; color: #666; margin: 0 0 15px 0;">Complete los siguientes pasos para habilitar su suscripción.</p>
-      
-      <div class="wizard-steps-indicator">
-        <div class="step-dot active" id="reg-dot-1">1</div>
-        <div class="step-dot" id="reg-dot-2">2</div>
-        <div class="step-dot" id="reg-dot-3">3</div>
-      </div>
-    </div>
-
-    <!-- PASO 1: DATOS PERSONALES -->
-    <div class="wizard-step-panel active-step" id="reg-step-1">
-      <div class="input-group">
-        <label>Nombre y Apellido *</label>
-        <input type="text" id="reg-fullname" placeholder="Ej: Juan Pérez" oninput="capitalizarInput(this)">
-      </div>
-      <div class="input-group">
-        <label>Correo Electrónico *</label>
-        <input type="email" id="reg-email" placeholder="ejemplo@correo.com">
-      </div>
-      <div class="input-group">
-        <label>Número de Celular / WhatsApp *</label>
-        <input type="text" id="reg-phone" placeholder="Ej: 11 2345 6789">
-      </div>
-      <div class="input-group">
-        <label>DNI / Documento *</label>
-        <input type="text" id="reg-dni" placeholder="Ej: 35123456">
-      </div>
-
-      <div class="nav-buttons-container">
-        <button type="button" class="btn-nav-step btn-nav-cancel" onclick="cancelarRegistro()">
-          <i class="fas fa-times"></i> Cancelar
-        </button>
-        <button type="button" class="btn-nav-step btn-nav-next" onclick="irPasoRegistro(2)">
-          Siguiente <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- PASO 2: UBICACIÓN E INTERESES -->
-    <div class="wizard-step-panel" id="reg-step-2">
-      <div class="input-group">
-        <label>Localidad / Barrio *</label>
-        <input type="text" id="reg-location" placeholder="Ej: Liniers, CABA">
-      </div>
-
-      <div class="input-group">
-        <label>Seleccione sus Temas de Interés *</label>
-        <div class="interest-grid">
-          <div class="btn-interest-chip" onclick="toggleInterest(this, 'Deportes')">Deportes</div>
-          <div class="btn-interest-chip" onclick="toggleInterest(this, 'Cine')">Cine</div>
-          <div class="btn-interest-chip" onclick="toggleInterest(this, 'Espectáculos')">Espectáculos</div>
-          <div class="btn-interest-chip" onclick="toggleInterest(this, 'Noticias')">Noticias</div>
-          <div class="btn-interest-chip" onclick="toggleInterest(this, 'Sociedad')">Sociedad</div>
-          <div class="btn-interest-chip" onclick="toggleInterest(this, 'Sorteo Entradas Cine')">Entradas Cine</div>
-          <div class="btn-interest-chip" onclick="toggleInterest(this, 'Sorteo Entradas Espectáculos')">Entradas Shows</div>
-        </div>
-      </div>
-
-      <div class="nav-buttons-container">
-        <button type="button" class="btn-nav-step btn-nav-cancel" onclick="irPasoRegistro(1)">
-          <i class="fas fa-arrow-left"></i> Atrás
-        </button>
-        <button type="button" class="btn-nav-step btn-nav-next" onclick="irPasoRegistro(3)">
-          Siguiente <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- PASO 3: CONFIRMACIÓN Y MEDIO DE PAGO -->
-    <div class="wizard-step-panel" id="reg-step-3">
-      <div style="background: #f8f9fa; border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 13px; line-height: 1.6; text-align: left;">
-        <strong style="color: var(--primary-orange); display: block; margin-bottom: 5px;">RESUMEN DE REGISTRO:</strong>
-        <strong>Monto Abono:</strong> $5.000 / mes<br>
-        <strong>Medio de Pago:</strong> Mercado Pago (Suscripción Directa)<br>
-        <strong>Titular:</strong> <span id="summary-reg-name">-</span><br>
-        <strong>Intereses:</strong> <span id="summary-reg-interests">-</span>
-      </div>
-
-      <button type="button" onclick="completarRegistroYRedirigirMP()" style="width: 100%; background: var(--mp-blue); padding: 15px; font-size: 14px;">
-        <i class="fas fa-lock"></i> Confirmar y Pagar con Mercado Pago
-      </button>
-
-      <div class="nav-buttons-container" style="margin-top: 15px;">
-        <button type="button" class="btn-nav-step btn-nav-cancel" onclick="irPasoRegistro(2)" style="width: 100%;">
-          <i class="fas fa-arrow-left"></i> Modificar Datos
-        </button>
-      </div>
-    </div>
-
-  </div>
-
 </div>
 
-<!-- VISTA 2: DASHBOARD FULL PARA USUARIOS SESIONADOS / CONFIRMADOS -->
+<!-- VISTA 3: DASHBOARD COMPLETO (USUARIOS LOGUEADOS) -->
 <div class="dashboard-full" id="dashboard-container" style="display:none;">
-  
   <div class="dashboard-header">
     <div class="header-info">
       <h2>Hola, <span id="user-display-name"></span></h2>
       <span class="date-text" id="current-date-display"></span>
     </div>
-    <button class="btn-logout" onclick="logout()">
-      <i class="fas fa-sign-out-alt"></i> Salir
-    </button>
+    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
   </div>
 
-  <div class="alert-container">
-    <div id="alert-cobro" class="alert-box alert-warning"></div>
-  </div>
-
-  <!-- NAVEGACIÓN Y PESTAÑAS (INCLUYE BOTÓN BUSCADOR COMPACTO) -->
   <div class="tabs-header">
-    <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')">
-      <i class="fas fa-newspaper"></i> Noticias
-    </button>
-    <button class="tab-btn tab-btn-search" id="btn-tab-search" onclick="openTab('tab-search')" title="Buscador de Contenido Exclusivo">
-      <i class="fas fa-search"></i>
-    </button>
-    <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')">
-      <i class="fas fa-ticket-alt"></i> Concursos
-    </button>
-    <button class="tab-btn" id="btn-tab-datos" onclick="openTab('tab-datos')">
-      <i class="fas fa-id-card"></i> Mis Datos
-    </button>
+    <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')"><i class="fas fa-newspaper"></i> Noticias</button>
+    <button class="tab-btn" id="btn-tab-buscador" onclick="openTab('tab-buscador')"><i class="fas fa-search"></i> Buscador</button>
+    <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')"><i class="fas fa-ticket-alt"></i> Concursos</button>
+    <button class="tab-btn" id="btn-tab-datos" onclick="openTab('tab-datos')"><i class="fas fa-user-cog"></i> Mis Datos</button>
   </div>
 
   <div class="main-content">
     
-    <!-- PESTAÑA: NOTICIAS GENERALES -->
+    <!-- PESTAÑA NOTICIAS -->
     <div id="tab-noticias" class="tab-content active">
       <div id="news-list-view" class="news-grid">
         
@@ -370,9 +356,9 @@
           <div class="news-card-body">
             <h4>Actualizaciones en Registros Digitales 2026</h4>
             <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...</p>
-            <div class="card-actions-row">
-              <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.')" style="flex-grow:1;">Ver más</button>
-              <button class="btn-save-fav" onclick="solicitarGuardarFavorito('Nota Periodística', 'Actualizaciones en Registros Digitales 2026', 'El proceso de modernización abarca la integración de firmas digitales y expedientes.')" title="Guardar en Favoritos"><i class="fas fa-bookmark"></i></button>
+            <div class="card-actions-bar">
+              <button class="btn-card-primary" onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.', 'Nota Informativa')">Leer Nota</button>
+              <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('Actualizaciones en Registros Digitales 2026', 'Nota Informativa')"><i class="far fa-bookmark"></i> Guardar</button>
             </div>
           </div>
         </div>
@@ -382,9 +368,9 @@
           <div class="news-card-body">
             <h4>Nuevos Beneficios para Suscriptores Activos</h4>
             <p>Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada...</p>
-            <div class="card-actions-row">
-              <button onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.')" style="flex-grow:1;">Ver más</button>
-              <button class="btn-save-fav" onclick="solicitarGuardarFavorito('Nota Periodística', 'Nuevos Beneficios para Suscriptores Activos', 'Sorteos mensuales de entradas para cine, teatro y espectáculos.')" title="Guardar en Favoritos"><i class="fas fa-bookmark"></i></button>
+            <div class="card-actions-bar">
+              <button class="btn-card-primary" onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.', 'Nota de Beneficios')">Leer Nota</button>
+              <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('Nuevos Beneficios para Suscriptores Activos', 'Nota de Beneficios')"><i class="far fa-bookmark"></i> Guardar</button>
             </div>
           </div>
         </div>
@@ -392,47 +378,46 @@
       </div>
 
       <div id="full-news-view">
-        <button onclick="volverANoticias()" style="margin-bottom: 15px; background: #333;"><i class="fas fa-arrow-left"></i> Volver a Noticias</button>
+        <button onclick="volverANoticias()" style="margin-bottom: 15px; background: #333;"><i class="fas fa-arrow-left"></i> Volver</button>
         <img id="full-news-img" src="" alt="Noticia">
         <h2 id="full-news-title"></h2>
         <p id="full-news-body"></p>
       </div>
     </div>
 
-    <!-- PESTAÑA: BUSCADOR DE CONTENIDO EXCLUSIVO PREDICTIVO -->
-    <div id="tab-search" class="tab-content">
-      <div style="max-width: 600px; margin: 0 auto 25px auto;">
-        <label style="font-size: 13px; font-weight: 800; color: var(--primary-orange); display: block; margin-bottom: 8px;">BUSCADOR PREDICTIVO DE CONTENIDO EXCLUSIVO</label>
-        <div style="position: relative;">
-          <input type="text" id="search-input-field" placeholder="Escriba para buscar (ej: Cine, Registro, Beneficios...)" oninput="ejecutarBusquedaPredictiva()">
-          <i class="fas fa-search" style="position: absolute; right: 15px; top: 14px; color: #888;"></i>
+    <!-- PESTAÑA BUSCADOR (BOTÓN LUPA) -->
+    <div id="tab-buscador" class="tab-content">
+      <div class="search-box-wrapper">
+        <div class="search-input-group">
+          <i class="fas fa-search search-icon-inside"></i>
+          <input type="text" id="predictive-search-input" placeholder="Escriba para buscar artículos, noticias o sorteos..." oninput="ejecutarBusquedaPredictiva()">
         </div>
       </div>
 
-      <div id="search-loading" style="display: none; text-align: center; padding: 20px;">
-        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-orange);"></i>
-        <p style="font-size: 13px; color: #666; margin-top: 10px;">Buscando en notas y artículos guardados...</p>
+      <div id="search-loading-spinner" class="predictive-loader">
+        <i class="fas fa-spinner fa-spin fa-2x"></i>
+        <p style="margin-top: 10px; font-size: 14px;">Buscando contenido exclusivo...</p>
       </div>
 
       <div id="search-results-grid" class="news-grid"></div>
     </div>
 
-    <!-- PESTAÑA: CONCURSOS -->
+    <!-- PESTAÑA CONCURSOS -->
     <div id="tab-concursos" class="tab-content">
       <div class="contest-card">
         <span id="contest-badge" class="contest-status-badge status-no">Aún no estás participando</span>
-        <h3 style="margin-top: 0;">Sorteo de Entradas: COYOTE VS ACME</h3>
+        <h3>Sorteo de Entradas: COYOTE VS ACME</h3>
         <p><strong>Cine:</strong> Cinemark Abasto</p>
         <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
         
-        <div style="margin-top:20px; display: flex; gap: 10px; flex-wrap: wrap;">
-          <button id="btn-participate-action" onclick="transferirYAbrirPestana('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
-          <button class="btn-save-fav" onclick="solicitarGuardarFavorito('Sorteo de Entradas', 'Sorteo de Entradas: COYOTE VS ACME', 'Cinemark Abasto - Sábado 29 de agosto a las 22:00 hs')" title="Guardar Sorteo en Favoritos"><i class="fas fa-bookmark"></i> Guardar Sorteo</button>
+        <div class="card-actions-bar" style="margin-top:20px; max-width: 320px;">
+          <button id="btn-participate-action" style="width: 100%;" onclick="transferirYAbrirPestana('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
+          <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('Sorteo de Entradas: COYOTE VS ACME', 'Sorteo de Entradas')"><i class="far fa-bookmark"></i> Guardar</button>
         </div>
       </div>
     </div>
 
-    <!-- PESTAÑA: MIS DATOS -->
+    <!-- PESTAÑA MIS DATOS -->
     <div id="tab-datos" class="tab-content">
       <table class="data-table">
         <tr><th>Nombre Completo</th><td id="data-fullname"></td></tr>
@@ -443,48 +428,13 @@
         <tr><th>Modalidad de Pago</th><td id="data-metodo-pago"></td></tr>
         <tr><th>Próximo Vencimiento</th><td id="data-vencimiento"></td></tr>
       </table>
-
-      <button onclick="mostrarModificacion()"><i class="fas fa-edit"></i> Solicitar Modificación de Datos</button>
-
-      <div id="modification-section" style="display:none; background: #fdfdfd; border: 2px solid var(--header-bg); border-radius: 8px; padding: 20px; margin-top: 20px;">
-        <h3 style="margin-top:0; color: var(--primary-orange);">Modificar Datos Personales</h3>
-        <div class="input-group">
-          <label>Campo a modificar</label>
-          <select id="mod-field">
-            <option value="Nombre Completo">Nombre Completo</option>
-            <option value="DNI / Identificación">DNI / Identificación</option>
-            <option value="Correo Electrónico">Correo Electrónico</option>
-            <option value="Teléfono Asociado">Teléfono Asociado</option>
-            <option value="Modalidad de Pago">Modalidad de Pago</option>
-            <option value="Otro">Otro dato / Consulta</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label>Nuevo Valor / Detalle del cambio</label>
-          <textarea id="mod-value" rows="3" placeholder="Escriba los datos requeridos..."></textarea>
-        </div>
-
-        <div style="display:flex; gap:10px;">
-          <button onclick="procesarModificacionYEnviar()">Procesar Modificación</button>
-          <button onclick="ocultarModificacion()" style="background:#6c757d;">Cancelar</button>
-        </div>
-      </div>
     </div>
 
   </div>
 </div>
 
-<!-- CAMPOS OCULTOS REQUERIDOS PARA EL ENVÍO NATIVO DE BLOGGER -->
-<form name="contact-form" id="contact-form" onsubmit="return false;" style="display:none !important;">
-  <input type="hidden" id="ContactForm1_contact-form-name" name="name" value="" />
-  <input type="hidden" id="ContactForm1_contact-form-email" name="email" value="" />
-  <textarea id="ContactForm1_contact-form-email-message" name="email-message"></textarea>
-  <input type="button" id="ContactForm1_contact-form-submit" value="Send" />
-</form>
-
 <script>
-// BASE DE DATOS DE USUARIOS REGISTRADOS
+// BASE DE DATOS LOCAL DE USUARIOS
 const users = {
   "luciacarpio20@gmail.com": {
     email: "luciacarpio20@gmail.com",
@@ -495,8 +445,7 @@ const users = {
     telefono: "+54 11 2167-9936",
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
-    proximoVencimiento: "2026-08-27",
-    estadoCuenta: "activo"
+    proximoVencimiento: "2026-08-27"
   },
   "mauricioacostacom@gmail.com": {
     email: "mauricioacostacom@gmail.com",
@@ -507,51 +456,61 @@ const users = {
     telefono: "+54 11 2167-9936",
     abonoMonto: "$5.000 / mes",
     metodoPago: "Mercado Pago",
-    proximoVencimiento: "2026-09-01",
-    estadoCuenta: "activo"
+    proximoVencimiento: "2026-09-01"
   }
 };
 
-// BASE DE DATOS DE CONTENIDO EXCLUSIVO
-const articulosGuardadosBD = [
-  {
-    tipo: "Nota Periodística",
-    titulo: "Actualizaciones en Registros Digitales 2026",
-    resumen: "Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...",
-    cuerpo: "El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.",
-    img: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    tipo: "Nota Periodística",
-    titulo: "Nuevos Beneficios para Suscriptores Activos",
-    resumen: "Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada...",
-    cuerpo: "Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.",
-    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80"
-  },
-  {
-    tipo: "Sorteo de Entradas",
-    titulo: "Sorteo de Entradas: COYOTE VS ACME",
-    resumen: "Cine: Cinemark Abasto. Función: Sábado 29 de agosto a las 22:00 hs.",
-    cuerpo: "Participa por un par de entradas exclusivas para la función privada de preestreno en Cinemark Abasto.",
-    img: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&auto=format&fit=crop&q=80"
-  }
+// ARTÍCULOS BASE PARA BUSCADOR Y SECCIÓN
+const articulosRepositorio = [
+  { id: 1, titulo: 'Actualizaciones en Registros Digitales 2026', tipo: 'Nota Informativa', img: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop&q=60', cuerpo: 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.' },
+  { id: 2, titulo: 'Nuevos Beneficios para Suscriptores Activos', tipo: 'Nota de Beneficios', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60', cuerpo: 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.' },
+  { id: 3, titulo: 'Sorteo de Entradas: COYOTE VS ACME', tipo: 'Sorteo de Entradas', img: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=500&auto=format&fit=crop&q=60', cuerpo: 'Función exclusiva el sábado 29 de agosto a las 22:00 hs en Cinemark Abasto.' }
 ];
 
 let currentUser = null;
-let pasoRegistroActual = 1;
+let pasoWizardActual = 1;
 let interesesSeleccionados = [];
+let searchTimeout = null;
 
-// INICIALIZACIÓN
 window.addEventListener("load", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // MODO 1: VENTANA INDEPENDIENTE DE REGISTRO WIZARD
+  if (urlParams.get("mode") === "register_wizard") {
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("dashboard-container").style.display = "none";
+    document.getElementById("registration-wizard-root").style.display = "block";
+    return;
+  }
+
+  // MODO 2: CONFIRMACIÓN Y MANEJO DE FAVORITOS
+  if (urlParams.get("action") === "confirm_favorite") {
+    const title = urlParams.get("title");
+    const type = urlParams.get("type");
+    document.body.innerHTML = `
+      <div class="wizard-card-root" style="text-align:center; margin-top:50px;">
+        <i class="fas fa-bookmark" style="font-size:3rem; color:var(--primary-orange); margin-bottom:15px;"></i>
+        <h3 style="color:var(--dark-orange);">¿Te gustaría guardar en tus favoritos este artículo?</h3>
+        <p style="font-size:16px; font-weight:700; margin:15px 0;">"${title}"</p>
+        <p style="font-size:13px; color:#666;">Categoría / Tipo: ${type}</p>
+        <div style="display:flex; gap:10px; margin-top:25px;">
+          <button onclick="confirmarGuardadoFavorito('${encodeURIComponent(title)}', '${encodeURIComponent(type)}')" style="flex:1;">Sí, Guardar en Favoritos</button>
+          <button onclick="window.close()" style="background:#6c757d;">Cancelar</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // DETECTAR REGRESO DE REGISTRO NUEVO
+  if (localStorage.getItem("show_registration_pending_msg") === "true") {
+    document.getElementById("modal-creation-success").style.display = "flex";
+    localStorage.removeItem("show_registration_pending_msg");
+  }
+
   const hoy = new Date();
   const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   document.getElementById("current-date-display").textContent = hoy.toLocaleDateString('es-AR', opciones);
-
-  // EVALUAR RETORNO DE MERCADO PAGO / PROCESAMIENTO
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get("status") === "approved" || urlParams.get("registration") === "pending") {
-    document.getElementById("account-creating-modal").style.display = "flex";
-  }
 
   const activeUserEmail = localStorage.getItem("active_session_email");
   if (activeUserEmail && users[activeUserEmail]) {
@@ -560,7 +519,106 @@ window.addEventListener("load", () => {
   }
 });
 
-// FUNCIONALIDAD LOGIN
+/* LÓGICA DEL ASISTENTE REGISTRO PASO A PASO (WIZARD) */
+function abrirFormularioRegistroPestanaAparte() {
+  window.open(window.location.pathname + "?mode=register_wizard", "_blank");
+}
+
+function capitalizarTexto(input) {
+  input.value = input.value.toLowerCase().replace(/(?:^|\s|-|\/)\S/g, a => a.toUpperCase());
+}
+
+function toggleInteres(el) {
+  const val = el.getAttribute("data-value");
+  if (el.classList.contains("selected")) {
+    el.classList.remove("selected");
+    interesesSeleccionados = interesesSeleccionados.filter(i => i !== val);
+  } else {
+    el.classList.add("selected");
+    interesesSeleccionados.push(val);
+  }
+}
+
+function irAlPasoWizard(paso) {
+  if (paso > pasoWizardActual && !validarPasoWizard(pasoWizardActual)) return;
+
+  document.querySelectorAll('.wizard-step-panel').forEach(p => p.classList.remove('active-step'));
+  document.getElementById('step-panel-' + paso).classList.add('active-step');
+
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('dot-' + i);
+    if (i === paso) dot.className = "step-dot active";
+    else if (i < paso) dot.className = "step-dot completed";
+    else dot.className = "step-dot";
+  }
+  pasoWizardActual = paso;
+}
+
+function validarPasoWizard(paso) {
+  if (paso === 1) {
+    const nom = document.getElementById('reg_nombre').value.trim();
+    const dni = document.getElementById('reg_dni').value.trim();
+    const loc = document.getElementById('reg_localidad').value.trim();
+    const email = document.getElementById('reg_email').value.trim();
+    const tel = document.getElementById('reg_telefono').value.trim();
+
+    if (!nom || !dni || !loc || !email || !tel) {
+      alert("Por favor complete todos los datos personales solicitados.");
+      return false;
+    }
+    if (email.indexOf('@') === -1) {
+      alert("Ingrese un correo electrónico válido.");
+      return false;
+    }
+  } else if (paso === 2) {
+    if (interesesSeleccionados.length === 0) {
+      alert("Por favor seleccione al menos un interés preferencial.");
+      return false;
+    }
+  }
+  return true;
+}
+
+function cancelarWizard() { window.close(); }
+
+function finalizarRegistroYRedirigirMP() {
+  const nom = document.getElementById('reg_nombre').value.trim();
+  const dni = document.getElementById('reg_dni').value.trim();
+  const loc = document.getElementById('reg_localidad').value.trim();
+  const email = document.getElementById('reg_email').value.trim();
+  const tel = document.getElementById('reg_telefono').value.trim();
+
+  document.getElementById('ContactForm1_contact-form-name').value = nom;
+  document.getElementById('ContactForm1_contact-form-email').value = email;
+
+  let cuerpoEmail = `ALTA DE NUEVO USUARIO SUSCRIPTOR ($5.000)\n`;
+  cuerpoEmail += `----------------------------------------\n`;
+  cuerpoEmail += `Nombre Completo: ${nom}\n`;
+  cuerpoEmail += `DNI: ${dni}\n`;
+  cuerpoEmail += `Localidad: ${loc}\n`;
+  cuerpoEmail += `Correo Electrónico: ${email}\n`;
+  cuerpoEmail += `Teléfono: ${tel}\n`;
+  cuerpoEmail += `Intereses Seleccionados: ${interesesSeleccionados.join(', ')}\n`;
+  cuerpoEmail += `Medio de Pago: Mercado Pago ($5.000)\n`;
+  cuerpoEmail += `Fecha de Solicitud: ${new Date().toLocaleDateString("es-AR")}`;
+
+  document.getElementById('ContactForm1_contact-form-email-message').value = cuerpoEmail;
+
+  try {
+    const btnSubmit = document.getElementById('ContactForm1_contact-form-submit');
+    if (btnSubmit) btnSubmit.click();
+  } catch(e){}
+
+  if (window.opener) {
+    try { window.opener.localStorage.setItem("show_registration_pending_msg", "true"); } catch(e){}
+  }
+
+  setTimeout(() => {
+    window.location.href = "https://mpago.la/2QtxSKp";
+  }, 1000);
+}
+
+/* LÓGICA DE LOGIN Y DASHBOARD */
 function login() {
   const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
   const passInput = document.getElementById("login-password").value.trim();
@@ -572,7 +630,7 @@ function login() {
     localStorage.setItem("active_session_email", emailInput);
     cargarDashboard(currentUser);
   } else {
-    errorEl.textContent = "Credenciales incorrectas. Verifique e intente nuevamente.";
+    errorEl.textContent = "Credenciales incorrectas.";
   }
 }
 
@@ -588,152 +646,22 @@ function cargarDashboard(user) {
   document.getElementById("data-abono").textContent = user.abonoMonto;
   document.getElementById("data-metodo-pago").textContent = user.metodoPago;
   document.getElementById("data-vencimiento").textContent = user.proximoVencimiento;
-
-  const participando = localStorage.getItem("contest_participating_" + user.email);
-  actualizarEstadoConcurso(participando === "true");
 }
 
-// FUNCIONALIDAD DE WIZARD DE REGISTRO MULTI-PASO
-function iniciarProcesoRegistro() {
-  document.getElementById("section-login-form").style.display = "none";
-  document.getElementById("section-register-wizard").style.display = "block";
-  irPasoRegistro(1);
-}
-
-function cancelarRegistro() {
-  document.getElementById("section-register-wizard").style.display = "none";
-  document.getElementById("section-login-form").style.display = "block";
-}
-
-function capitalizarInput(input) {
-  let start = input.selectionStart;
-  let end = input.selectionEnd;
-  input.value = input.value.toLowerCase().replace(/(?:^|\s|-|\/)\S/g, function(a) { return a.toUpperCase(); });
-  try { input.setSelectionRange(start, end); } catch(e){}
-}
-
-function toggleInterest(el, interes) {
-  if (el.classList.contains("selected")) {
-    el.classList.remove("selected");
-    interesesSeleccionados = interesesSeleccionados.filter(i => i !== interes);
-  } else {
-    el.classList.add("selected");
-    interesesSeleccionados.push(interes);
-  }
-}
-
-function irPasoRegistro(paso) {
-  if (paso > pasoRegistroActual) {
-    if (!validarPasoRegistro(pasoRegistroActual)) return;
-  }
-
-  document.querySelectorAll('#section-register-wizard .wizard-step-panel').forEach(p => p.classList.remove('active-step'));
-  document.getElementById('reg-step-' + paso).classList.add('active-step');
-
-  for (let i = 1; i <= 3; i++) {
-    const dot = document.getElementById('reg-dot-' + i);
-    if (i === paso) dot.className = "step-dot active";
-    else if (i < paso) dot.className = "step-dot completed";
-    else dot.className = "step-dot";
-  }
-
-  pasoRegistroActual = paso;
-
-  if (paso === 3) {
-    document.getElementById('summary-reg-name').textContent = document.getElementById('reg-fullname').value.trim();
-    document.getElementById('summary-reg-interests').textContent = interesesSeleccionados.length > 0 ? interesesSeleccionados.join(', ') : 'Ninguno seleccionado';
-  }
-}
-
-function validarPasoRegistro(paso) {
-  if (paso === 1) {
-    const nombre = document.getElementById('reg-fullname').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const phone = document.getElementById('reg-phone').value.trim();
-    const dni = document.getElementById('reg-dni').value.trim();
-
-    if (!nombre || !email || !phone || !dni) {
-      mostrarAlerta("Por favor complete todos los campos requeridos (Nombre, Email, Teléfono y DNI).");
-      return false;
-    }
-    if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
-      mostrarAlerta("Ingrese un correo electrónico válido.");
-      return false;
-    }
-  } else if (paso === 2) {
-    const loc = document.getElementById('reg-location').value.trim();
-    if (!loc) {
-      mostrarAlerta("Por favor ingrese su Localidad / Barrio.");
-      return false;
-    }
-    if (interesesSeleccionados.length === 0) {
-      mostrarAlerta("Seleccione al menos un tema de interés para personalizar sus beneficios.");
-      return false;
-    }
-  }
-  return true;
-}
-
-// COMPLETAR REGISTRO, ENVIAR EMAIL SILENCIOSO Y REDIRIGIR A MERCADO PAGO
-function completarRegistroYRedirigirMP() {
-  const overlay = document.getElementById("redirect-overlay");
-  document.getElementById("overlay-title").innerText = "Procesando Registro...";
-  document.getElementById("redirect-overlay-txt").innerText = "Registrando datos del usuario y abriendo la pasarela de pago...";
-  overlay.style.display = "flex";
-
-  const datosRegistro = {
-    usuario: document.getElementById('reg-fullname').value.trim(),
-    email: document.getElementById('reg-email').value.trim(),
-    telefono: document.getElementById('reg-phone').value.trim(),
-    dni: document.getElementById('reg-dni').value.trim(),
-    localidad: document.getElementById('reg-location').value.trim(),
-    intereses: interesesSeleccionados.join(', '),
-    abono: "$5.000 / mes",
-    metodoPago: "Mercado Pago",
-    tipoAccion: "ALTA_NUEVO_USUARIO_PENDIENTE_PAGO"
-  };
-
-  // Preparar envío de notificación nativa por Blogger
-  document.getElementById('ContactForm1_contact-form-name').value = datosRegistro.usuario;
-  document.getElementById('ContactForm1_contact-form-email').value = datosRegistro.email;
-  
-  let msg = `NUEVA SOLICITUD DE REGISTRO DE USUARIO ($5.000)\n\n`;
-  msg += `Nombre: ${datosRegistro.usuario}\n`;
-  msg += `DNI: ${datosRegistro.dni}\n`;
-  msg += `Email: ${datosRegistro.email}\n`;
-  msg += `Teléfono: ${datosRegistro.telefono}\n`;
-  msg += `Localidad: ${datosRegistro.localidad}\n`;
-  msg += `Intereses: ${datosRegistro.intereses}\n`;
-  msg += `Estado: Pendiente Acreditación Mercado Pago`;
-
-  document.getElementById('ContactForm1_contact-form-email-message').value = msg;
-
-  try {
-    const btnBlogger = document.getElementById('ContactForm1_contact-form-submit');
-    if (btnBlogger) btnBlogger.click();
-  } catch(e){}
-
-  setTimeout(() => {
-    // Redirección oficial a Mercado Pago
-    window.location.href = "https://mpago.la/2QtxSKp";
-  }, 1500);
-}
-
-// GESTIÓN DE PESTAÑAS Y NOTICIAS
 function openTab(tabId) {
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 
   document.getElementById(tabId).classList.add('active');
-  if(tabId === 'tab-noticias') document.getElementById('btn-tab-noticias').classList.add('active');
-  if(tabId === 'tab-search') document.getElementById('btn-tab-search').classList.add('active');
-  if(tabId === 'tab-concursos') document.getElementById('btn-tab-concursos').classList.add('active');
-  if(tabId === 'tab-datos') document.getElementById('btn-tab-datos').classList.add('active');
+  document.getElementById('btn-' + tabId).classList.add('active');
 
+  if (tabId === 'tab-buscador') {
+    ejecutarBusquedaPredictiva();
+  }
   volverANoticias();
 }
 
-function verNoticiaCompleta(titulo, imgUrl, cuerpo) {
+function verNoticiaCompleta(titulo, imgUrl, cuerpo, tipo) {
   document.getElementById('news-list-view').style.display = 'none';
   const fullView = document.getElementById('full-news-view');
   document.getElementById('full-news-title').textContent = titulo;
@@ -747,133 +675,83 @@ function volverANoticias() {
   document.getElementById('news-list-view').style.display = 'grid';
 }
 
-// BUSCADOR PREDICTIVO EN PESTAÑA DEDICADA
-let searchTimer = null;
+/* BUSCADOR PREDICTIVO EN TIEMPO REAL */
 function ejecutarBusquedaPredictiva() {
-  const query = document.getElementById("search-input-field").value.trim().toLowerCase();
-  const grid = document.getElementById("search-results-grid");
-  const loader = document.getElementById("search-loading");
+  const query = document.getElementById("predictive-search-input").value.trim().toLowerCase();
+  const spinner = document.getElementById("search-loading-spinner");
+  const resultsGrid = document.getElementById("search-results-grid");
 
-  grid.innerHTML = "";
-  if (!query) {
-    loader.style.display = "none";
-    return;
-  }
+  spinner.style.display = "block";
+  resultsGrid.innerHTML = "";
 
-  loader.style.display = "block";
-  clearTimeout(searchTimer);
-
-  searchTimer = setTimeout(() => {
-    loader.style.display = "none";
-    const resultados = articulosGuardadosBD.filter(item => 
-      item.titulo.toLowerCase().includes(query) || 
-      item.resumen.toLowerCase().includes(query) ||
-      item.tipo.toLowerCase().includes(query)
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    spinner.style.display = "none";
+    
+    const filtrados = articulosRepositorio.filter(a => 
+      a.titulo.toLowerCase().includes(query) || 
+      a.tipo.toLowerCase().includes(query) ||
+      a.cuerpo.toLowerCase().includes(query)
     );
 
-    if (resultados.length === 0) {
-      grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #777;">No se encontraron artículos o sorteos guardados que coincidan con "${query}".</p>`;
+    if (filtrados.length === 0) {
+      resultsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#666; padding:20px;">No se encontraron artículos o noticias que coincidan.</p>`;
       return;
     }
 
-    resultados.forEach(item => {
+    filtrados.forEach(a => {
       const card = document.createElement("div");
       card.className = "news-card";
       card.innerHTML = `
-        <img src="${item.img}" alt="${item.titulo}">
+        <img src="${a.img}" alt="${a.titulo}">
         <div class="news-card-body">
-          <span style="font-size: 11px; font-weight: 800; color: var(--primary-orange); text-transform: uppercase;">${item.tipo}</span>
-          <h4 style="margin: 5px 0 10px 0;">${item.titulo}</h4>
-          <p>${item.resumen}</p>
-          <div class="card-actions-row">
-            <button onclick="verNoticiaCompleta('${item.titulo}', '${item.img}', '${item.cuerpo}')" style="flex-grow:1;">Ver Contenido</button>
-            <button class="btn-save-fav" onclick="solicitarGuardarFavorito('${item.tipo}', '${item.titulo}', '${item.resumen}')" title="Guardar en Favoritos"><i class="fas fa-bookmark"></i></button>
+          <h4>${a.titulo}</h4>
+          <p>${a.cuerpo}</p>
+          <div class="card-actions-bar">
+            <button class="btn-card-primary" onclick="verNoticiaCompleta('${a.titulo}', '${a.img}', '${a.cuerpo}', '${a.tipo}')">Leer Nota</button>
+            <button class="btn-card-save" onclick="solicitarGuardarEnFavoritos('${a.titulo}', '${a.tipo}')"><i class="far fa-bookmark"></i> Guardar</button>
           </div>
         </div>
       `;
-      grid.appendChild(card);
+      resultsGrid.appendChild(card);
     });
   }, 400);
 }
 
-// FUNCIONALIDAD SOLICITAR GUARDAR EN FAVORITOS EN VENTANA PARTE
-function solicitarGuardarFavorito(tipo, titulo, informacion) {
-  const usuarioActual = currentUser ? currentUser.nombreCompleto : "Usuario Suscripto";
-  const emailActual = currentUser ? currentUser.email : "sin-email@portal.com";
-
-  const paqueteFavorito = {
-    usuario: usuarioActual,
-    email: emailActual,
-    tipoAccion: "GUARDAR_ARTICULO_FAVORITO",
-    tipoContenido: tipo,
-    tituloArticulo: titulo,
-    detalleArticulo: informacion,
-    fecha: new Date().toLocaleDateString("es-AR")
-  };
-
-  const payloadEncoded = encodeURIComponent(JSON.stringify(paqueteFavorito));
-  const urlFinal = `https://www.prenoticia.com/p/mi-cuenta.html?data=${payloadEncoded}`;
-
-  window.open(urlFinal, "_blank");
+/* GUARDAR ARTÍCULOS EN FAVORITOS */
+function solicitarGuardarEnFavoritos(titulo, tipo) {
+  const urlModal = window.location.pathname + `?action=confirm_favorite&title=${encodeURIComponent(titulo)}&type=${encodeURIComponent(tipo)}`;
+  window.open(urlModal, "_blank", "width=500,height=450");
 }
 
-// PROCESAMIENTO DE MODIFICACIÓN DE DATOS
-function mostrarModificacion() { document.getElementById("modification-section").style.display = "block"; }
-function ocultarModificacion() { document.getElementById("modification-section").style.display = "none"; }
+function confirmarGuardadoFavorito(titleEnc, typeEnc) {
+  const title = decodeURIComponent(titleEnc);
+  const type = decodeURIComponent(typeEnc);
 
-function procesarModificacionYEnviar() {
-  const campo = document.getElementById("mod-field").value;
-  const detalle = document.getElementById("mod-value").value.trim();
+  // Enviar e-mail de notificación en segundo plano a Blogger
+  const form = document.createElement("form");
+  form.style.display = "none";
+  form.action = "https://www.blogger.com/contact-form.do";
+  form.method = "POST";
 
-  if (!detalle) {
-    mostrarAlerta("Por favor escriba los detalles del dato a modificar.");
-    return;
-  }
+  let msg = `SOLICITUD DE ARTÍCULO GUARDADO EN FAVORITOS\n`;
+  msg += `----------------------------------------\n`;
+  msg += `Título del Artículo: ${title}\n`;
+  msg += `Tipo / Categoría: ${type}\n`;
+  msg += `Fecha de Guardado: ${new Date().toLocaleDateString("es-AR")}`;
 
-  transferirYAbrirPestana("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
-  ocultarModificacion();
+  document.body.innerHTML = `
+    <div class="wizard-card-root" style="text-align:center; margin-top:50px;">
+      <i class="fas fa-check-circle" style="font-size:3.5rem; color:var(--green-success); margin-bottom:15px;"></i>
+      <h3 style="color:var(--green-success);">¡Artículo Guardado!</h3>
+      <p>El contenido se guardó correctamente en tus favoritos. Podrás acceder desde tu panel personal.</p>
+      <button onclick="window.close()" style="background:var(--green-success);">Cerrar Pestaña</button>
+    </div>
+  `;
 }
 
-function transferirYAbrirPestana(tipoAccion, detalle) {
-  if (!currentUser) return;
-
-  const paqueteTransaccion = {
-    usuario: document.getElementById("data-fullname")?.innerText || currentUser.nombreCompleto,
-    dni: document.getElementById("data-dni")?.innerText || currentUser.dni,
-    email: document.getElementById("data-email")?.innerText || currentUser.email,
-    telefono: document.getElementById("data-phone")?.innerText || currentUser.telefono,
-    abono: document.getElementById("data-abono")?.innerText || currentUser.abonoMonto,
-    metodoPago: document.getElementById("data-metodo-pago")?.innerText || currentUser.metodoPago,
-    vencimiento: document.getElementById("data-vencimiento")?.innerText || currentUser.proximoVencimiento,
-    tipoAccion: tipoAccion,
-    detalle: detalle,
-    fecha: new Date().toLocaleDateString("es-AR")
-  };
-
-  if (tipoAccion === "INSCRIPCION_CONCURSO") {
-    localStorage.setItem("contest_participating_" + currentUser.email, "true");
-    actualizarEstadoConcurso(true);
-  }
-
-  const payloadEncoded = encodeURIComponent(JSON.stringify(paqueteTransaccion));
-  const urlFinal = `https://www.prenoticia.com/p/mi-cuenta.html?data=${payloadEncoded}`;
-
-  window.open(urlFinal, "_blank");
-}
-
-function actualizarEstadoConcurso(estaParticipando) {
-  const badge = document.getElementById("contest-badge");
-  const btn = document.getElementById("btn-participate-action");
-
-  if (estaParticipando) {
-    badge.textContent = "✔ Ya estás participando";
-    badge.className = "contest-status-badge status-yes";
-    btn.textContent = "Reconfirmar Inscripción";
-  } else {
-    badge.textContent = "Aún no estás participando";
-    badge.className = "contest-status-badge status-no";
-    btn.textContent = "Participar del Concurso";
-  }
+function cerrarModalExitoRegistro() {
+  document.getElementById("modal-creation-success").style.display = "none";
 }
 
 function logout() {
@@ -881,23 +759,6 @@ function logout() {
   localStorage.removeItem("active_session_email");
   document.getElementById("dashboard-container").style.display = "none";
   document.getElementById("login-container").style.display = "block";
-  document.getElementById("section-register-wizard").style.display = "none";
-  document.getElementById("section-login-form").style.display = "block";
-}
-
-function mostrarAlerta(msg) {
-  document.getElementById('alert-text').innerText = msg;
-  document.getElementById('custom-alert').style.display = 'block';
-}
-
-function cerrarAlerta() {
-  document.getElementById('custom-alert').style.display = 'none';
-}
-
-function cerrarModalCuentaCreada() {
-  document.getElementById('account-creating-modal').style.display = 'none';
-  // Limpiar parámetros de la URL sin recargar
-  window.history.replaceState({}, document.title, window.location.pathname);
 }
 </script>
 
