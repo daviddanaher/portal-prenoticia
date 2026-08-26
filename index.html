@@ -1,384 +1,810 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Portal de Usuarios</title>
-<style>
-  :root {
-    --primary-orange: #ff9800;
-    --dark-orange: #e68a00;
-    --header-bg: #f58220;
-    --bg-gray: #f4f6f9;
-    --card-bg: #ffffff;
-    --text-color: #222222;
-    --text-muted: #666666;
-    --border-color: #e0e0e0;
-    --green-success: #2e7d32;
-    --red-error: #c62828;
-    --warning-yellow: #f57c00;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Prenoticia - Portal Interactivo de Usuarios & Suscripciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-orange: #f58220;
+            --dark-orange: #e68a00;
+            --bright-gold: #d4af37;
+            --bg-gray: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-dark: #222222;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+            --green-success: #2e7d32;
+            --red-error: #c62828;
+            --mp-blue: #009ee3;
+        }
 
-  * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-  html, body { margin: 0; padding: 0; background-color: var(--bg-gray); color: var(--text-color); min-height: 100vh; width: 100%; overflow-x: hidden; }
+        * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        html, body { margin: 0; padding: 0; background-color: var(--bg-gray); color: var(--text-dark); min-height: 100vh; width: 100%; overflow-x: hidden; }
 
-  .login-container { max-width: 420px; margin: 40px auto; padding: 20px; }
-  .login-section { padding: 30px; border: 1px solid var(--border-color); border-radius: 10px; text-align: center; background: #ffffff; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-  .login-section h2 { color: var(--header-bg); margin-top: 0; font-size: 26px; margin-bottom: 25px; }
+        /* OCULTAR MENSAJES NATIVOS DE BLOGGER */
+        #ContactForm1_contact-form-error-message,
+        #ContactForm1_contact-form-success-message,
+        .contact-form-error-message,
+        .contact-form-success-message,
+        .widget-content .contact-form-success-message {
+            display: none !important; opacity: 0 !important; visibility: hidden !important; height: 0 !important; margin: 0 !important; padding: 0 !important;
+        }
 
-  .dashboard-full { width: 100%; min-height: 100vh; background: #ffffff; margin: 0; padding: 0; }
-  .dashboard-header { background: #ffffff; padding: 15px 20px; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-  .header-info h2 { margin: 0; font-size: 22px; color: #111; }
-  .header-info .date-text { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
+        /* BANNER INVITACIÓN NO REGISTRADOS */
+        .promo-banner-unregistered {
+            background: linear-gradient(135deg, #f58220 0%, #e68a00 100%);
+            color: #ffffff;
+            padding: 25px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 20px rgba(245, 130, 32, 0.25);
+            text-align: center;
+        }
+        .promo-banner-unregistered h2 { margin: 0 0 10px 0; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .promo-banner-unregistered p { font-size: 15px; margin: 0 0 18px 0; line-height: 1.5; color: #fffef0; }
+        .promo-badge-price {
+            display: inline-block;
+            background: #ffffff;
+            color: var(--dark-orange);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
 
-  .input-group { margin-bottom: 20px; text-align: left; }
-  .input-group label { display: block; font-size: 14px; font-weight: 600; color: var(--text-color); margin-bottom: 8px; }
-  .checkbox-group { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: var(--text-muted); }
+        /* LOGIN / REGISTRO MULTI-STEP CONTAINER */
+        .auth-container { max-width: 780px; margin: 30px auto; padding: 0 15px; }
+        .auth-card { background: #ffffff; border-radius: 16px; border: 1px solid var(--border-color); padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
 
-  input[type="text"], input[type="password"], input[type="email"], select, textarea { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; }
-  button { background-color: var(--header-bg); color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; }
-  button:hover { background-color: var(--dark-orange); }
-  .btn-logout { background-color: var(--red-error); }
+        /* MULTI-STEP WIZARD STYLES */
+        .wizard-steps-indicator { display: flex; justify-content: center; gap: 12px; margin-bottom: 25px; }
+        .step-dot {
+            width: 38px; height: 38px; border-radius: 50%; background: #f0f0f0; border: 2px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #777;
+            transition: all 0.3s ease; user-select: none;
+        }
+        .step-dot.active { border-color: var(--primary-orange); background: rgba(245, 130, 32, 0.15); color: var(--primary-orange); box-shadow: 0 0 10px rgba(245, 130, 32, 0.3); }
+        .step-dot.completed { background: var(--primary-orange); border-color: var(--primary-orange); color: #ffffff; }
 
-  .alert-container { padding: 10px 20px 0 20px; }
-  .alert-box { width: 100%; padding: 15px; border-radius: 8px; font-weight: 600; margin-bottom: 10px; display: none; font-size: 14px; }
-  .alert-warning { background-color: #fff3e0; color: var(--warning-yellow); border: 1px solid #ffe0b2; }
-  .alert-mora { background-color: #ffebee; color: var(--red-error); border: 1px solid #ffcdd2; }
-  .alert-suspended { background-color: #333333; color: #ffffff; text-align: center; padding: 20px; }
+        .wizard-step-panel { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; text-align: left; }
+        .wizard-step-panel.active-step { display: block; opacity: 1; }
 
-  .tabs-header { display: flex; background: #ffffff; border-bottom: 3px solid var(--header-bg); padding: 10px 20px 0 20px; gap: 5px; position: sticky; top: 0; z-index: 100; }
-  .tab-btn { padding: 12px 18px; background: #e9ecef; color: #495057; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 14px; flex: 1; text-align: center; }
-  .tab-btn.active { background: var(--header-bg); color: #ffffff; }
+        /* INPUTS & SELECTS */
+        .input-group { margin-bottom: 18px; text-align: left; }
+        .input-group label { display: block; font-size: 12px; font-weight: 800; color: var(--primary-orange); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .input-custom {
+            width: 100%; background: #fdfdfd; border: 1px solid var(--border-color); border-radius: 8px; padding: 13px 15px;
+            font-size: 14.5px; color: #333; outline: none; transition: all 0.3s ease;
+        }
+        .input-custom:focus { border-color: var(--primary-orange); box-shadow: 0 0 8px rgba(245, 130, 32, 0.2); }
 
-  .main-content { padding: 20px; }
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+        /* BOTONES DE INTERESES ESTÉTICOS */
+        .interests-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-top: 10px; }
+        .btn-interest-tag {
+            padding: 12px 14px; background: #f8f9fa; border: 2px solid var(--border-color); border-radius: 10px;
+            color: #555; font-size: 13px; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.25s ease;
+            display: flex; align-items: center; justify-content: center; gap: 8px; user-select: none;
+        }
+        .btn-interest-tag:hover { border-color: var(--primary-orange); color: var(--primary-orange); }
+        .btn-interest-tag.selected { background: rgba(245, 130, 32, 0.12); border-color: var(--primary-orange); color: var(--dark-orange); box-shadow: 0 2px 8px rgba(245, 130, 32, 0.2); }
 
-  .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .news-card { border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; background: #fff; }
-  .news-card img { width: 100%; height: 180px; object-fit: cover; }
-  .news-card-body { padding: 15px; }
+        /* BOTONES DE NAVEGACIÓN PASO A PASO */
+        .nav-buttons-container { display: flex; justify-content: space-between; gap: 12px; margin-top: 25px; flex-wrap: wrap; }
+        .btn-nav-step {
+            padding: 13px 22px; border-radius: 8px; font-weight: 800; font-size: 13.5px; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease; display: inline-flex;
+            align-items: center; gap: 8px; border: 1px solid var(--border-color); background: #ffffff; color: #444;
+        }
+        .btn-nav-step:hover { background: #f0f0f0; }
+        .btn-nav-next { background: var(--primary-orange); color: #ffffff; border: none; margin-left: auto; }
+        .btn-nav-next:hover { background: var(--dark-orange); box-shadow: 0 4px 12px rgba(230, 138, 0, 0.3); }
+        .btn-nav-cancel { background: rgba(198, 40, 40, 0.08); border-color: rgba(198, 40, 40, 0.3); color: var(--red-error); }
+        .btn-nav-cancel:hover { background: rgba(198, 40, 40, 0.2); }
 
-  #full-news-view { display: none; min-height: calc(100vh - 120px); background: #ffffff; padding: 10px 0; }
-  #full-news-view img { width: 100%; max-height: 350px; object-fit: cover; border-radius: 8px; }
-  #full-news-view h2 { font-size: 24px; margin: 15px 0; }
-  #full-news-view p { font-size: 16px; line-height: 1.6; color: #333; }
+        /* DASHBOARD PRINCIPAL */
+        .dashboard-full { width: 100%; min-height: 100vh; background: #ffffff; }
+        .dashboard-header { background: #ffffff; padding: 15px 25px; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header-info h2 { margin: 0; font-size: 22px; color: #111; font-weight: 800; }
+        .header-info .date-text { font-size: 13px; color: var(--text-muted); margin-top: 4px; display: block; }
 
-  .contest-card { border: 2px solid var(--header-bg); border-radius: 10px; padding: 20px; background: #fffcf8; }
-  .contest-status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 15px; }
-  .status-no { background: #ffebee; color: var(--red-error); }
-  .status-yes { background: #e8f5e9; color: var(--green-success); }
+        /* TABS HEADER & BUSCADOR */
+        .tabs-header { display: flex; background: #ffffff; border-bottom: 3px solid var(--primary-orange); padding: 10px 25px 0 25px; gap: 8px; position: sticky; top: 0; z-index: 100; align-items: center; flex-wrap: wrap; }
+        .tab-btn { padding: 12px 20px; background: #f0f2f5; color: #555; border: none; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 700; font-size: 13.5px; flex: 1; min-width: 120px; text-align: center; transition: all 0.2s; }
+        .tab-btn.active { background: var(--primary-orange); color: #ffffff; }
 
-  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  .data-table th, .data-table td { padding: 12px; border: 1px solid var(--border-color); font-size: 14px; }
-  .data-table th { background: #f8f9fa; width: 40%; text-align: left; }
+        /* BUSCADOR CON LUPA */
+        .search-tab-box { display: flex; align-items: center; background: #f0f2f5; border-radius: 8px; padding: 2px 10px; border: 1px solid var(--border-color); margin-left: auto; }
+        .search-tab-box input { border: none; background: transparent; padding: 8px; font-size: 13.5px; outline: none; width: 180px; }
+        .search-tab-box i { color: var(--primary-orange); cursor: pointer; font-size: 15px; }
 
-  #modification-section { display: none; background: #fdfdfd; border: 2px solid var(--header-bg); border-radius: 8px; padding: 20px; margin-top: 20px; }
-</style>
+        .main-content { padding: 25px; max-width: 1200px; margin: 0 auto; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* CARDS NOTICIAS Y ARTÍCULOS */
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+        .news-card { border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: transform 0.2s; }
+        .news-card:hover { transform: translateY(-3px); }
+        .news-card img { width: 100%; height: 180px; object-fit: cover; }
+        .news-card-body { padding: 18px; }
+        .news-card-body h4 { margin: 0 0 10px 0; font-size: 17px; color: #111; line-height: 1.4; }
+        .news-card-body p { font-size: 13.5px; color: #666; margin-bottom: 15px; line-height: 1.5; }
+        .news-card-actions { display: flex; gap: 10px; }
+        .btn-card-action { flex: 1; padding: 9px; border-radius: 6px; font-weight: 700; font-size: 12.5px; cursor: pointer; text-align: center; border: none; }
+        .btn-view-more { background: var(--primary-orange); color: #fff; }
+        .btn-save-fav { background: #f0f2f5; color: #333; border: 1px solid var(--border-color); }
+        .btn-save-fav:hover { background: #e2e6ea; color: var(--primary-orange); }
+
+        /* VISTA DETALLE NOTICIA */
+        #full-news-view { display: none; background: #ffffff; padding: 10px 0; }
+        #full-news-view img { width: 100%; max-height: 400px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; }
+        #full-news-view h2 { font-size: 26px; color: #111; margin-bottom: 15px; }
+        #full-news-view p { font-size: 15.5px; line-height: 1.7; color: #333; }
+
+        /* TABLAS Y DATOS */
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .data-table th, .data-table td { padding: 14px; border: 1px solid var(--border-color); font-size: 14px; }
+        .data-table th { background: #f8f9fa; width: 35%; text-align: left; color: #444; }
+
+        /* OVERLAYS & MODALES */
+        #redirect-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95); z-index: 99999; align-items: center;
+            justify-content: center; flex-direction: column; text-align: center; padding: 20px;
+        }
+
+        #custom-alert {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 420px; background: #ffffff; color: #222; padding: 25px;
+            border-radius: 12px; z-index: 10000; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center; border-top: 5px solid var(--primary-orange);
+        }
+
+        .alert-box-status {
+            padding: 15px; border-radius: 8px; font-weight: 600; margin-bottom: 20px; font-size: 14px; text-align: center;
+        }
+        .status-pending { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+
+        @media (max-width: 768px) {
+            .tabs-header { padding: 10px 15px 0 15px; }
+            .search-tab-box { width: 100%; margin: 10px 0; }
+            .search-tab-box input { width: 100%; }
+            .nav-buttons-container { flex-direction: column; }
+            .btn-nav-step { width: 100%; justify-content: center; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div class="login-container" id="login-container">
-  <div class="login-section">
-    <h2>Iniciar Sesión</h2>
-    <div class="input-group">
-      <label>Correo Electrónico</label>
-      <input type="email" id="login-email" placeholder="ejemplo@correo.com">
-    </div>
-    <div class="input-group">
-      <label>Contraseña</label>
-      <input type="password" id="login-password" placeholder="Ingrese su contraseña">
-    </div>
-    <div class="checkbox-group">
-      <input type="checkbox" id="remember-me">
-      <label for="remember-me">Recordar credenciales</label>
-    </div>
-    <button type="button" onclick="login()" style="width: 100%;">Ingresar</button>
-    <p id="login-error" style="color:var(--red-error); margin-top: 15px; font-weight: bold;"></p>
-  </div>
+<!-- OVERLAY DE CARGA Y REDIRECCIÓN -->
+<div id="redirect-overlay">
+    <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary-orange); margin-bottom: 20px;"></i>
+    <h3 id="overlay-title" style="color: var(--primary-orange); font-size: 1.3rem; margin: 0 0 10px 0; text-transform: uppercase;">Procesando Solicitud...</h3>
+    <p id="redirect-overlay-txt" style="font-size: 0.95rem; color: #555; max-width: 400px; margin: 0;">Sincronizando datos con la plataforma central...</p>
 </div>
 
-<!-- DASHBOARD -->
-<div class="dashboard-full" id="dashboard-container" style="display:none;">
-  <div class="dashboard-header">
-    <div class="header-info">
-      <h2>Hola, <span id="user-display-name"></span></h2>
-      <span class="date-text" id="current-date-display"></span>
-    </div>
-    <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
-  </div>
+<!-- MODAL ALERTA PERSONALIZADA -->
+<div id="custom-alert">
+    <span style="font-weight: 800; font-size: 1.1rem; display: block; margin-bottom: 12px; color: var(--primary-orange); text-transform: uppercase;">Aviso del Sistema</span>
+    <p id="alert-text" style="font-size: 0.92rem; margin-bottom: 20px; line-height: 1.5; color: #444;"></p>
+    <button onclick="cerrarAlerta()" style="background: var(--primary-orange); color: white; border: none; padding: 10px 25px; border-radius: 6px; font-weight: 800; cursor: pointer; width: 100%;">Entendido</button>
+</div>
 
-  <div class="alert-container">
-    <div id="alert-cobro" class="alert-box alert-warning"></div>
-    <div id="alert-mora" class="alert-box alert-mora"></div>
-    <div id="suspended-view" class="alert-box alert-suspended">
-      <h3>Cuenta Suspendida</h3>
-      <p>Tu cuenta está suspendida. Regularizá comunicándote a <a href="mailto:prenoticia@gmail.com" style="color:#ffb74d;">prenoticia@gmail.com</a></p>
-    </div>
-  </div>
-
-  <div class="tabs-header">
-    <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')">Noticias</button>
-    <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')">Concursos</button>
-    <button class="tab-btn" id="btn-tab-datos" onclick="openTab('tab-datos')">Mis Datos</button>
-  </div>
-
-  <div class="main-content">
-    <!-- PESTAÑA NOTICIAS -->
-    <div id="tab-noticias" class="tab-content active">
-      <div id="news-list-view" class="news-grid">
-        <div class="news-card">
-          <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop&q=60" alt="Noticia 1">
-          <div class="news-card-body">
-            <h4>Actualizaciones en Registros Digitales 2026</h4>
-            <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección...</p>
-            <button onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.')">Ver más</button>
-          </div>
+<!-- CONTENEDOR DE AUTENTICACIÓN / REGISTRO MULTI-STEP -->
+<div class="auth-container" id="auth-container">
+    
+    <!-- BANNER PARA NO REGISTRADOS -->
+    <div class="promo-banner-unregistered" id="unregistered-promo">
+        <h2><i class="fas fa-star"></i> Acceso Exclusivo Prenoticia</h2>
+        <p>¿Aún no tienes una cuenta registrada? Suscríbete hoy mismo para acceder a noticias al instante, reportajes especiales y participar automáticamente de nuestros sorteos de entradas para cine y espectáculos.</p>
+        <div class="promo-badge-price">Suscripción Mensual: $5.000</div>
+        <div>
+            <button onclick="mostrarModoRegistro()" style="background: #ffffff; color: var(--dark-orange); border: none; padding: 12px 25px; font-weight: 800; border-radius: 25px; cursor: pointer; text-transform: uppercase; font-size: 13.5px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                <i class="fas fa-user-plus"></i> Crear Mi Cuenta Ahora
+            </button>
         </div>
-
-        <div class="news-card">
-          <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60" alt="Noticia 2">
-          <div class="news-card-body">
-            <h4>Nuevos Beneficios para Suscriptores Activos</h4>
-            <p>Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada...</p>
-            <button onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.')">Ver más</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="full-news-view">
-        <button onclick="volverANoticias()" style="margin-bottom: 15px; background: #333;">← Volver</button>
-        <img id="full-news-img" src="" alt="Noticia">
-        <h2 id="full-news-title"></h2>
-        <p id="full-news-body"></p>
-      </div>
     </div>
 
-    <!-- PESTAÑA CONCURSOS -->
-    <div id="tab-concursos" class="tab-content">
-      <div class="contest-card">
-        <span id="contest-badge" class="contest-status-badge status-no">Aún no estás participando</span>
-        <h3>Sorteo de Entradas: COYOTE VS ACME</h3>
-        <p><strong>Cine:</strong> Cinemark Abasto</p>
-        <p><strong>Función:</strong> Sábado 29 de agosto a las 22:00 hs</p>
+    <div class="auth-card">
         
-        <div style="margin-top:20px;">
-          <button id="btn-participate-action" onclick="transferirYAbrirPestana('INSCRIPCION_CONCURSO', 'Sorteo de Entradas: COYOTE VS ACME (Cinemark Abasto)')">Participar del Concurso</button>
+        <!-- OPCCIÓN: INICIAR SESIÓN -->
+        <div id="login-view">
+            <h3 style="color: var(--primary-orange); margin-top: 0; font-size: 22px; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+            </h3>
+            <div class="input-group">
+                <label>Correo Electrónico</label>
+                <input type="email" id="login-email" class="input-custom" placeholder="ejemplo@correo.com">
+            </div>
+            <div class="input-group">
+                <label>Contraseña</label>
+                <input type="password" id="login-password" class="input-custom" placeholder="Ingrese su contraseña">
+            </div>
+            <button onclick="login()" style="width: 100%; background: var(--primary-orange); color: white; border: none; padding: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 15px; text-transform: uppercase; margin-top: 10px;">
+                Ingresar al Portal
+            </button>
+            <p id="login-error" style="color: var(--red-error); font-weight: 700; margin-top: 15px; text-align: center; font-size: 13.5px;"></p>
+            <div style="text-align: center; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                <span style="font-size: 13.5px; color: #666;">¿No tienes usuario? </span>
+                <a href="javascript:void(0)" onclick="mostrarModoRegistro()" style="color: var(--primary-orange); font-weight: 700; text-decoration: none;">Regístrate aquí por $5.000</a>
+            </div>
         </div>
-      </div>
+
+        <!-- OPCIÓN: REGISTRO MULTI-STEP -->
+        <div id="register-wizard-view" style="display: none;">
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h3 style="color: var(--primary-orange); text-transform: uppercase; font-size: 1.2rem; margin: 0 0 10px 0; letter-spacing: 0.5px;">Alta de Nuevo Usuario</h3>
+                <p style="font-size: 13.5px; color: #666; margin: 0;">Complete los pasos para activar su suscripción y acceder a los beneficios exclusivos.</p>
+            </div>
+
+            <!-- INDICADOR DE PASOS -->
+            <div class="wizard-steps-indicator">
+                <div class="step-dot active" id="reg-dot-1">1</div>
+                <div class="step-dot" id="reg-dot-2">2</div>
+                <div class="step-dot" id="reg-dot-3">3</div>
+            </div>
+
+            <form id="register-form" onsubmit="return false;">
+                
+                <!-- PASO 1: DATOS PERSONALES -->
+                <div class="wizard-step-panel active-step" id="reg-step-panel-1">
+                    <h4 style="color: var(--dark-orange); font-size: 0.95rem; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">Paso 1: Información de Contacto</h4>
+                    
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <div style="flex:1; min-width: 220px;" class="input-group">
+                            <label>Nombre y Apellido *</label>
+                            <input class="input-custom" id="reg_nombre" placeholder="Ingrese nombre y apellido" type="text" oninput="capitalizarTexto(this)" />
+                        </div>
+                        <div style="flex:1; min-width: 220px;" class="input-group">
+                            <label>Correo Electrónico *</label>
+                            <input class="input-custom" id="reg_email" placeholder="ejemplo@correo.com" type="email" />
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <div style="flex:1; min-width: 220px;" class="input-group">
+                            <label>Número de Celular / WhatsApp *</label>
+                            <input class="input-custom" id="reg_telefono" placeholder="Ej: 11 2167 9936" type="text" />
+                        </div>
+                        <div style="flex:1; min-width: 220px;" class="input-group">
+                            <label>Localidad / Barrio *</label>
+                            <input class="input-custom" id="reg_localidad" placeholder="Ej: Liniers, CABA" type="text" oninput="capitalizarTexto(this)" />
+                        </div>
+                    </div>
+
+                    <div class="nav-buttons-container">
+                        <button type="button" class="btn-nav-step btn-nav-cancel" onclick="cancelarRegistro()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="button" class="btn-nav-step btn-nav-next" onclick="irAlPasoRegistro(2)">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PASO 2: SELECCIÓN DE INTERESES -->
+                <div class="wizard-step-panel" id="reg-step-panel-2">
+                    <h4 style="color: var(--dark-orange); font-size: 0.95rem; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">Paso 2: Preferencias de Contenido</h4>
+                    <p style="font-size: 13px; color: #666; margin-bottom: 15px;">Seleccione los temas de su interés para personalizar sus boletines y sorteos:</p>
+
+                    <div class="interests-grid">
+                        <div class="btn-interest-tag" onclick="toggleInteres(this, 'Deportes')"><i class="fas fa-football-ball"></i> Deportes</div>
+                        <div class="btn-interest-tag" onclick="toggleInteres(this, 'Cine')"><i class="fas fa-film"></i> Cine</div>
+                        <div class="btn-interest-tag" onclick="toggleInteres(this, 'Espectáculos')"><i class="fas fa-theater-masks"></i> Espectáculos</div>
+                        <div class="btn-interest-tag" onclick="toggleInteres(this, 'Noticias')"><i class="fas fa-newspaper"></i> Noticias</div>
+                        <div class="btn-interest-tag" onclick="toggleInteres(this, 'Sociedad')"><i class="fas fa-users"></i> Sociedad</div>
+                        <div class="btn-interest-tag" onclick="toggleInteres(this, 'Sorteos Entradas Cine')"><i class="fas fa-ticket-alt"></i> Sorteo Entradas Cine</div>
+                        <div class="btn-interest-tag" onclick="toggleInteres(this, 'Sorteo Entradas Espectáculos')"><i class="fas fa-star"></i> Sorteo Espectáculos</div>
+                    </div>
+
+                    <div class="nav-buttons-container">
+                        <button type="button" class="btn-nav-step" onclick="irAlPasoRegistro(1)">
+                            <i class="fas fa-arrow-left"></i> Atrás
+                        </button>
+                        <button type="button" class="btn-nav-step btn-nav-cancel" onclick="cancelarRegistro()">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="button" class="btn-nav-step btn-nav-next" onclick="irAlPasoRegistro(3)">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PASO 3: CONFIRMACIÓN Y MEDIO DE PAGO MERCADO PAGO -->
+                <div class="wizard-step-panel" id="reg-step-panel-3">
+                    <h4 style="color: var(--dark-orange); font-size: 0.95rem; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">Paso 3: Pago de la Suscripción ($5.000)</h4>
+                    
+                    <div style="background: #fdfbf7; border: 1px solid #ffe0b2; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 13.5px; line-height: 1.6;">
+                        <strong>Resumen del Alta:</strong><br>
+                        • <strong>Titular:</strong> <span id="resumen_reg_nombre">-</span><br>
+                        • <strong>Email:</strong> <span id="resumen_reg_email">-</span><br>
+                        • <strong>Abono Mensual:</strong> $5.000 / mes<br>
+                        • <strong>Medio de Pago Seleccionado:</strong> Mercado Pago
+                    </div>
+
+                    <p style="font-size: 13px; color: #555; margin-bottom: 20px;">
+                        Al hacer clic en <strong>"Confirmar y Pagar"</strong>, se enviará el registro formal a nuestro centro de atención y se abrirá la pasarela segura de Mercado Pago para completar el abono.
+                    </p>
+
+                    <div class="nav-buttons-container">
+                        <button type="button" class="btn-nav-step" onclick="irAlPasoRegistro(2)">
+                            <i class="fas fa-arrow-left"></i> Atrás
+                        </button>
+                        <button type="button" class="btn-nav-step btn-nav-next" style="background: var(--mp-blue);" onclick="procesarRegistroFinal()">
+                            <i class="fas fa-lock"></i> Confirmar y Pagar vía Mercado Pago
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
     </div>
-
-    <!-- PESTAÑA MIS DATOS -->
-    <div id="tab-datos" class="tab-content">
-      <table class="data-table">
-        <tr><th>Nombre Completo</th><td id="data-fullname"></td></tr>
-        <tr><th>DNI / Identificación</th><td id="data-dni"></td></tr>
-        <tr><th>Correo Electrónico</th><td id="data-email"></td></tr>
-        <tr><th>Teléfono Asociado</th><td id="data-phone"></td></tr>
-        <tr><th>Monto del Abono</th><td id="data-abono"></td></tr>
-        <tr><th>Modalidad de Pago</th><td id="data-metodo-pago"></td></tr>
-        <tr><th>Próximo Vencimiento</th><td id="data-vencimiento"></td></tr>
-      </table>
-
-      <button onclick="mostrarModificacion()">Modificar Datos</button>
-
-      <div id="modification-section">
-        <h3>Solicitar Modificación de Datos</h3>
-        <div class="input-group">
-          <label>Campo a modificar</label>
-          <select id="mod-field">
-            <option value="Nombre Completo">Nombre Completo</option>
-            <option value="DNI / Identificación">DNI / Identificación</option>
-            <option value="Correo Electrónico">Correo Electrónico</option>
-            <option value="Teléfono Asociado">Teléfono Asociado</option>
-            <option value="Modalidad de Pago">Modalidad de Pago</option>
-            <option value="Otro">Otro dato / Consulta</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label>Nuevo Valor / Detalle del cambio</label>
-          <textarea id="mod-value" rows="3" placeholder="Escriba los datos requeridos..."></textarea>
-        </div>
-
-        <div style="display:flex; gap:10px;">
-          <button onclick="procesarModificacionYEnviar()">Procesar Modificación</button>
-          <button onclick="ocultarModificacion()" style="background:#6c757d;">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
+
+<!-- DASHBOARD DE USUARIO (LOGUEADO) -->
+<div class="dashboard-full" id="dashboard-container" style="display:none;">
+    
+    <div class="dashboard-header">
+        <div class="header-info">
+            <h2>Hola, <span id="user-display-name">Usuario</span></h2>
+            <span class="date-text" id="current-date-display"></span>
+        </div>
+        <button onclick="logout()" style="background: var(--red-error); color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer;">
+            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </button>
+    </div>
+
+    <!-- PENSAMIENTO DE PROCESO / MENSAJE ESTADO PENDIENTE CREACIÓN -->
+    <div style="padding: 15px 25px 0 25px;" id="box-status-pending-wrapper">
+        <div id="box-status-pending" class="alert-box-status status-pending" style="display:none;">
+            <i class="fas fa-sync fa-spin" style="margin-right: 8px;"></i> Estamos creando tu cuenta y validando tu pago en Mercado Pago. Aguarda unos minutos, podrás acceder al contenido exclusivo al reingresar.
+        </div>
+    </div>
+
+    <!-- NAVEGACIÓN POR PESTAÑAS + BUSCADOR PREDICTIVO -->
+    <div class="tabs-header">
+        <button class="tab-btn active" id="btn-tab-noticias" onclick="openTab('tab-noticias')"><i class="fas fa-newspaper"></i> Noticias</button>
+        <button class="tab-btn" id="btn-tab-concursos" onclick="openTab('tab-concursos')"><i class="fas fa-ticket-alt"></i> Sorteos Exclusivos</button>
+        <button class="tab-btn" id="btn-tab-datos" onclick="openTab('tab-datos')"><i class="fas fa-user-cog"></i> Mis Datos</button>
+        
+        <!-- BUSCADOR CON LUPA PREDICTIVO -->
+        <div class="search-tab-box">
+            <input type="text" id="predictive-search-input" placeholder="Buscar noticias o guardados..." onkeyup="ejecutarBuscadorPredictivo(this.value)">
+            <i class="fas fa-search" onclick="ejecutarBuscadorPredictivo(document.getElementById('predictive-search-input').value)"></i>
+        </div>
+    </div>
+
+    <div class="main-content">
+        
+        <!-- PESTAÑA: NOTICIAS Y CONTENIDO -->
+        <div id="tab-noticias" class="tab-content active">
+            
+            <div id="search-loading-indicator" style="display:none; text-align: center; padding: 30px;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-orange);"></i>
+                <p style="font-size: 14px; color: #666; margin-top: 10px;">Buscando en el catálogo guardado y exclusivo...</p>
+            </div>
+
+            <div id="news-list-view" class="news-grid">
+                <!-- NOTICIA 1 -->
+                <div class="news-card" data-titulo="Actualizaciones en Registros Digitales 2026">
+                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=500&auto=format&fit=crop&q=60" alt="Noticia 1">
+                    <div class="news-card-body">
+                        <h4>Actualizaciones en Registros Digitales 2026</h4>
+                        <p>Conoce las últimas novedades sobre la optimización de activos y metodologías de protección de datos...</p>
+                        <div class="news-card-actions">
+                            <button class="btn-card-action btn-view-more" onclick="verNoticiaCompleta('Actualizaciones en Registros Digitales 2026', 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=80', 'El proceso de modernización abarca la integración de firmas digitales, automatización de expedientes y atención prioritaria para suscriptores.')">Ver Más</button>
+                            <button class="btn-card-action btn-save-fav" onclick="solicitarGuardarFavorito('Actualizaciones en Registros Digitales 2026')"><i class="far fa-bookmark"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOTICIA 2 -->
+                <div class="news-card" data-titulo="Nuevos Beneficios para Suscriptores Activos">
+                    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=60" alt="Noticia 2">
+                    <div class="news-card-body">
+                        <h4>Nuevos Beneficios para Suscriptores Activos</h4>
+                        <p>Accede a sorteos exclusivos, promociones en eventos culturales y asistencia personalizada con tu abono...</p>
+                        <div class="news-card-actions">
+                            <button class="btn-card-action btn-view-more" onclick="verNoticiaCompleta('Nuevos Beneficios para Suscriptores Activos', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80', 'Todos los usuarios que mantengan su membresía al día contarán con sorteos mensuales de entradas para cine, teatro y espectáculos.')">Ver Más</button>
+                            <button class="btn-card-action btn-save-fav" onclick="solicitarGuardarFavorito('Nuevos Beneficios para Suscriptores Activos')"><i class="far fa-bookmark"></i> Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="full-news-view">
+                <button onclick="volverANoticias()" style="margin-bottom: 15px; background: #333; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 700; cursor: pointer;">
+                    <i class="fas fa-arrow-left"></i> Volver a Noticias
+                </button>
+                <img id="full-news-img" src="" alt="Noticia">
+                <h2 id="full-news-title"></h2>
+                <p id="full-news-body"></p>
+            </div>
+        </div>
+
+        <!-- PESTAÑA: CONCURSOS Y SORTEOS -->
+        <div id="tab-concursos" class="tab-content">
+            <div style="border: 2px solid var(--primary-orange); border-radius: 12px; padding: 25px; background: #fffcf8;">
+                <span id="contest-badge" style="display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 15px; background: #ffebee; color: var(--red-error);">Aún no estás participando</span>
+                <h3 style="margin-top: 0; color: #111;">Sorteo Mensual de Entradas por $5.000: COYOTE VS ACME</h3>
+                <p><strong>Cine / Teatro:</strong> Cinemark Abasto</p>
+                <p><strong>Función Exclusiva:</strong> Sábado 29 de Agosto a las 22:00 hs</p>
+                <div style="margin-top: 20px;">
+                    <button id="btn-participate-action" style="background: var(--green-success); color: white; border: none; padding: 12px 22px; border-radius: 8px; font-weight: 800; cursor: pointer;" onclick="transferirYAbrirPestana('INSCRIPCION_CONCURSO', 'Sorteo Mensual $5.000 - Entradas Cine: COYOTE VS ACME')">
+                        Participar del Sorteo Exclusivo
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PESTAÑA: MIS DATOS Y CONFIGURACIÓN -->
+        <div id="tab-datos" class="tab-content">
+            <table class="data-table">
+                <tr><th>Nombre Completo</th><td id="data-fullname">-</td></tr>
+                <tr><th>Correo Electrónico</th><td id="data-email">-</td></tr>
+                <tr><th>Teléfono Asociado</th><td id="data-phone">-</td></tr>
+                <tr><th>Localidad</th><td id="data-localidad">-</td></tr>
+                <tr><th>Monto del Abono</th><td id="data-abono">$5.000 / mes</td></tr>
+                <tr><th>Modalidad de Pago</th><td id="data-metodo-pago">Mercado Pago</td></tr>
+                <tr><th>Intereses Seleccionados</th><td id="data-intereses">-</td></tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- CAMPOS OCULTOS REQUERIDOS PARA INTEGRACIÓN SILENCIOSA CON BLOGGER -->
+<form name="contact-form" id="contact-form" style="display:none !important;" onsubmit="return false;">
+    <input type="hidden" id="ContactForm1_contact-form-name" name="name" value="" />
+    <input type="hidden" id="ContactForm1_contact-form-email" name="email" value="" />
+    <textarea id="ContactForm1_contact-form-email-message" name="email-message"></textarea>
+    <input type="button" id="ContactForm1_contact-form-submit" value="Send" />
+</form>
 
 <script>
+// BASE DE DATOS DE USUARIOS
 const users = {
-  "luciacarpio20@gmail.com": {
-    email: "luciacarpio20@gmail.com",
-    pass: "osotobi20",
-    nombreCompleto: "María Lucía Carpio Peralta",
-    nombreSaludo: "Maria Lucia",
-    dni: "38.123.456",
-    telefono: "+54 11 2167-9936",
-    abonoMonto: "$5.000 / mes",
-    metodoPago: "Mercado Pago",
-    proximoVencimiento: "2026-08-27",
-    estadoCuenta: "activo"
-  },
-  "mauricioacostacom@gmail.com": {
-    email: "mauricioacostacom@gmail.com",
-    pass: "choquedetetas333",
-    nombreCompleto: "Mauricio David Acosta Danaher",
-    nombreSaludo: "Mauricio David",
-    dni: "32.987.654",
-    telefono: "+54 11 2167-9936",
-    abonoMonto: "$5.000 / mes",
-    metodoPago: "Mercado Pago",
-    proximoVencimiento: "2026-09-01",
-    estadoCuenta: "activo"
-  }
+    "luciacarpio20@gmail.com": {
+        email: "luciacarpio20@gmail.com",
+        pass: "osotobi20",
+        nombreCompleto: "María Lucía Carpio Peralta",
+        nombreSaludo: "Lucía",
+        telefono: "+54 11 2167-9936",
+        localidad: "Liniers",
+        abonoMonto: "$5.000 / mes",
+        metodoPago: "Mercado Pago",
+        intereses: "Cine, Espectáculos, Sorteos Entradas Cine"
+    },
+    "mauricioacostacom@gmail.com": {
+        email: "mauricioacostacom@gmail.com",
+        pass: "choquedetetas333",
+        nombreCompleto: "Mauricio David Acosta Danaher",
+        nombreSaludo: "Mauricio",
+        telefono: "+54 11 2167-9936",
+        localidad: "Liniers",
+        abonoMonto: "$5.000 / mes",
+        metodoPago: "Mercado Pago",
+        intereses: "Noticias, Deportes, Cine, Espectáculos"
+    }
 };
 
 let currentUser = null;
+let pasoRegistroActual = 1;
+let interesesSeleccionados = [];
 
+// INICIALIZACIÓN
 window.addEventListener("load", () => {
-  const hoy = new Date();
-  const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  document.getElementById("current-date-display").textContent = hoy.toLocaleDateString('es-AR', opciones);
+    const hoy = new Date();
+    const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("current-date-display").textContent = hoy.toLocaleDateString('es-AR', opciones);
 
-  const activeUserEmail = localStorage.getItem("active_session_email");
-  if (activeUserEmail && users[activeUserEmail]) {
-    currentUser = users[activeUserEmail];
-    cargarDashboard(currentUser);
-  }
+    // Verificar si hay sesión o proceso de pago pendiente
+    const activeUserEmail = localStorage.getItem("active_session_email");
+    const isPendingPayment = localStorage.getItem("pending_registration_status");
+
+    if (activeUserEmail && users[activeUserEmail]) {
+        currentUser = users[activeUserEmail];
+        cargarDashboard(currentUser);
+    } else if (isPendingPayment === "true") {
+        document.getElementById("box-status-pending").style.display = "block";
+    }
 });
 
-function login() {
-  const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
-  const passInput = document.getElementById("login-password").value.trim();
-  const errorEl = document.getElementById("login-error");
+// CAPITALIZAR PRIMERA LETRA
+function capitalizarTexto(input) {
+    let valor = input.value;
+    input.value = valor.toLowerCase().replace(/(?:^|\s|-|\/)\S/g, function(a) { return a.toUpperCase(); });
+}
 
-  if (users[emailInput] && users[emailInput].pass === passInput) {
-    errorEl.textContent = "";
-    currentUser = users[emailInput];
-    localStorage.setItem("active_session_email", emailInput);
-    cargarDashboard(currentUser);
-  } else {
-    errorEl.textContent = "Credenciales incorrectas.";
-  }
+// LÓGICA DE REGISTRO MULTI-STEP
+function mostrarModoRegistro() {
+    document.getElementById("unregistered-promo").style.display = "none";
+    document.getElementById("login-view").style.display = "none";
+    document.getElementById("register-wizard-view").style.display = "block";
+    irAlPasoRegistro(1);
+}
+
+function cancelarRegistro() {
+    document.getElementById("register-wizard-view").style.display = "none";
+    document.getElementById("unregistered-promo").style.display = "block";
+    document.getElementById("login-view").style.display = "block";
+}
+
+function toggleInteres(element, interes) {
+    if (element.classList.contains("selected")) {
+        element.classList.remove("selected");
+        interesesSeleccionados = interesesSeleccionados.filter(i => i !== interes);
+    } else {
+        element.classList.add("selected");
+        interesesSeleccionados.push(interes);
+    }
+}
+
+function irAlPasoRegistro(pasoObjetivo) {
+    if (pasoObjetivo > pasoRegistroActual) {
+        if (!validarPasoRegistro(pasoRegistroActual)) return;
+    }
+
+    document.querySelectorAll('#register-wizard-view .wizard-step-panel').forEach(panel => {
+        panel.classList.remove('active-step');
+    });
+
+    document.getElementById('reg-step-panel-' + pasoObjetivo).classList.add('active-step');
+
+    for (let i = 1; i <= 3; i++) {
+        const dot = document.getElementById('reg-dot-' + i);
+        if (i === pasoObjetivo) {
+            dot.className = "step-dot active";
+        } else if (i < pasoObjetivo) {
+            dot.className = "step-dot completed";
+        } else {
+            dot.className = "step-dot";
+        }
+    }
+
+    pasoRegistroActual = pasoObjetivo;
+
+    if (pasoObjetivo === 3) {
+        document.getElementById("resumen_reg_nombre").innerText = document.getElementById("reg_nombre").value.trim();
+        document.getElementById("resumen_reg_email").innerText = document.getElementById("reg_email").value.trim();
+    }
+}
+
+function validarPasoRegistro(paso) {
+    if (paso === 1) {
+        const nombre = document.getElementById("reg_nombre").value.trim();
+        const email = document.getElementById("reg_email").value.trim();
+        const telefono = document.getElementById("reg_telefono").value.trim();
+        const localidad = document.getElementById("reg_localidad").value.trim();
+
+        if (!nombre || !email || !telefono || !localidad) {
+            mostrarAlerta("Por favor complete todos los campos obligatorios del Paso 1.");
+            return false;
+        }
+        if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+            mostrarAlerta("Por favor ingrese un correo electrónico válido.");
+            return false;
+        }
+    } else if (paso === 2) {
+        if (interesesSeleccionados.length === 0) {
+            mostrarAlerta("Por favor seleccione al menos un tema de interés.");
+            return false;
+        }
+    }
+    return true;
+}
+
+// PROCESAR REGISTRO FINAL E INTEGRACIÓN MERCADO PAGO
+function procesarRegistroFinal() {
+    const nombre = document.getElementById("reg_nombre").value.trim();
+    const email = document.getElementById("reg_email").value.trim().toLowerCase();
+    const telefono = document.getElementById("reg_telefono").value.trim();
+    const localidad = document.getElementById("reg_localidad").value.trim();
+
+    const paqueteRegistro = {
+        usuario: nombre,
+        email: email,
+        telefono: telefono,
+        localidad: localidad,
+        abono: "$5.000 / mes",
+        metodoPago: "Mercado Pago",
+        intereses: interesesSeleccionados.join(", "),
+        tipoAccion: "ALTA_NUEVO_USUARIO",
+        fecha: new Date().toLocaleDateString("es-AR")
+    };
+
+    // Marcar estado pendiente de activación en localStorage
+    localStorage.setItem("pending_registration_status", "true");
+
+    const overlay = document.getElementById('redirect-overlay');
+    const overlayTxt = document.getElementById('redirect-overlay-txt');
+    overlay.style.display = 'flex';
+    overlayTxt.innerText = "Registrando solicitud y abriendo pasarela de pago...";
+
+    // Envío silencioso
+    sincronizarEInsertarFormularioBlogger("SOLICITUD DE ALTA REGISTRO ($5.000)", JSON.stringify(paqueteRegistro));
+
+    const payloadEncoded = encodeURIComponent(JSON.stringify(paqueteRegistro));
+    const urlFinalConfirmacion = `https://www.prenoticia.com/p/mi-cuenta.html?data=${payloadEncoded}`;
+
+    setTimeout(() => {
+        // Abrir pestaña externa de confirmación de datos
+        window.open(urlFinalConfirmacion, "_blank");
+        
+        // Abrir link oficial de cobro Mercado Pago
+        window.location.href = "https://mpago.la/2QtxSKp";
+    }, 1200);
+}
+
+// LOGIN Y DASHBOARD
+function login() {
+    const emailInput = document.getElementById("login-email").value.trim().toLowerCase();
+    const passInput = document.getElementById("login-password").value.trim();
+    const errorEl = document.getElementById("login-error");
+
+    if (users[emailInput] && users[emailInput].pass === passInput) {
+        errorEl.textContent = "";
+        currentUser = users[emailInput];
+        localStorage.setItem("active_session_email", emailInput);
+        localStorage.removeItem("pending_registration_status");
+        cargarDashboard(currentUser);
+    } else {
+        errorEl.textContent = "Credenciales incorrectas.";
+    }
 }
 
 function cargarDashboard(user) {
-  document.getElementById("login-container").style.display = "none";
-  document.getElementById("dashboard-container").style.display = "block";
-  document.getElementById("user-display-name").textContent = user.nombreSaludo;
+    document.getElementById("auth-container").style.display = "none";
+    document.getElementById("dashboard-container").style.display = "block";
+    document.getElementById("user-display-name").textContent = user.nombreSaludo || user.nombreCompleto;
 
-  document.getElementById("data-fullname").textContent = user.nombreCompleto;
-  document.getElementById("data-dni").textContent = user.dni;
-  document.getElementById("data-email").textContent = user.email;
-  document.getElementById("data-phone").textContent = user.telefono;
-  document.getElementById("data-abono").textContent = user.abonoMonto;
-  document.getElementById("data-metodo-pago").textContent = user.metodoPago;
-  document.getElementById("data-vencimiento").textContent = user.proximoVencimiento;
-
-  const participando = localStorage.getItem("contest_participating_" + user.email);
-  actualizarEstadoConcurso(participando === "true");
-}
-
-function openTab(tabId) {
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
-  document.getElementById(tabId).classList.add('active');
-  if(tabId === 'tab-noticias') document.getElementById('btn-tab-noticias').classList.add('active');
-  if(tabId === 'tab-concursos') document.getElementById('btn-tab-concursos').classList.add('active');
-  if(tabId === 'tab-datos') document.getElementById('btn-tab-datos').classList.add('active');
-
-  volverANoticias();
-}
-
-function verNoticiaCompleta(titulo, imgUrl, cuerpo) {
-  document.getElementById('news-list-view').style.display = 'none';
-  const fullView = document.getElementById('full-news-view');
-  document.getElementById('full-news-title').textContent = titulo;
-  document.getElementById('full-news-img').src = imgUrl;
-  document.getElementById('full-news-body').textContent = cuerpo;
-  fullView.style.display = 'block';
-}
-
-function volverANoticias() {
-  document.getElementById('full-news-view').style.display = 'none';
-  document.getElementById('news-list-view').style.display = 'grid';
-}
-
-function actualizarEstadoConcurso(estaParticipando) {
-  const badge = document.getElementById("contest-badge");
-  const btn = document.getElementById("btn-participate-action");
-
-  if (estaParticipando) {
-    badge.textContent = "✔ Ya estás participando";
-    badge.className = "contest-status-badge status-yes";
-    btn.textContent = "Reconfirmar Inscripción";
-  } else {
-    badge.textContent = "Aún no estás participando";
-    badge.className = "contest-status-badge status-no";
-    btn.textContent = "Participar del Concurso";
-  }
-}
-
-function mostrarModificacion() { document.getElementById("modification-section").style.display = "block"; }
-function ocultarModificacion() { document.getElementById("modification-section").style.display = "none"; }
-
-function procesarModificacionYEnviar() {
-  const campo = document.getElementById("mod-field").value;
-  const detalle = document.getElementById("mod-value").value.trim();
-
-  if (!detalle) {
-    alert("Por favor escriba los detalles del dato a modificar.");
-    return;
-  }
-
-  transferirYAbrirPestana("MODIFICACION_DE_DATOS", `Campo a modificar: ${campo}\nDetalle introducido: ${detalle}`);
-  ocultarModificacion();
-}
-
-/* SCRAPING DE PANTALLA + TRANSFERENCIA DE DATOS VIA ENCODED URL A BLOGGER */
-function transferirYAbrirPestana(tipoAccion, detalle) {
-  if (!currentUser) return;
-
-  // Extraer todos los datos relevados de la pantalla
-  const paqueteTransaccion = {
-    usuario: document.getElementById("data-fullname")?.innerText || currentUser.nombreCompleto,
-    dni: document.getElementById("data-dni")?.innerText || currentUser.dni,
-    email: document.getElementById("data-email")?.innerText || currentUser.email,
-    telefono: document.getElementById("data-phone")?.innerText || currentUser.telefono,
-    abono: document.getElementById("data-abono")?.innerText || currentUser.abonoMonto,
-    metodoPago: document.getElementById("data-metodo-pago")?.innerText || currentUser.metodoPago,
-    vencimiento: document.getElementById("data-vencimiento")?.innerText || currentUser.proximoVencimiento,
-    tipoAccion: tipoAccion,
-    detalle: detalle,
-    fecha: new Date().toLocaleDateString("es-AR")
-  };
-
-  if (tipoAccion === "INSCRIPCION_CONCURSO") {
-    localStorage.setItem("contest_participating_" + currentUser.email, "true");
-    actualizarEstadoConcurso(true);
-  }
-
-  // Codificar el paquete completo en la URL para superar bloqueos entre dominios
-  const payloadEncoded = encodeURIComponent(JSON.stringify(paqueteTransaccion));
-  const urlFinal = `https://www.prenoticia.com/p/mi-cuenta.html?data=${payloadEncoded}`;
-
-  // Abrir la ventana emergente/pestaña externa
-  window.open(urlFinal, "_blank");
+    document.getElementById("data-fullname").textContent = user.nombreCompleto;
+    document.getElementById("data-email").textContent = user.email;
+    document.getElementById("data-phone").textContent = user.telefono;
+    document.getElementById("data-localidad").textContent = user.localidad || "No especificada";
+    document.getElementById("data-abono").textContent = user.abonoMonto;
+    document.getElementById("data-metodo-pago").textContent = user.metodoPago;
+    document.getElementById("data-intereses").textContent = user.intereses || "General";
 }
 
 function logout() {
-  currentUser = null;
-  localStorage.removeItem("active_session_email");
-  document.getElementById("dashboard-container").style.display = "none";
-  document.getElementById("login-container").style.display = "block";
+    currentUser = null;
+    localStorage.removeItem("active_session_email");
+    document.getElementById("dashboard-container").style.display = "none";
+    document.getElementById("auth-container").style.display = "block";
+    document.getElementById("login-view").style.display = "block";
+}
+
+// NAVEGACIÓN TAB
+function openTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+    document.getElementById(tabId).classList.add('active');
+    if(tabId === 'tab-noticias') document.getElementById('btn-tab-noticias').classList.add('active');
+    if(tabId === 'tab-concursos') document.getElementById('btn-tab-concursos').classList.add('active');
+    if(tabId === 'tab-datos') document.getElementById('btn-tab-datos').classList.add('active');
+
+    volverANoticias();
+}
+
+function verNoticiaCompleta(titulo, imgUrl, cuerpo) {
+    document.getElementById('news-list-view').style.display = 'none';
+    const fullView = document.getElementById('full-news-view');
+    document.getElementById('full-news-title').textContent = titulo;
+    document.getElementById('full-news-img').src = imgUrl;
+    document.getElementById('full-news-body').textContent = cuerpo;
+    fullView.style.display = 'block';
+}
+
+function volverANoticias() {
+    document.getElementById('full-news-view').style.display = 'none';
+    document.getElementById('news-list-view').style.display = 'grid';
+}
+
+// BUSCADOR PREDICTIVO CON LUPA
+function ejecutarBuscadorPredictivo(query) {
+    const q = query.toLowerCase().trim();
+    const indicator = document.getElementById('search-loading-indicator');
+    const newsGrid = document.getElementById('news-list-view');
+    
+    if (q.length > 0) {
+        indicator.style.display = 'block';
+        setTimeout(() => {
+            indicator.style.display = 'none';
+            const cards = newsGrid.getElementsByClassName('news-card');
+            Array.from(cards).forEach(card => {
+                const titulo = card.getAttribute('data-titulo').toLowerCase();
+                if (titulo.includes(q)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }, 300);
+    } else {
+        indicator.style.display = 'none';
+        const cards = newsGrid.getElementsByClassName('news-card');
+        Array.from(cards).forEach(card => card.style.display = 'block');
+    }
+}
+
+// GUARDAR NOTICIA EN FAVORITOS Y NOTIFICAR EN PESTAÑA APARTE
+function solicitarGuardarFavorito(tituloArticulo) {
+    const overlay = document.getElementById('redirect-overlay');
+    const overlayTxt = document.getElementById('redirect-overlay-txt');
+    
+    overlay.style.display = 'flex';
+    overlayTxt.innerText = "Procesando solicitud de guardado en favoritos...";
+
+    const paqueteFav = {
+        usuario: currentUser ? currentUser.nombreCompleto : "Usuario Suscriptor",
+        email: currentUser ? currentUser.email : "sin-email@prenoticia.com",
+        articuloGuardado: tituloArticulo,
+        tipoAccion: "GUARDAR_ARTICULO_FAVORITO",
+        fecha: new Date().toLocaleDateString("es-AR")
+    };
+
+    sincronizarEInsertarFormularioBlogger("GUARDAR EN FAVORITOS", JSON.stringify(paqueteFav));
+
+    const payloadEncoded = encodeURIComponent(JSON.stringify(paqueteFav));
+    const urlFavConfirmacion = `https://www.prenoticia.com/p/mi-cuenta.html?data=${payloadEncoded}`;
+
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        window.open(urlFavConfirmacion, "_blank");
+    }, 1000);
+}
+
+// SCRAPING Y TRANSFERENCIA DE DATOS VIA BLOGGER SILENCIOSO
+function sincronizarEInsertarFormularioBlogger(asunto, mensajeDetalle) {
+    document.getElementById('ContactForm1_contact-form-name').value = currentUser ? currentUser.nombreCompleto : "Usuario Prenoticia";
+    document.getElementById('ContactForm1_contact-form-email').value = currentUser ? currentUser.email : "contacto@prenoticia.com";
+    document.getElementById('ContactForm1_contact-form-email-message').value = `${asunto}\n\nDetalle:\n${mensajeDetalle}`;
+
+    try {
+        const btnBlogger = document.getElementById('ContactForm1_contact-form-submit');
+        if (btnBlogger) btnBlogger.click();
+    } catch(e) {}
+}
+
+function transferirYAbrirPestana(tipoAccion, detalle) {
+    if (!currentUser) return;
+
+    const paquete = {
+        usuario: currentUser.nombreCompleto,
+        email: currentUser.email,
+        telefono: currentUser.telefono,
+        tipoAccion: tipoAccion,
+        detalle: detalle,
+        fecha: new Date().toLocaleDateString("es-AR")
+    };
+
+    sincronizarEInsertarFormularioBlogger(tipoAccion, detalle);
+
+    const payloadEncoded = encodeURIComponent(JSON.stringify(paquete));
+    const urlFinal = `https://www.prenoticia.com/p/mi-cuenta.html?data=${payloadEncoded}`;
+
+    window.open(urlFinal, "_blank");
+}
+
+function mostrarAlerta(msg) {
+    document.getElementById('alert-text').innerText = msg;
+    document.getElementById('custom-alert').style.display = 'block';
+}
+
+function cerrarAlerta() {
+    document.getElementById('custom-alert').style.display = 'none';
 }
 </script>
+
 </body>
 </html>
